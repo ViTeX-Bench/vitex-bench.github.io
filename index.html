@@ -3,180 +3,199 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  
+
   <!-- Primary Meta Tags -->
-  <!-- TODO: Replace with your paper title and author names -->
-  <meta name="title" content="PAPER_TITLE - AUTHOR_NAMES">
-  <!-- TODO: Write a compelling 150-160 character description of your research -->
-  <meta name="description" content="BRIEF_DESCRIPTION_OF_YOUR_RESEARCH_CONTRIBUTION_AND_FINDINGS">
-  <!-- TODO: Add 5-10 relevant keywords for your research area -->
-  <meta name="keywords" content="KEYWORD1, KEYWORD2, KEYWORD3, machine learning, computer vision, AI">
-  <!-- TODO: List all authors -->
-  <meta name="author" content="FIRST_AUTHOR_NAME, SECOND_AUTHOR_NAME">
+  <meta name="title" content="ViTeX-Bench: Benchmarking High Fidelity Video Scene Text Editing">
+  <meta name="description" content="A 387-clip paired dataset, a 13-metric three-axis evaluation protocol with the ViTeX-Score aggregate, and an open reference model (ViTeX-14B) for video scene text editing.">
+  <meta name="keywords" content="video scene text editing, video editing, scene text, benchmark, NeurIPS 2026, dataset, leaderboard, ViTeX-Bench, ViTeX-14B">
+  <meta name="author" content="Anonymous">
   <meta name="robots" content="index, follow">
   <meta name="language" content="English">
-  
-  <!-- Open Graph / Facebook -->
+
+  <!-- Open Graph -->
   <meta property="og:type" content="article">
-  <!-- TODO: Replace with your institution or lab name -->
-  <meta property="og:site_name" content="INSTITUTION_OR_LAB_NAME">
-  <!-- TODO: Same as paper title above -->
-  <meta property="og:title" content="PAPER_TITLE">
-  <!-- TODO: Same as description above -->
-  <meta property="og:description" content="BRIEF_DESCRIPTION_OF_YOUR_RESEARCH_CONTRIBUTION_AND_FINDINGS">
-  <!-- TODO: Replace with your actual website URL -->
-  <meta property="og:url" content="https://YOUR_DOMAIN.com/YOUR_PROJECT_PAGE">
-  <!-- TODO: Create a 1200x630px preview image and update path -->
-  <meta property="og:image" content="https://YOUR_DOMAIN.com/static/images/social_preview.png">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="PAPER_TITLE - Research Preview">
-  <meta property="article:published_time" content="2024-01-01T00:00:00.000Z">
-  <meta property="article:author" content="FIRST_AUTHOR_NAME">
-  <meta property="article:section" content="Research">
-  <meta property="article:tag" content="KEYWORD1">
-  <meta property="article:tag" content="KEYWORD2">
+  <meta property="og:site_name" content="ViTeX-Bench">
+  <meta property="og:title" content="ViTeX-Bench: Benchmarking High Fidelity Video Scene Text Editing">
+  <meta property="og:description" content="A 387-clip paired dataset, a 13-metric three-axis evaluation protocol with the ViTeX-Score aggregate, and an open reference model (ViTeX-14B) for video scene text editing.">
+  <meta property="og:url" content="https://vitex-bench.github.io/">
+  <meta property="og:image" content="https://vitex-bench.github.io/static/images/vitex_icon.png">
+  <meta property="og:image:alt" content="ViTeX-Bench">
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
-  <!-- TODO: Replace with your lab/institution Twitter handle -->
-  <meta name="twitter:site" content="@YOUR_TWITTER_HANDLE">
-  <!-- TODO: Replace with first author's Twitter handle -->
-  <meta name="twitter:creator" content="@AUTHOR_TWITTER_HANDLE">
-  <!-- TODO: Same as paper title above -->
-  <meta name="twitter:title" content="PAPER_TITLE">
-  <!-- TODO: Same as description above -->
-  <meta name="twitter:description" content="BRIEF_DESCRIPTION_OF_YOUR_RESEARCH_CONTRIBUTION_AND_FINDINGS">
-  <!-- TODO: Same as social preview image above -->
-  <meta name="twitter:image" content="https://YOUR_DOMAIN.com/static/images/social_preview.png">
-  <meta name="twitter:image:alt" content="PAPER_TITLE - Research Preview">
+  <meta name="twitter:title" content="ViTeX-Bench: Benchmarking High Fidelity Video Scene Text Editing">
+  <meta name="twitter:description" content="A 387-clip paired dataset, a 13-metric three-axis evaluation protocol with the ViTeX-Score aggregate, and an open reference model (ViTeX-14B) for video scene text editing.">
+  <meta name="twitter:image" content="https://vitex-bench.github.io/static/images/vitex_icon.png">
 
-  <!-- Academic/Research Specific -->
-  <meta name="citation_title" content="PAPER_TITLE">
-  <meta name="citation_author" content="FIRST_AUTHOR_LAST, FIRST_AUTHOR_FIRST">
-  <meta name="citation_author" content="SECOND_AUTHOR_LAST, SECOND_AUTHOR_FIRST">
-  <meta name="citation_publication_date" content="2024">
-  <meta name="citation_conference_title" content="CONFERENCE_NAME">
-  <meta name="citation_pdf_url" content="https://YOUR_DOMAIN.com/static/pdfs/paper.pdf">
-  
-  <!-- Additional SEO -->
-  <meta name="theme-color" content="#2563eb">
-  <meta name="msapplication-TileColor" content="#2563eb">
+  <!-- Academic / citation_meta -->
+  <meta name="citation_title" content="ViTeX-Bench: Benchmarking High Fidelity Video Scene Text Editing">
+  <meta name="citation_author" content="Anonymous">
+  <meta name="citation_publication_date" content="2026">
+  <meta name="citation_conference_title" content="NeurIPS 2026 Datasets and Benchmarks Track (under review)">
+
+  <meta name="theme-color" content="#0a2540">
+  <meta name="msapplication-TileColor" content="#0a2540">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  
+
   <!-- Preconnect for performance -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://ajax.googleapis.com">
-  <link rel="preconnect" href="https://documentcloud.adobe.com">
   <link rel="preconnect" href="https://cdn.jsdelivr.net">
 
+  <title>ViTeX-Bench: Benchmarking High Fidelity Video Scene Text Editing</title>
 
-  <!-- TODO: Replace with your paper title and authors -->
-  <title>PAPER_TITLE - AUTHOR_NAMES | Academic Research</title>
-  
-  <!-- Favicon and App Icons -->
   <link rel="icon" type="image/x-icon" href="static/images/favicon.ico">
   <link rel="apple-touch-icon" href="static/images/favicon.ico">
-  
-  <!-- Critical CSS - Load synchronously -->
+
   <link rel="stylesheet" href="static/css/bulma.min.css">
   <link rel="stylesheet" href="static/css/index.css">
-  
-  <!-- Non-critical CSS - Load asynchronously -->
+
   <link rel="preload" href="static/css/bulma-carousel.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
   <link rel="preload" href="static/css/bulma-slider.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
   <link rel="preload" href="static/css/fontawesome.all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
   <link rel="preload" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-  
-  <!-- Fallback for browsers that don't support preload -->
+
   <noscript>
     <link rel="stylesheet" href="static/css/bulma-carousel.min.css">
     <link rel="stylesheet" href="static/css/bulma-slider.min.css">
     <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
   </noscript>
-  
-  <!-- Fonts - Optimized loading -->
+
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  
-  <!-- Defer non-critical JavaScript -->
+
   <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script defer src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
   <script defer src="static/js/fontawesome.all.min.js"></script>
   <script defer src="static/js/bulma-carousel.min.js"></script>
   <script defer src="static/js/bulma-slider.min.js"></script>
   <script defer src="static/js/index.js"></script>
-  
-  <!-- Structured Data for Academic Papers -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "ScholarlyArticle",
-    "headline": "PAPER_TITLE",
-    "description": "BRIEF_DESCRIPTION_OF_YOUR_RESEARCH_CONTRIBUTION_AND_FINDINGS",
-    "author": [
-      {
-        "@type": "Person",
-        "name": "FIRST_AUTHOR_NAME",
-        "affiliation": {
-          "@type": "Organization",
-          "name": "INSTITUTION_NAME"
-        }
-      },
-      {
-        "@type": "Person",
-        "name": "SECOND_AUTHOR_NAME",
-        "affiliation": {
-          "@type": "Organization",
-          "name": "INSTITUTION_NAME"
-        }
-      }
-    ],
-    "datePublished": "2024-01-01",
-    "publisher": {
-      "@type": "Organization",
-      "name": "CONFERENCE_OR_JOURNAL_NAME"
-    },
-    "url": "https://YOUR_DOMAIN.com/YOUR_PROJECT_PAGE",
-    "image": "https://YOUR_DOMAIN.com/static/images/social_preview.png",
-    "keywords": ["KEYWORD1", "KEYWORD2", "KEYWORD3", "machine learning", "computer vision"],
-    "abstract": "FULL_ABSTRACT_TEXT_HERE",
-    "citation": "BIBTEX_CITATION_HERE",
-    "isAccessibleForFree": true,
-    "license": "https://creativecommons.org/licenses/by/4.0/",
-    "mainEntity": {
-      "@type": "WebPage",
-      "@id": "https://YOUR_DOMAIN.com/YOUR_PROJECT_PAGE"
-    },
-    "about": [
-      {
-        "@type": "Thing",
-        "name": "RESEARCH_AREA_1"
-      },
-      {
-        "@type": "Thing", 
-        "name": "RESEARCH_AREA_2"
-      }
-    ]
-  }
-  </script>
-  
-  <!-- Website/Organization Structured Data -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "INSTITUTION_OR_LAB_NAME",
-    "url": "https://YOUR_INSTITUTION_WEBSITE.com",
-    "logo": "https://YOUR_DOMAIN.com/static/images/favicon.ico",
-    "sameAs": [
-      "https://twitter.com/YOUR_TWITTER_HANDLE",
-      "https://github.com/YOUR_GITHUB_USERNAME"
-    ]
-  }
-  </script>
+
+  <!-- Page-local styles for ViTeX-Bench sections -->
+  <style>
+    /* Section spacing harmonization */
+    .vt-tight { padding-top: 2.5rem; padding-bottom: 2.5rem; }
+
+    /* Contribution cards */
+    .vt-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem; }
+    .vt-card {
+      border: 1px solid #e3e8ee; border-radius: 14px; padding: 1.5rem;
+      background: #fff; box-shadow: 0 1px 2px rgba(10,37,64,0.04);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .vt-card:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(10,37,64,0.08); }
+    .vt-card .vt-icon { font-size: 1.6rem; color: #0a2540; margin-bottom: 0.6rem; }
+    .vt-card h4 { color: #0a2540; font-weight: 700; font-size: 1.15rem; margin-bottom: 0.4rem; }
+    .vt-card p { color: #425466; font-size: 0.95rem; line-height: 1.55; }
+
+    /* Stat tiles */
+    .vt-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 0.75rem; }
+    .vt-stat {
+      background: #f6f9fc; border: 1px solid #e3e8ee; border-radius: 10px;
+      padding: 1rem 0.75rem; text-align: center;
+    }
+    .vt-stat .vt-num { font-size: 1.6rem; font-weight: 700; color: #0a2540; line-height: 1.1;
+                      font-variant-numeric: tabular-nums; }
+    .vt-stat .vt-lbl { font-size: 0.78rem; color: #697386; text-transform: uppercase; letter-spacing: 0.04em; margin-top: 0.25rem; }
+
+    /* Axis blocks */
+    .vt-axes { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; }
+    .vt-axis {
+      background: #fff; border: 1px solid #e3e8ee; border-radius: 12px; padding: 1.25rem;
+    }
+    .vt-axis h4 { color: #0a2540; font-weight: 700; font-size: 1.05rem; margin-bottom: 0.5rem; }
+    .vt-axis .vt-axis-tag {
+      display: inline-block; font-size: 0.72rem; letter-spacing: 0.05em;
+      text-transform: uppercase; padding: 2px 8px; border-radius: 999px;
+      background: #eef2f8; color: #0a2540; margin-right: 0.4rem;
+      font-variant-numeric: tabular-nums;
+    }
+    .vt-axis ul { list-style: none; padding-left: 0; margin-top: 0.75rem; font-size: 0.92rem; color: #425466; }
+    .vt-axis li { padding: 4px 0; }
+    .vt-axis li code {
+      background: #f6f9fc; color: #0a2540; padding: 1px 6px; border-radius: 4px;
+      font-size: 0.85rem; border: 1px solid #e3e8ee;
+    }
+
+    /* Score formula box */
+    .vt-formula {
+      background: #0a2540; color: #f6f9fc; border-radius: 14px;
+      padding: 1.5rem 1.5rem 1.25rem; margin-top: 1.25rem;
+      font-family: ui-monospace, "SF Mono", Menlo, Monaco, Consolas, monospace;
+      overflow-x: auto;
+    }
+    .vt-formula .vt-eq { font-size: 1.05rem; line-height: 1.7; white-space: nowrap; }
+    .vt-formula .vt-eq small { color: #a0b3cf; }
+    .vt-formula .vt-note { color: #a0b3cf; font-size: 0.82rem; margin-top: 0.6rem;
+                            font-family: Inter, sans-serif; }
+
+    /* Leaderboard table */
+    .vt-lb-wrap {
+      border: 1px solid #e3e8ee; border-radius: 12px; overflow: hidden;
+      box-shadow: 0 1px 2px rgba(10,37,64,0.04); background: #fff;
+    }
+    .vt-lb {
+      width: 100%; border-collapse: separate; border-spacing: 0;
+      font-size: 0.9rem; font-variant-numeric: tabular-nums;
+    }
+    .vt-lb thead th {
+      background: #f6f9fc; color: #425466;
+      font-weight: 600; font-size: 0.74rem; letter-spacing: 0.04em;
+      text-transform: uppercase; padding: 12px 14px;
+      border-bottom: 1px solid #e3e8ee; text-align: right;
+    }
+    .vt-lb thead th.left { text-align: left; }
+    .vt-lb td { padding: 10px 14px; border-bottom: 1px solid #f1f4f8; text-align: right; color: #425466; }
+    .vt-lb td.left { text-align: left; }
+    .vt-lb tbody tr:last-child td { border-bottom: none; }
+    .vt-lb tbody tr:hover td { background: #fafbfc; }
+    .vt-lb td.method { color: #0a2540; font-weight: 600; }
+    .vt-lb td.score { background: #0a2540; color: #fff; font-weight: 700; }
+    .vt-lb tbody tr:hover td.score { background: #1e3a5f; }
+    .vt-lb td.axis { background: #f6f9fc; color: #0a2540; font-weight: 600; }
+    .vt-lb tbody tr:hover td.axis { background: #eef2f8; }
+    .vt-lb .vt-rank { color: #a3acb9; font-weight: 500; width: 38px; text-align: center; }
+    .vt-lb .vt-fam {
+      display: inline-block; padding: 2px 7px;
+      font-size: 0.72rem; font-weight: 500; border-radius: 999px;
+    }
+    .vt-fam.A { background: #cff5d1; color: #0a3514; }
+    .vt-fam.B { background: #fff5cc; color: #7e3503; }
+    .vt-fam.C { background: #ffd1d8; color: #7d122c; }
+    .vt-fam.D { background: #dadcff; color: #322a87; }
+    .vt-fam.O { background: #e3e8ee; color: #0a2540; }
+
+    .vt-cta {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: #0a2540; color: #fff; padding: 0.7rem 1.2rem;
+      border-radius: 999px; font-weight: 600; text-decoration: none;
+      transition: background 0.15s;
+    }
+    .vt-cta:hover { background: #1e3a5f; color: #fff; }
+
+    /* Failure-mode panels */
+    .vt-failures { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; }
+    .vt-fail {
+      border: 1px solid #e3e8ee; border-radius: 12px; padding: 1.1rem; background: #fff;
+    }
+    .vt-fail .vt-fail-head { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.6rem; }
+    .vt-fail .vt-fail-tag {
+      width: 26px; height: 26px; border-radius: 7px;
+      display: inline-flex; align-items: center; justify-content: center;
+      background: #0a2540; color: #fff; font-weight: 700; font-size: 0.85rem;
+    }
+    .vt-fail h5 { color: #0a2540; font-weight: 700; font-size: 0.95rem; margin: 0; }
+    .vt-fail p { color: #425466; font-size: 0.88rem; line-height: 1.55; margin-top: 0.5rem; }
+    .vt-fail video, .vt-fail .vt-fail-placeholder {
+      width: 100%; aspect-ratio: 16/9; border-radius: 8px;
+      background: #f1f4f8; display: flex; align-items: center; justify-content: center;
+      color: #a3acb9; font-size: 0.85rem;
+    }
+
+    /* Anchor offset for sticky-ish navigation if added later */
+    section { scroll-margin-top: 2rem; }
+  </style>
 </head>
 <body>
 
@@ -186,335 +205,464 @@
     <i class="fas fa-chevron-up"></i>
   </button>
 
-  <!-- More Works Dropdown -->
-  <div class="more-works-container">
-    <button class="more-works-btn" onclick="toggleMoreWorks()" title="View More Works from Our Lab">
-      <i class="fas fa-flask"></i>
-      More Works
-      <i class="fas fa-chevron-down dropdown-arrow"></i>
-    </button>
-    <div class="more-works-dropdown" id="moreWorksDropdown">
-      <div class="dropdown-header">
-        <h4>More Works from Our Lab</h4>
-        <button class="close-btn" onclick="toggleMoreWorks()">
-          <i class="fas fa-times"></i>
-        </button>
-      </div>
-      <div class="works-list">
-        <!-- TODO: Replace with your lab's related works -->
-        <a href="https://arxiv.org/abs/PAPER_ID_1" class="work-item" target="_blank">
-          <div class="work-info">
-            <!-- TODO: Replace with actual paper title -->
-            <h5>Paper Title 1</h5>
-            <!-- TODO: Replace with brief description -->
-            <p>Brief description of the work and its main contribution.</p>
-            <!-- TODO: Replace with venue and year -->
-            <span class="work-venue">Conference/Journal 2024</span>
-          </div>
-          <i class="fas fa-external-link-alt"></i>
-        </a>
-        <!-- TODO: Add more related works or remove extra items -->
-        <a href="https://arxiv.org/abs/PAPER_ID_2" class="work-item" target="_blank">
-          <div class="work-info">
-            <h5>Paper Title 2</h5>
-            <p>Brief description of the work and its main contribution.</p>
-            <span class="work-venue">Conference/Journal 2023</span>
-          </div>
-          <i class="fas fa-external-link-alt"></i>
-        </a>
-        <a href="https://arxiv.org/abs/PAPER_ID_3" class="work-item" target="_blank">
-          <div class="work-info">
-            <h5>Paper Title 3</h5>
-            <p>Brief description of the work and its main contribution.</p>
-            <span class="work-venue">Conference/Journal 2023</span>
-          </div>
-          <i class="fas fa-external-link-alt"></i>
-        </a>
-      </div>
-    </div>
-  </div>
-
   <main id="main-content">
   <section class="hero">
     <div class="hero-body">
       <div class="container is-max-desktop">
         <div class="columns is-centered">
           <div class="column has-text-centered">
-            <!-- TODO: Replace with your paper title -->
-            <h1 class="title is-1 publication-title">Academic Project Page</h1>
+            <h1 class="title is-1 publication-title">ViTeX-Bench: Benchmarking High Fidelity Video Scene Text Editing</h1>
             <div class="is-size-5 publication-authors">
-              <!-- TODO: Replace with your paper authors and their personal links -->
-              <span class="author-block">
-                <a href="FIRST AUTHOR PERSONAL LINK" target="_blank">First Author</a><sup>*</sup>,</span>
-                <span class="author-block">
-                  <a href="SECOND AUTHOR PERSONAL LINK" target="_blank">Second Author</a><sup>*</sup>,</span>
-                  <span class="author-block">
-                    <a href="THIRD AUTHOR PERSONAL LINK" target="_blank">Third Author</a>
-                  </span>
-                  </div>
+              <span class="author-block">Anonymous Authors</span>
+            </div>
 
-                  <div class="is-size-5 publication-authors">
-                    <!-- TODO: Replace with your institution and conference/journal info -->
-                    <span class="author-block">Institution Name<br>Conference name and year</span>
-                    <!-- TODO: Remove this line if no equal contribution -->
-                    <span class="eql-cntrb"><small><br><sup>*</sup>Indicates Equal Contribution</small></span>
-                  </div>
+            <div class="is-size-5 publication-authors">
+              <span class="author-block">Submitted to NeurIPS 2026 Datasets and Benchmarks Track</span>
+              <br>
+              <span class="eql-cntrb"><small>Paper under double-blind review. Author list and affiliations updated after deanonymization.</small></span>
+            </div>
 
-                  <div class="column has-text-centered">
-                    <div class="publication-links">
-                         <!-- TODO: Update with your arXiv paper ID -->
-                      <span class="link-block">
-                        <a href="https://arxiv.org/pdf/<ARXIV PAPER ID>.pdf" target="_blank"
-                        class="external-link button is-normal is-rounded is-dark">
-                        <span class="icon">
-                          <i class="fas fa-file-pdf"></i>
-                        </span>
-                        <span>Paper</span>
-                      </a>
-                    </span>
-
-                    <!-- TODO: Add your supplementary material PDF or remove this section -->
-                    <span class="link-block">
-                      <a href="static/pdfs/supplementary_material.pdf" target="_blank"
-                      class="external-link button is-normal is-rounded is-dark">
-                      <span class="icon">
-                        <i class="fas fa-file-pdf"></i>
-                      </span>
-                      <span>Supplementary</span>
-                    </a>
-                  </span>
-
-                  <!-- TODO: Replace with your GitHub repository URL -->
-                  <span class="link-block">
-                    <a href="https://github.com/YOUR REPO HERE" target="_blank"
-                    class="external-link button is-normal is-rounded is-dark">
-                    <span class="icon">
-                      <i class="fab fa-github"></i>
-                    </span>
+            <div class="column has-text-centered">
+              <div class="publication-links">
+                <span class="link-block">
+                  <a href="https://huggingface.co/datasets/ViTeX-Bench/ViTeX-Dataset" target="_blank"
+                     class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">🤗</span>
+                    <span>Dataset</span>
+                  </a>
+                </span>
+                <span class="link-block">
+                  <a href="https://huggingface.co/ViTeX-Bench/ViTeX-Bench" target="_blank"
+                     class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">💻</span>
                     <span>Code</span>
                   </a>
                 </span>
-
-                <!-- TODO: Update with your arXiv paper ID -->
                 <span class="link-block">
-                  <a href="https://arxiv.org/abs/<ARXIV PAPER ID>" target="_blank"
-                  class="external-link button is-normal is-rounded is-dark">
-                  <span class="icon">
-                    <i class="ai ai-arxiv"></i>
-                  </span>
-                  <span>arXiv</span>
-                </a>
-              </span>
+                  <a href="https://huggingface.co/ViTeX-Bench/ViTeX-14B" target="_blank"
+                     class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">🤖</span>
+                    <span>Model</span>
+                  </a>
+                </span>
+                <span class="link-block">
+                  <a href="https://huggingface.co/spaces/ViTeX-Bench/ViTeX-Bench-Leaderboard" target="_blank"
+                     class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">🏆</span>
+                    <span>Leaderboard</span>
+                  </a>
+                </span>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
 
-<!-- Teaser video-->
+<!-- Teaser video -->
 <section class="hero teaser">
   <div class="container is-max-desktop">
     <div class="hero-body">
-      <!-- TODO: Replace with your teaser video -->
-      <video poster="" id="tree" autoplay controls muted loop height="100%" preload="metadata">
-        <!-- TODO: Add your video file path here -->
+      <video poster="" id="teaser" autoplay controls muted loop height="100%" preload="metadata">
         <source src="static/videos/banner_video.mp4" type="video/mp4">
       </video>
-      <!-- TODO: Replace with your video description -->
       <h2 class="subtitle has-text-centered">
-        Aliquam vitae elit ullamcorper tellus egestas pellentesque. Ut lacus tellus, maximus vel lectus at, placerat pretium mi. Maecenas dignissim tincidunt vestibulum. Sed consequat hendrerit nisl ut maximus. 
+        Replacing scene text on signs, jerseys, screens, blackboards, and product labels in real-world videos
+        while preserving the surrounding content, motion, lighting, and camera dynamics.
       </h2>
     </div>
   </div>
 </section>
 <!-- End teaser video -->
 
-<!-- Paper abstract -->
+
+<!-- Abstract -->
 <section class="section hero is-light">
   <div class="container is-max-desktop">
     <div class="columns is-centered has-text-centered">
       <div class="column is-four-fifths">
         <h2 class="title is-3">Abstract</h2>
         <div class="content has-text-justified">
-          <!-- TODO: Replace with your paper abstract -->
           <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ullamcorper tellus sed ante aliquam tempus. Etiam porttitor urna feugiat nibh elementum, et tempor dolor mattis. Donec accumsan enim augue, a vulputate nisi sodales sit amet. Proin bibendum ex eget mauris cursus euismod nec et nibh. Maecenas ac gravida ante, nec cursus dui. Vivamus purus nibh, placerat ac purus eget, sagittis vestibulum metus. Sed vestibulum bibendum lectus gravida commodo. Pellentesque auctor leo vitae sagittis suscipit.
+            Video scene text editing aims to replace text appearing on signs, whiteboards, jerseys, screens, product labels,
+            and other scene surfaces in a video while preserving the surrounding content, motion, lighting, and camera dynamics.
+            Although scene text editing has been extensively studied for still images, its video counterpart remains underdeveloped:
+            existing resources lack paired real-video edits, current evaluation protocols do not measure character-level correctness over time,
+            and no open reference model exists for systematic comparison.
+            We introduce <b>ViTeX-Bench</b>, a benchmark suite for faithful and temporally consistent video scene text editing.
+            Specifically, we build <b>ViTeX-Dataset</b>, which contains 387 curated real-world 720p video clips,
+            sourced from Panda-70M and InternVid. We construct it through a semi-automatic pipeline that localizes scene text,
+            creates source–target text pairs, removes the original text, and synthesizes temporally consistent edits.
+            We then establish <b>ViTeX-Bench</b>, which evaluates video scene text editing models along three axes:
+            text correctness, visual quality, and edit locality, using thirteen complementary metrics aggregated into a single
+            <b>ViTeX-Score</b>.
+            To demonstrate the effectiveness of our paired dataset, we further introduce <b>ViTeX-14B</b>, an open model based on Wan2.1,
+            with a glyph-video conditioning pathway that supplies temporally aligned target-text structure to the video-editing backbone.
+            Together, ViTeX-Dataset, ViTeX-Bench, and ViTeX-14B provide a common foundation for training, evaluating,
+            and diagnosing video scene text editing systems.
           </p>
         </div>
       </div>
     </div>
   </div>
 </section>
-<!-- End paper abstract -->
+<!-- End abstract -->
 
 
-<!-- Image carousel -->
-<section class="hero is-small">
-  <div class="hero-body">
-    <div class="container">
-      <div id="results-carousel" class="carousel results-carousel">
-       <div class="item">
-        <!-- TODO: Replace with your research result images -->
-        <img src="static/images/carousel1.jpg" alt="First research result visualization" loading="lazy"/>
-        <!-- TODO: Replace with description of this result -->
-        <h2 class="subtitle has-text-centered">
-          First image description.
-        </h2>
+<!-- Key contributions -->
+<section class="section vt-tight">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">A coordinated three-part release</h2>
+    <p class="subtitle has-text-centered" style="color:#697386;">
+      A dataset, a protocol, and a reference model — designed to be used together but releasable independently.
+    </p>
+    <div class="vt-cards" style="margin-top: 2rem;">
+      <div class="vt-card">
+        <div class="vt-icon">📊</div>
+        <h4>ViTeX-Dataset</h4>
+        <p>
+          387 curated 720p clips from Panda-70M and InternVid with paired edits.
+          230 clips for open training, 157 frozen for permanent evaluation.
+          Four scripts: Latin, Chinese, Japanese, Cyrillic.
+        </p>
+      </div>
+      <div class="vt-card">
+        <div class="vt-icon">🎯</div>
+        <h4>ViTeX-Bench</h4>
+        <p>
+          Three orthogonal axes (text correctness, visual quality, edit locality)
+          unfolded into thirteen complementary metrics, aggregated by a non-substitutive
+          geometric mean into the single ViTeX-Score.
+        </p>
+      </div>
+      <div class="vt-card">
+        <div class="vt-icon">🤖</div>
+        <h4>ViTeX-14B</h4>
+        <p>
+          Open reference model extending Wan2.1-VACE-14B with a glyph-video conditioning
+          pathway. Trained on the 230-clip training split alone; tops the visual axis
+          on the leaderboard.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End key contributions -->
+
+
+<!-- Dataset overview -->
+<section class="section hero is-light">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">ViTeX-Dataset</h2>
+    <p class="subtitle has-text-centered" style="color:#697386;">
+      Real-world clips with semi-automatic paired edits.
+    </p>
+
+    <div class="vt-stats" style="margin-top: 1.5rem;">
+      <div class="vt-stat"><div class="vt-num">387</div><div class="vt-lbl">Total clips</div></div>
+      <div class="vt-stat"><div class="vt-num">230</div><div class="vt-lbl">Training</div></div>
+      <div class="vt-stat"><div class="vt-num">157</div><div class="vt-lbl">Frozen test</div></div>
+      <div class="vt-stat"><div class="vt-num">4</div><div class="vt-lbl">Scripts</div></div>
+      <div class="vt-stat"><div class="vt-num">120</div><div class="vt-lbl">Frames per clip</div></div>
+      <div class="vt-stat"><div class="vt-num">720p</div><div class="vt-lbl">at 24 fps</div></div>
+    </div>
+
+    <div class="content" style="margin-top: 2rem;">
+      <p style="color:#425466;">
+        Each clip ships with the source video, a propagated per-frame binary mask of the editable text region,
+        and a source–target string pair. The training split additionally provides a paired edited video
+        produced by our two-strategy construction pipeline (alpha composition for static-text clips,
+        a fine-tuned PISCO inserter for dynamic clips). The 157-clip evaluation split is permanently frozen
+        and withholds edited ground truth, so the benchmark cannot leak edit-side information into training.
+        Source and target strings range from single characters to ~40-character phrases, covering both
+        short edits (where per-frame editors can in principle recover the full string) and longer phrases
+        that stress temporal consistency.
+      </p>
+    </div>
+
+    <!-- Image carousel slot — user will replace with dataset sample frames -->
+    <div id="dataset-carousel" class="carousel results-carousel" style="margin-top: 2rem;">
+      <div class="item">
+        <img src="static/images/carousel1.jpg" alt="Sample frame from the dataset" loading="lazy"/>
+        <h2 class="subtitle has-text-centered">Sample frame — to be replaced.</h2>
       </div>
       <div class="item">
-        <!-- Your image here -->
-        <img src="static/images/carousel2.jpg" alt="Second research result visualization" loading="lazy"/>
-        <h2 class="subtitle has-text-centered">
-          Second image description.
-        </h2>
+        <img src="static/images/carousel2.jpg" alt="Sample frame from the dataset" loading="lazy"/>
+        <h2 class="subtitle has-text-centered">Sample frame — to be replaced.</h2>
       </div>
       <div class="item">
-        <!-- Your image here -->
-        <img src="static/images/carousel3.jpg" alt="Third research result visualization" loading="lazy"/>
-        <h2 class="subtitle has-text-centered">
-         Third image description.
-       </h2>
-     </div>
-     <div class="item">
-      <!-- Your image here -->
-      <img src="static/images/carousel4.jpg" alt="Fourth research result visualization" loading="lazy"/>
-      <h2 class="subtitle has-text-centered">
-        Fourth image description.
-      </h2>
-    </div>
-  </div>
-</div>
-</div>
-</section>
-<!-- End image carousel -->
-
-
-
-
-<!-- Youtube video -->
-<section class="hero is-small is-light">
-  <div class="hero-body">
-    <div class="container">
-      <!-- Paper video. -->
-      <h2 class="title is-3">Video Presentation</h2>
-      <div class="columns is-centered has-text-centered">
-        <div class="column is-four-fifths">
-          
-          <div class="publication-video">
-            <!-- TODO: Replace with your YouTube video ID -->
-            <iframe src="https://www.youtube.com/embed/JkaxUblCGz0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-          </div>
-        </div>
+        <img src="static/images/carousel3.jpg" alt="Sample frame from the dataset" loading="lazy"/>
+        <h2 class="subtitle has-text-centered">Sample frame — to be replaced.</h2>
+      </div>
+      <div class="item">
+        <img src="static/images/carousel4.jpg" alt="Sample frame from the dataset" loading="lazy"/>
+        <h2 class="subtitle has-text-centered">Sample frame — to be replaced.</h2>
       </div>
     </div>
   </div>
 </section>
-<!-- End youtube video -->
+<!-- End dataset overview -->
 
 
-<!-- Video carousel -->
-<section class="hero is-small">
-  <div class="hero-body">
-    <div class="container">
-      <h2 class="title is-3">Another Carousel</h2>
-      <div id="results-carousel" class="carousel results-carousel">
-        <div class="item item-video1">
-          <!-- TODO: Add poster image for better preview -->
-          <video poster="" id="video1" controls muted loop height="100%" preload="metadata">
-            <!-- Your video file here -->
-            <source src="static/videos/carousel1.mp4" type="video/mp4">
-          </video>
-        </div>
-        <div class="item item-video2">
-          <!-- TODO: Add poster image for better preview -->
-          <video poster="" id="video2" controls muted loop height="100%" preload="metadata">
-            <!-- Your video file here -->
-            <source src="static/videos/carousel2.mp4" type="video/mp4">
-          </video>
-        </div>
-        <div class="item item-video3">
-          <!-- TODO: Add poster image for better preview -->
-          <video poster="" id="video3" controls muted loop height="100%" preload="metadata">
-            <!-- Your video file here -->
-            <source src="static/videos/carousel3.mp4" type="video/mp4">
-          </video>
-        </div>
+<!-- Benchmark protocol -->
+<section class="section vt-tight">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">Evaluation protocol</h2>
+    <p class="subtitle has-text-centered" style="color:#697386;">
+      Three orthogonal axes, thirteen complementary metrics, one non-substitutive aggregate.
+    </p>
+
+    <div class="vt-axes" style="margin-top: 1.5rem;">
+      <div class="vt-axis">
+        <span class="vt-axis-tag">Axis 1</span>
+        <h4>Text correctness</h4>
+        <p style="color:#425466; font-size:0.92rem;">
+          PP-OCRv5 with per-clip language routing reads the dilated text-region crop;
+          source-detectability gating restricts scoring to frames where the source is readable.
+          Substring (semi-global) edit distance prevents penalizing a correct target embedded in a longer OCR string.
+        </p>
+        <ul>
+          <li><code>SeqAcc</code> — exact-match rate</li>
+          <li><code>CharAcc</code> — substring similarity</li>
+          <li><code>TTS</code> — temporal text stability</li>
+        </ul>
+      </div>
+
+      <div class="vt-axis">
+        <span class="vt-axis-tag">Axis 2</span>
+        <h4>Visual quality</h4>
+        <p style="color:#425466; font-size:0.92rem;">
+          Six primitives at two scopes (full frame and a static union-mask text crop).
+          Flicker rewards smoothness (hackable by interpolation); Warp uses RAFT optical flow
+          on the source video and only scores low when the prediction follows the same per-pixel motion.
+        </p>
+        <ul>
+          <li><code>Flicker_f / Flicker_c</code> — adjacent-frame MAE</li>
+          <li><code>Warp_f / Warp_c</code> — RAFT-flow warping error</li>
+          <li><code>MUSIQ_f / MUSIQ_c</code> — KonIQ-pretrained no-reference IQA</li>
+        </ul>
+      </div>
+
+      <div class="vt-axis">
+        <span class="vt-axis-tag">Axis 3</span>
+        <h4>Edit locality</h4>
+        <p style="color:#425466; font-size:0.92rem;">
+          Compose a locality-only prediction by copying source pixels into the masked region,
+          then score four metrics against the source. DreamSim is robust to the codec/VAE noise
+          that pixel-level metrics over-penalize on full-frame regenerative methods.
+        </p>
+        <ul>
+          <li><code>PSNR_loc / SSIM_loc</code></li>
+          <li><code>LPIPS_loc</code> (AlexNet)</li>
+          <li><code>DreamSim_loc</code> — learned identity</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="vt-formula">
+      <div class="vt-eq">
+        <b>ViTeX-Score</b> = ∛(Correctness · Visual · Locality)
+      </div>
+      <div class="vt-eq" style="margin-top: 0.4rem;">
+        <small>Axis</small> = geomean<sub>w</sub>(m̃<sub>1</sub>, …, m̃<sub>k</sub>),
+        &nbsp;&nbsp;
+        <small>m̃<sub>i</sub></small> = normalize(m<sub>i</sub>; frozen v1 endpoints) ∈ [0, 1]
+      </div>
+      <div class="vt-note">
+        Geometric mean at both levels enforces non-substitutivity: any axis at zero collapses ViTeX-Score,
+        so visual quality cannot rescue a missing edit. Inside the visual axis the text-crop scope
+        carries double weight (w<sub>crop</sub> = 2, w<sub>full</sub> = 1); correctness and locality use uniform weights.
       </div>
     </div>
   </div>
 </section>
-<!-- End video carousel -->
+<!-- End benchmark protocol -->
 
 
+<!-- Live leaderboard preview -->
+<section class="section hero is-light">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">Leaderboard</h2>
+    <p class="subtitle has-text-centered" style="color:#697386;">
+      Open submissions at the live Hugging Face Space, moderated by the maintainers.
+    </p>
+
+    <div class="vt-lb-wrap" style="margin-top: 1.5rem; overflow-x: auto;">
+      <table class="vt-lb">
+        <thead>
+          <tr>
+            <th></th>
+            <th class="left">Method</th>
+            <th class="left">Family</th>
+            <th>Correctness ↑</th>
+            <th>Visual ↑</th>
+            <th>Locality ↑</th>
+            <th>ViTeX-Score ↑</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="vt-rank">1</td><td class="left method">ViTeX-14B (Corp)</td><td class="left"><span class="vt-fam O">ours</span></td><td class="axis">0.541</td><td class="axis">0.635</td><td class="axis">0.954</td><td class="score">0.689</td></tr>
+          <tr><td class="vt-rank">2</td><td class="left method">TextCtrl</td><td class="left"><span class="vt-fam A">A</span></td><td class="axis">0.562</td><td class="axis">0.613</td><td class="axis">0.939</td><td class="score">0.686</td></tr>
+          <tr><td class="vt-rank">3</td><td class="left method">ViTeX-14B</td><td class="left"><span class="vt-fam O">ours</span></td><td class="axis">0.534</td><td class="axis">0.647</td><td class="axis">0.794</td><td class="score">0.650</td></tr>
+          <tr><td class="vt-rank">4</td><td class="left method">RS-STE</td><td class="left"><span class="vt-fam A">A</span></td><td class="axis">0.491</td><td class="axis">0.594</td><td class="axis">0.901</td><td class="score">0.641</td></tr>
+          <tr><td class="vt-rank">5</td><td class="left method">VideoPainter<sup>†</sup></td><td class="left"><span class="vt-fam C">C</span></td><td class="axis">0.515</td><td class="axis">0.608</td><td class="axis">0.773</td><td class="score">0.623</td></tr>
+          <tr><td class="vt-rank">6</td><td class="left method">AnyText2</td><td class="left"><span class="vt-fam A">A</span></td><td class="axis">0.407</td><td class="axis">0.580</td><td class="axis">0.699</td><td class="score">0.549</td></tr>
+          <tr><td class="vt-rank">7</td><td class="left method">FLUX-Text</td><td class="left"><span class="vt-fam A">A</span></td><td class="axis">0.502</td><td class="axis">0.140</td><td class="axis">0.851</td><td class="score">0.392</td></tr>
+          <tr><td class="vt-rank">8</td><td class="left method">TextCtrl + AnyV2V</td><td class="left"><span class="vt-fam B">B</span></td><td class="axis">0.165</td><td class="axis">0.437</td><td class="axis">0.512</td><td class="score">0.333</td></tr>
+          <tr><td class="vt-rank">9</td><td class="left method">Wan2.1-VACE-14B</td><td class="left"><span class="vt-fam C">C</span></td><td class="axis">0.000</td><td class="axis">0.631</td><td class="axis">0.889</td><td class="score">0.000</td></tr>
+          <tr><td class="vt-rank">10</td><td class="left method">Kling Video 3.0 Omni</td><td class="left"><span class="vt-fam D">D</span></td><td class="axis">0.000</td><td class="axis">0.569</td><td class="axis">0.583</td><td class="score">0.000</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-top: 1rem; color: #697386; font-size: 0.85rem;">
+      Family A: per-frame image editor. B: first-frame edit + I2V propagation. C: mask-conditioned video inpainting. D: instruction-guided V2V.
+      <sup>†</sup>VideoPainter Flicker<sub>f/c</sub> and Warp<sub>f/c</sub> are protocol-adaptation artifacts (CogVideoX-1.0 sub-protocol grid).
+    </p>
+    <div style="text-align: center; margin-top: 1.5rem;">
+      <a class="vt-cta" href="https://huggingface.co/spaces/ViTeX-Bench/ViTeX-Bench-Leaderboard" target="_blank">
+        🏆 View live leaderboard &amp; submit
+      </a>
+    </div>
+  </div>
+</section>
+<!-- End leaderboard -->
 
 
-
-
-<!-- Paper poster -->
-<section class="hero is-small is-light">
-  <div class="hero-body">
-    <div class="container">
-      <h2 class="title">Poster</h2>
-
-      <!-- TODO: Replace with your poster PDF -->
-      <iframe  src="static/pdfs/sample.pdf" width="100%" height="550">
-          </iframe>
-        
+<!-- Qualitative results video carousel -->
+<section class="section vt-tight">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">Qualitative results</h2>
+    <p class="subtitle has-text-centered" style="color:#697386;">
+      ViTeX-14B on the 157-clip frozen evaluation split. Source on the left, edit on the right (placeholder videos).
+    </p>
+    <div id="qual-carousel" class="carousel results-carousel" style="margin-top: 1.5rem;">
+      <div class="item item-video1">
+        <video poster="" id="video1" controls muted loop height="100%" preload="metadata">
+          <source src="static/videos/carousel1.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="item item-video2">
+        <video poster="" id="video2" controls muted loop height="100%" preload="metadata">
+          <source src="static/videos/carousel2.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="item item-video3">
+        <video poster="" id="video3" controls muted loop height="100%" preload="metadata">
+          <source src="static/videos/carousel3.mp4" type="video/mp4">
+        </video>
       </div>
     </div>
-  </section>
-<!--End paper poster -->
+  </div>
+</section>
+<!-- End qualitative -->
 
 
-
-<!--BibTex citation -->
-  <section class="section" id="BibTeX">
-    <div class="container is-max-desktop content">
-      <div class="bibtex-header">
-        <h2 class="title">BibTeX</h2>
-        <button class="copy-bibtex-btn" onclick="copyBibTeX()" title="Copy BibTeX to clipboard">
-          <i class="fas fa-copy"></i>
-          <span class="copy-text">Copy</span>
-        </button>
+<!-- Failure modes -->
+<section class="section hero is-light">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">Why three axes, jointly</h2>
+    <p class="subtitle has-text-centered" style="color:#697386;">
+      Four representative baseline failures, each isolated by a different axis or pair. A single visual impression
+      or a single metric column would miss them.
+    </p>
+    <div class="vt-failures" style="margin-top: 1.5rem;">
+      <div class="vt-fail">
+        <div class="vt-fail-head">
+          <span class="vt-fail-tag">A</span>
+          <h5>High TTS ≠ successful edit</h5>
+        </div>
+        <div class="vt-fail-placeholder">video placeholder</div>
+        <p>
+          A method that consistently preserves the <i>source</i> string registers high TTS but
+          <code>SeqAcc = 0</code> (Wan2.1-VACE-14B in zero-shot mode). Reading TTS jointly with SeqAcc
+          disambiguates "consistently rendering the target" from "consistently doing nothing".
+        </p>
       </div>
-      <pre id="bibtex-code"><code>@article{YourPaperKey2024,
-  title={Your Paper Title Here},
-  author={First Author and Second Author and Third Author},
-  journal={Conference/Journal Name},
-  year={2024},
-  url={https://your-domain.com/your-project-page}
+      <div class="vt-fail">
+        <div class="vt-fail-head">
+          <span class="vt-fail-tag">B</span>
+          <h5>High visual quality ≠ correctness</h5>
+        </div>
+        <div class="vt-fail-placeholder">video placeholder</div>
+        <p>
+          Kling Video 3.0 Omni leads both MUSIQ axes with <code>SeqAcc = 0</code>: visually plausible glyphs
+          that spell the wrong target. A benchmark aggregating visual metrics without conditioning on
+          correctness would rank this first.
+        </p>
+      </div>
+      <div class="vt-fail">
+        <div class="vt-fail-head">
+          <span class="vt-fail-tag">C</span>
+          <h5>Per-frame ≠ temporally stable</h5>
+        </div>
+        <div class="vt-fail-placeholder">video placeholder</div>
+        <p>
+          FLUX-Text reaches strong SeqAcc and CharAcc on individual frames yet exhibits glyph-identity drift
+          across the video — high per-frame correctness co-occurs with low TTS and an extreme
+          <code>Flicker_c</code> spike.
+        </p>
+      </div>
+      <div class="vt-fail">
+        <div class="vt-fail-head">
+          <span class="vt-fail-tag">D</span>
+          <h5>Propagation collapses correctness <i>and</i> locality</h5>
+        </div>
+        <div class="vt-fail-placeholder">video placeholder</div>
+        <p>
+          TextCtrl + AnyV2V begins with a correct first-frame edit, then accumulates off-mask drift over time —
+          locality metrics (PSNR / SSIM / LPIPS<sub>loc</sub>) collapse together with text correctness as
+          propagation progresses.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End failure modes -->
+
+
+<!-- BibTeX -->
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <div class="bibtex-header">
+      <h2 class="title">BibTeX</h2>
+      <button class="copy-bibtex-btn" onclick="copyBibTeX()" title="Copy BibTeX to clipboard">
+        <i class="fas fa-copy"></i>
+        <span class="copy-text">Copy</span>
+      </button>
+    </div>
+    <pre id="bibtex-code"><code>@misc{vitexbench2026,
+  title  = {ViTeX-Bench: Benchmarking High Fidelity Video Scene Text Editing},
+  author = {Anonymous},
+  year   = {2026},
+  note   = {Submitted to NeurIPS 2026 Datasets and Benchmarks Track.
+            Author list and DOI updated after deanonymization.},
+  url    = {https://vitex-bench.github.io/}
 }</code></pre>
-    </div>
+  </div>
 </section>
-<!--End BibTex citation -->
+<!-- End BibTeX -->
 
 
-  <footer class="footer">
+<footer class="footer">
   <div class="container">
     <div class="columns is-centered">
       <div class="column is-8">
         <div class="content">
-
           <p>
-            This page was built using the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a> which was adopted from the <a href="https://nerfies.github.io" target="_blank">Nerfies</a> project page.
-            You are free to borrow the source code of this website, we just ask that you link back to this page in the footer. <br> This website is licensed under a <a rel="license"  href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative
-            Commons Attribution-ShareAlike 4.0 International License</a>.
+            This page was built using the
+            <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a>
+            adapted from the <a href="https://nerfies.github.io" target="_blank">Nerfies</a> project page.
+            This website is licensed under a
+            <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
           </p>
-
         </div>
       </div>
     </div>
   </div>
 </footer>
 
-<!-- Statcounter tracking code -->
-  
-<!-- You can add a tracker to track page visits by creating an account at statcounter.com -->
-
-    <!-- End of Statcounter Code -->
-
+  </main>
   </body>
   </html>

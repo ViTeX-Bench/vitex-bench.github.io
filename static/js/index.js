@@ -1,10 +1,11 @@
 window.HELP_IMPROVE_VIDEOJS = false;
 
-// More Works Dropdown Functionality
+// More Works Dropdown Functionality (kept as a no-op when the dropdown is absent)
 function toggleMoreWorks() {
     const dropdown = document.getElementById('moreWorksDropdown');
     const button = document.querySelector('.more-works-btn');
-    
+    if (!dropdown || !button) return;
+
     if (dropdown.classList.contains('show')) {
         dropdown.classList.remove('show');
         button.classList.remove('active');
@@ -19,8 +20,9 @@ document.addEventListener('click', function(event) {
     const container = document.querySelector('.more-works-container');
     const dropdown = document.getElementById('moreWorksDropdown');
     const button = document.querySelector('.more-works-btn');
-    
-    if (container && !container.contains(event.target)) {
+    if (!container || !dropdown || !button) return;
+
+    if (!container.contains(event.target)) {
         dropdown.classList.remove('show');
         button.classList.remove('active');
     }
@@ -28,12 +30,12 @@ document.addEventListener('click', function(event) {
 
 // Close dropdown on escape key
 document.addEventListener('keydown', function(event) {
-    if (event.key === 'Escape') {
-        const dropdown = document.getElementById('moreWorksDropdown');
-        const button = document.querySelector('.more-works-btn');
-        dropdown.classList.remove('show');
-        button.classList.remove('active');
-    }
+    if (event.key !== 'Escape') return;
+    const dropdown = document.getElementById('moreWorksDropdown');
+    const button = document.querySelector('.more-works-btn');
+    if (!dropdown || !button) return;
+    dropdown.classList.remove('show');
+    button.classList.remove('active');
 });
 
 // Copy BibTeX to clipboard
