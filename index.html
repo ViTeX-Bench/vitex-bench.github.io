@@ -4,7 +4,6 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!-- Primary Meta Tags -->
   <meta name="title" content="ViTeX-Bench: Benchmarking High Fidelity Video Scene Text Editing">
   <meta name="description" content="A 387-clip paired dataset, a 13-metric three-axis evaluation protocol with the ViTeX-Score aggregate, and an open reference model (ViTeX-14B) for video scene text editing.">
   <meta name="keywords" content="video scene text editing, video editing, scene text, benchmark, NeurIPS 2026, dataset, leaderboard, ViTeX-Bench, ViTeX-14B">
@@ -12,7 +11,6 @@
   <meta name="robots" content="index, follow">
   <meta name="language" content="English">
 
-  <!-- Open Graph -->
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="ViTeX-Bench">
   <meta property="og:title" content="ViTeX-Bench: Benchmarking High Fidelity Video Scene Text Editing">
@@ -21,24 +19,21 @@
   <meta property="og:image" content="https://vitex-bench.github.io/static/images/vitex_icon.png">
   <meta property="og:image:alt" content="ViTeX-Bench">
 
-  <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="ViTeX-Bench: Benchmarking High Fidelity Video Scene Text Editing">
   <meta name="twitter:description" content="A 387-clip paired dataset, a 13-metric three-axis evaluation protocol with the ViTeX-Score aggregate, and an open reference model (ViTeX-14B) for video scene text editing.">
   <meta name="twitter:image" content="https://vitex-bench.github.io/static/images/vitex_icon.png">
 
-  <!-- Academic / citation_meta -->
   <meta name="citation_title" content="ViTeX-Bench: Benchmarking High Fidelity Video Scene Text Editing">
   <meta name="citation_author" content="Anonymous">
   <meta name="citation_publication_date" content="2026">
-  <meta name="citation_conference_title" content="NeurIPS 2026 Datasets and Benchmarks Track (under review)">
+  <meta name="citation_conference_title" content="NeurIPS 2026 Track on Evaluations and Datasets (under review)">
 
   <meta name="theme-color" content="#0a2540">
   <meta name="msapplication-TileColor" content="#0a2540">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
 
-  <!-- Preconnect for performance -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://ajax.googleapis.com">
@@ -72,88 +67,149 @@
   <script defer src="static/js/bulma-slider.min.js"></script>
   <script defer src="static/js/index.js"></script>
 
-  <!-- Page-local styles for ViTeX-Bench sections -->
   <style>
-    /* Section spacing harmonization */
+    /* ---------- Page-local design tokens ---------- */
+    :root {
+      --vt-navy: #0a2540;
+      --vt-slate: #425466;
+      --vt-mute: #697386;
+      --vt-pale: #f6f9fc;
+      --vt-line: #e3e8ee;
+      --vt-ring: rgba(10, 37, 64, 0.04);
+    }
+
     .vt-tight { padding-top: 2.5rem; padding-bottom: 2.5rem; }
 
-    /* Contribution cards */
+    /* ---------- Showcase carousel ---------- */
+    .vt-showcase-frame {
+      background: #fff;
+      border: 1px solid var(--vt-line);
+      border-radius: 16px;
+      padding: 1rem 1rem 0.75rem;
+      box-shadow: 0 1px 3px var(--vt-ring);
+    }
+    .vt-showcase-frame video {
+      width: 100%; height: auto; border-radius: 10px; background: #000;
+      display: block;
+    }
+    .vt-showcase-meta {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 0.65rem 0.4rem 0.25rem; gap: 1rem;
+      font-size: 0.92rem; color: var(--vt-slate);
+    }
+    .vt-showcase-meta .vt-edit {
+      font-family: ui-monospace, "SF Mono", Menlo, monospace;
+      color: var(--vt-navy); font-weight: 600;
+    }
+    .vt-showcase-meta .vt-arrow {
+      color: var(--vt-mute); margin: 0 0.35rem;
+    }
+    .vt-showcase-meta .vt-clip-id {
+      color: var(--vt-mute); font-size: 0.78rem;
+      font-family: ui-monospace, monospace;
+    }
+
+    /* ---------- Contribution cards ---------- */
     .vt-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem; }
     .vt-card {
-      border: 1px solid #e3e8ee; border-radius: 14px; padding: 1.5rem;
-      background: #fff; box-shadow: 0 1px 2px rgba(10,37,64,0.04);
+      border: 1px solid var(--vt-line); border-radius: 14px; padding: 1.5rem;
+      background: #fff; box-shadow: 0 1px 2px var(--vt-ring);
       transition: transform 0.2s, box-shadow 0.2s;
     }
     .vt-card:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(10,37,64,0.08); }
-    .vt-card .vt-icon { font-size: 1.6rem; color: #0a2540; margin-bottom: 0.6rem; }
-    .vt-card h4 { color: #0a2540; font-weight: 700; font-size: 1.15rem; margin-bottom: 0.4rem; }
-    .vt-card p { color: #425466; font-size: 0.95rem; line-height: 1.55; }
+    .vt-card .vt-icon { font-size: 1.6rem; color: var(--vt-navy); margin-bottom: 0.6rem; }
+    .vt-card h4 { color: var(--vt-navy); font-weight: 700; font-size: 1.15rem; margin-bottom: 0.4rem; }
+    .vt-card p { color: var(--vt-slate); font-size: 0.95rem; line-height: 1.55; }
 
-    /* Stat tiles */
+    /* ---------- Stat tiles ---------- */
     .vt-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 0.75rem; }
     .vt-stat {
-      background: #f6f9fc; border: 1px solid #e3e8ee; border-radius: 10px;
+      background: var(--vt-pale); border: 1px solid var(--vt-line); border-radius: 10px;
       padding: 1rem 0.75rem; text-align: center;
     }
-    .vt-stat .vt-num { font-size: 1.6rem; font-weight: 700; color: #0a2540; line-height: 1.1;
-                      font-variant-numeric: tabular-nums; }
-    .vt-stat .vt-lbl { font-size: 0.78rem; color: #697386; text-transform: uppercase; letter-spacing: 0.04em; margin-top: 0.25rem; }
-
-    /* Axis blocks */
-    .vt-axes { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; }
-    .vt-axis {
-      background: #fff; border: 1px solid #e3e8ee; border-radius: 12px; padding: 1.25rem;
-    }
-    .vt-axis h4 { color: #0a2540; font-weight: 700; font-size: 1.05rem; margin-bottom: 0.5rem; }
-    .vt-axis .vt-axis-tag {
-      display: inline-block; font-size: 0.72rem; letter-spacing: 0.05em;
-      text-transform: uppercase; padding: 2px 8px; border-radius: 999px;
-      background: #eef2f8; color: #0a2540; margin-right: 0.4rem;
+    .vt-stat .vt-num {
+      font-size: 1.6rem; font-weight: 700; color: var(--vt-navy); line-height: 1.1;
       font-variant-numeric: tabular-nums;
     }
-    .vt-axis ul { list-style: none; padding-left: 0; margin-top: 0.75rem; font-size: 0.92rem; color: #425466; }
-    .vt-axis li { padding: 4px 0; }
-    .vt-axis li code {
-      background: #f6f9fc; color: #0a2540; padding: 1px 6px; border-radius: 4px;
-      font-size: 0.85rem; border: 1px solid #e3e8ee;
+    .vt-stat .vt-lbl {
+      font-size: 0.78rem; color: var(--vt-mute);
+      text-transform: uppercase; letter-spacing: 0.04em; margin-top: 0.25rem;
     }
 
-    /* Score formula box */
+    /* ---------- Figure embeds (arch / pipeline) ---------- */
+    .vt-figure {
+      background: #fff; border: 1px solid var(--vt-line); border-radius: 14px;
+      padding: 1.25rem; box-shadow: 0 1px 3px var(--vt-ring);
+    }
+    .vt-figure img { width: 100%; height: auto; display: block; }
+    .vt-figure .vt-figcap {
+      color: var(--vt-mute); font-size: 0.88rem; line-height: 1.55;
+      padding: 0.85rem 0.4rem 0.1rem;
+    }
+    .vt-figure .vt-figcap b { color: var(--vt-navy); }
+
+    /* ---------- Triangle protocol diagram ---------- */
+    .vt-triangle {
+      max-width: 640px; margin: 0 auto; display: block;
+    }
+    .vt-triangle text { font-family: Inter, sans-serif; }
+    .vt-triangle .corner-circle { fill: #fff; stroke: var(--vt-navy); stroke-width: 1.6; }
+    .vt-triangle .axis-name {
+      fill: var(--vt-navy); font-weight: 700; font-size: 14px;
+      text-anchor: middle;
+    }
+    .vt-triangle .metric { fill: var(--vt-slate); font-size: 11.5px; text-anchor: middle; }
+    .vt-triangle .triangle-edge {
+      fill: none; stroke: var(--vt-navy); stroke-width: 1.5;
+      stroke-dasharray: 4 4; opacity: 0.45;
+    }
+    .vt-triangle .feed-line { stroke: var(--vt-navy); stroke-width: 1; opacity: 0.35; }
+    .vt-triangle .center-circle { fill: var(--vt-navy); stroke: var(--vt-navy); }
+    .vt-triangle .center-text { fill: #fff; font-weight: 700; text-anchor: middle; }
+    .vt-triangle .center-sub { fill: #a0b3cf; font-size: 10.5px; text-anchor: middle; }
+
+    /* ---------- Score formula (deep navy) ---------- */
     .vt-formula {
-      background: #0a2540; color: #f6f9fc; border-radius: 14px;
-      padding: 1.5rem 1.5rem 1.25rem; margin-top: 1.25rem;
+      background: var(--vt-navy); color: var(--vt-pale); border-radius: 14px;
+      padding: 1.5rem; margin-top: 1.25rem;
       font-family: ui-monospace, "SF Mono", Menlo, Monaco, Consolas, monospace;
       overflow-x: auto;
     }
     .vt-formula .vt-eq { font-size: 1.05rem; line-height: 1.7; white-space: nowrap; }
     .vt-formula .vt-eq small { color: #a0b3cf; }
-    .vt-formula .vt-note { color: #a0b3cf; font-size: 0.82rem; margin-top: 0.6rem;
-                            font-family: Inter, sans-serif; }
+    .vt-formula .vt-note {
+      color: #a0b3cf; font-size: 0.82rem; margin-top: 0.6rem;
+      font-family: Inter, sans-serif;
+    }
 
-    /* Leaderboard table */
+    /* ---------- Leaderboard table ---------- */
     .vt-lb-wrap {
-      border: 1px solid #e3e8ee; border-radius: 12px; overflow: hidden;
-      box-shadow: 0 1px 2px rgba(10,37,64,0.04); background: #fff;
+      border: 1px solid var(--vt-line); border-radius: 12px; overflow: hidden;
+      box-shadow: 0 1px 2px var(--vt-ring); background: #fff;
     }
     .vt-lb {
       width: 100%; border-collapse: separate; border-spacing: 0;
-      font-size: 0.9rem; font-variant-numeric: tabular-nums;
+      font-size: 0.88rem; font-variant-numeric: tabular-nums;
     }
     .vt-lb thead th {
-      background: #f6f9fc; color: #425466;
+      background: var(--vt-pale); color: var(--vt-slate);
       font-weight: 600; font-size: 0.74rem; letter-spacing: 0.04em;
-      text-transform: uppercase; padding: 12px 14px;
-      border-bottom: 1px solid #e3e8ee; text-align: right;
+      text-transform: uppercase; padding: 12px 12px;
+      border-bottom: 1px solid var(--vt-line); text-align: right;
+      white-space: nowrap;
     }
     .vt-lb thead th.left { text-align: left; }
-    .vt-lb td { padding: 10px 14px; border-bottom: 1px solid #f1f4f8; text-align: right; color: #425466; }
+    .vt-lb td {
+      padding: 9px 12px; border-bottom: 1px solid #f1f4f8;
+      text-align: right; color: var(--vt-slate); white-space: nowrap;
+    }
     .vt-lb td.left { text-align: left; }
     .vt-lb tbody tr:last-child td { border-bottom: none; }
     .vt-lb tbody tr:hover td { background: #fafbfc; }
-    .vt-lb td.method { color: #0a2540; font-weight: 600; }
-    .vt-lb td.score { background: #0a2540; color: #fff; font-weight: 700; }
+    .vt-lb td.method { color: var(--vt-navy); font-weight: 600; }
+    .vt-lb td.score { background: var(--vt-navy); color: #fff; font-weight: 700; }
     .vt-lb tbody tr:hover td.score { background: #1e3a5f; }
-    .vt-lb td.axis { background: #f6f9fc; color: #0a2540; font-weight: 600; }
+    .vt-lb td.axis { background: var(--vt-pale); color: var(--vt-navy); font-weight: 600; }
     .vt-lb tbody tr:hover td.axis { background: #eef2f8; }
     .vt-lb .vt-rank { color: #a3acb9; font-weight: 500; width: 38px; text-align: center; }
     .vt-lb .vt-fam {
@@ -164,43 +220,77 @@
     .vt-fam.B { background: #fff5cc; color: #7e3503; }
     .vt-fam.C { background: #ffd1d8; color: #7d122c; }
     .vt-fam.D { background: #dadcff; color: #322a87; }
-    .vt-fam.O { background: #e3e8ee; color: #0a2540; }
+    .vt-fam.O { background: #e3e8ee; color: var(--vt-navy); }
+
+    /* Wide 13-metric breakdown table */
+    .vt-lb-wide { font-size: 0.78rem; }
+    .vt-lb-wide thead th { padding: 10px 7px; font-size: 0.66rem; }
+    .vt-lb-wide td { padding: 6px 7px; }
+    .vt-lb-wide td.score, .vt-lb-wide td.axis { font-size: 0.84rem; }
+    .vt-lb-wide td.metric { color: var(--vt-slate); }
+    .vt-lb-wide .num0 { color: #c1c9d2; }
+    .vt-lb-wide td.method { font-size: 0.84rem; max-width: 180px;
+                            overflow: hidden; text-overflow: ellipsis; }
 
     .vt-cta {
       display: inline-flex; align-items: center; gap: 0.5rem;
-      background: #0a2540; color: #fff; padding: 0.7rem 1.2rem;
+      background: var(--vt-navy); color: #fff; padding: 0.7rem 1.3rem;
       border-radius: 999px; font-weight: 600; text-decoration: none;
       transition: background 0.15s;
     }
     .vt-cta:hover { background: #1e3a5f; color: #fff; }
 
-    /* Failure-mode panels */
-    .vt-failures { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; }
+    /* ---------- Failure-mode panels ---------- */
     .vt-fail {
-      border: 1px solid #e3e8ee; border-radius: 12px; padding: 1.1rem; background: #fff;
+      border: 1px solid var(--vt-line); border-radius: 14px; padding: 1.25rem;
+      background: #fff; box-shadow: 0 1px 2px var(--vt-ring); margin-bottom: 1.25rem;
     }
-    .vt-fail .vt-fail-head { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.6rem; }
-    .vt-fail .vt-fail-tag {
-      width: 26px; height: 26px; border-radius: 7px;
-      display: inline-flex; align-items: center; justify-content: center;
-      background: #0a2540; color: #fff; font-weight: 700; font-size: 0.85rem;
+    .vt-fail-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+      margin-top: 0.85rem;
     }
-    .vt-fail h5 { color: #0a2540; font-weight: 700; font-size: 0.95rem; margin: 0; }
-    .vt-fail p { color: #425466; font-size: 0.88rem; line-height: 1.55; margin-top: 0.5rem; }
-    .vt-fail video, .vt-fail .vt-fail-placeholder {
-      width: 100%; aspect-ratio: 16/9; border-radius: 8px;
-      background: #f1f4f8; display: flex; align-items: center; justify-content: center;
+    @media (max-width: 720px) { .vt-fail-grid { grid-template-columns: 1fr; } }
+    .vt-fail-grid figure { margin: 0; }
+    .vt-fail-grid figcaption {
+      color: var(--vt-mute); font-size: 0.78rem;
+      text-transform: uppercase; letter-spacing: 0.04em;
+      padding: 0.35rem 0.2rem 0;
+    }
+    .vt-fail-grid video, .vt-fail-grid .vt-fail-placeholder {
+      width: 100%; aspect-ratio: 16/9; border-radius: 10px;
+      background: #f1f4f8;
+      display: flex; align-items: center; justify-content: center;
       color: #a3acb9; font-size: 0.85rem;
     }
+    .vt-fail-head {
+      display: flex; align-items: baseline; gap: 0.7rem; flex-wrap: wrap;
+    }
+    .vt-fail-tag {
+      width: 26px; height: 26px; border-radius: 7px;
+      display: inline-flex; align-items: center; justify-content: center;
+      background: var(--vt-navy); color: #fff;
+      font-weight: 700; font-size: 0.85rem;
+    }
+    .vt-fail h5 { color: var(--vt-navy); font-weight: 700; font-size: 1.05rem; margin: 0; }
+    .vt-fail .vt-fail-target {
+      font-family: ui-monospace, monospace; font-size: 0.85rem; color: var(--vt-slate);
+    }
+    .vt-fail p {
+      color: var(--vt-slate); font-size: 0.92rem; line-height: 1.6;
+      margin-top: 0.85rem;
+    }
+    .vt-fail-method {
+      display: inline-block; padding: 2px 8px;
+      font-size: 0.72rem; font-weight: 500; border-radius: 999px;
+      background: #ffd1d8; color: #7d122c; margin-left: 0.4rem;
+    }
 
-    /* Anchor offset for sticky-ish navigation if added later */
     section { scroll-margin-top: 2rem; }
   </style>
 </head>
 <body>
 
 
-  <!-- Scroll to Top Button -->
   <button class="scroll-to-top" onclick="scrollToTop()" title="Scroll to top" aria-label="Scroll to top">
     <i class="fas fa-chevron-up"></i>
   </button>
@@ -217,7 +307,7 @@
             </div>
 
             <div class="is-size-5 publication-authors">
-              <span class="author-block">Submitted to NeurIPS 2026 Datasets and Benchmarks Track</span>
+              <span class="author-block">Submitted to NeurIPS 2026 Track on Evaluations and Datasets</span>
               <br>
               <span class="eql-cntrb"><small>Paper under double-blind review. Author list and affiliations updated after deanonymization.</small></span>
             </div>
@@ -261,21 +351,142 @@
   </section>
 
 
-<!-- Teaser video -->
-<section class="hero teaser">
+<!-- Showcase carousel: source + mask overlay alongside all baselines and our methods -->
+<section class="hero teaser vt-tight">
   <div class="container is-max-desktop">
-    <div class="hero-body">
-      <video poster="" id="teaser" autoplay controls muted loop height="100%" preload="metadata">
-        <source src="static/videos/banner_video.mp4" type="video/mp4">
-      </video>
-      <h2 class="subtitle has-text-centered">
-        Replacing scene text on signs, jerseys, screens, blackboards, and product labels in real-world videos
-        while preserving the surrounding content, motion, lighting, and camera dynamics.
-      </h2>
+    <h2 class="title is-3 has-text-centered">Side-by-side: source vs. all eight baselines and our two models</h2>
+    <p class="subtitle has-text-centered" style="color:#697386;">
+      Each scene shows the source clip with a semi-transparent text-region mask overlay,
+      next to every baseline output and ViTeX-14B / ViTeX-14B (Corp). Use the carousel
+      arrows to switch scenes.
+    </p>
+
+    <div id="showcase-carousel" class="carousel results-carousel" style="margin-top: 1.5rem;">
+      <div class="item">
+        <div class="vt-showcase-frame">
+          <video controls muted loop playsinline preload="metadata">
+            <source src="static/videos/showcase/0004547_00000.mp4" type="video/mp4">
+          </video>
+          <div class="vt-showcase-meta">
+            <div><span class="vt-edit">First</span><span class="vt-arrow">→</span><span class="vt-edit">Last</span></div>
+            <div class="vt-clip-id">0004547_00000</div>
+          </div>
+        </div>
+      </div>
+      <div class="item">
+        <div class="vt-showcase-frame">
+          <video controls muted loop playsinline preload="metadata">
+            <source src="static/videos/showcase/0008430_00000.mp4" type="video/mp4">
+          </video>
+          <div class="vt-showcase-meta">
+            <div><span class="vt-edit">INTERFERENCE EFFECT</span><span class="vt-arrow">→</span><span class="vt-edit">DIFFRACTION PATTERN</span></div>
+            <div class="vt-clip-id">0008430_00000</div>
+          </div>
+        </div>
+      </div>
+      <div class="item">
+        <div class="vt-showcase-frame">
+          <video controls muted loop playsinline preload="metadata">
+            <source src="static/videos/showcase/0008164_00000.mp4" type="video/mp4">
+          </video>
+          <div class="vt-showcase-meta">
+            <div><span class="vt-edit">POSTED</span><span class="vt-arrow">→</span><span class="vt-edit">BUSTED</span></div>
+            <div class="vt-clip-id">0008164_00000</div>
+          </div>
+        </div>
+      </div>
+      <div class="item">
+        <div class="vt-showcase-frame">
+          <video controls muted loop playsinline preload="metadata">
+            <source src="static/videos/showcase/0006286_00000.mp4" type="video/mp4">
+          </video>
+          <div class="vt-showcase-meta">
+            <div><span class="vt-edit">COLLIER</span><span class="vt-arrow">→</span><span class="vt-edit">WASHING</span></div>
+            <div class="vt-clip-id">0006286_00000</div>
+          </div>
+        </div>
+      </div>
+      <div class="item">
+        <div class="vt-showcase-frame">
+          <video controls muted loop playsinline preload="metadata">
+            <source src="static/videos/showcase/0005273_00000.mp4" type="video/mp4">
+          </video>
+          <div class="vt-showcase-meta">
+            <div><span class="vt-edit">HOURS</span><span class="vt-arrow">→</span><span class="vt-edit">WEEKS</span></div>
+            <div class="vt-clip-id">0005273_00000</div>
+          </div>
+        </div>
+      </div>
+      <div class="item">
+        <div class="vt-showcase-frame">
+          <video controls muted loop playsinline preload="metadata">
+            <source src="static/videos/showcase/0005186_00000.mp4" type="video/mp4">
+          </video>
+          <div class="vt-showcase-meta">
+            <div><span class="vt-edit">ONLY</span><span class="vt-arrow">→</span><span class="vt-edit">STOP</span></div>
+            <div class="vt-clip-id">0005186_00000</div>
+          </div>
+        </div>
+      </div>
+      <div class="item">
+        <div class="vt-showcase-frame">
+          <video controls muted loop playsinline preload="metadata">
+            <source src="static/videos/showcase/0001942_00000.mp4" type="video/mp4">
+          </video>
+          <div class="vt-showcase-meta">
+            <div><span class="vt-edit">BULB?</span><span class="vt-arrow">→</span><span class="vt-edit">LAMP?</span></div>
+            <div class="vt-clip-id">0001942_00000</div>
+          </div>
+        </div>
+      </div>
+      <div class="item">
+        <div class="vt-showcase-frame">
+          <video controls muted loop playsinline preload="metadata">
+            <source src="static/videos/showcase/0001716_00000.mp4" type="video/mp4">
+          </video>
+          <div class="vt-showcase-meta">
+            <div><span class="vt-edit">GO</span><span class="vt-arrow">→</span><span class="vt-edit">BE</span></div>
+            <div class="vt-clip-id">0001716_00000</div>
+          </div>
+        </div>
+      </div>
+      <div class="item">
+        <div class="vt-showcase-frame">
+          <video controls muted loop playsinline preload="metadata">
+            <source src="static/videos/showcase/0000229_00000.mp4" type="video/mp4">
+          </video>
+          <div class="vt-showcase-meta">
+            <div><span class="vt-edit">SOC</span><span class="vt-arrow">→</span><span class="vt-edit">COC</span></div>
+            <div class="vt-clip-id">0000229_00000</div>
+          </div>
+        </div>
+      </div>
+      <div class="item">
+        <div class="vt-showcase-frame">
+          <video controls muted loop playsinline preload="metadata">
+            <source src="static/videos/showcase/115.mp4" type="video/mp4">
+          </video>
+          <div class="vt-showcase-meta">
+            <div>Scene 115</div>
+            <div class="vt-clip-id">115</div>
+          </div>
+        </div>
+      </div>
+      <div class="item">
+        <div class="vt-showcase-frame">
+          <video controls muted loop playsinline preload="metadata">
+            <source src="static/videos/showcase/104.mp4" type="video/mp4">
+          </video>
+          <div class="vt-showcase-meta">
+            <div>Scene 104</div>
+            <div class="vt-clip-id">104</div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
-<!-- End teaser video -->
+<!-- End showcase -->
 
 
 <!-- Abstract -->
@@ -311,7 +522,7 @@
 <!-- End abstract -->
 
 
-<!-- Key contributions -->
+<!-- Three-part release: contribution cards -->
 <section class="section vt-tight">
   <div class="container is-max-desktop">
     <h2 class="title is-3 has-text-centered">A coordinated three-part release</h2>
@@ -349,15 +560,15 @@
     </div>
   </div>
 </section>
-<!-- End key contributions -->
+<!-- End three-part release -->
 
 
-<!-- Dataset overview -->
+<!-- Dataset construction pipeline (Figure 2) -->
 <section class="section hero is-light">
   <div class="container is-max-desktop">
-    <h2 class="title is-3 has-text-centered">ViTeX-Dataset</h2>
+    <h2 class="title is-3 has-text-centered">ViTeX-Dataset construction</h2>
     <p class="subtitle has-text-centered" style="color:#697386;">
-      Real-world clips with semi-automatic paired edits.
+      A semi-automatic pipeline turns a curated 387-clip pool into paired training tuples.
     </p>
 
     <div class="vt-stats" style="margin-top: 1.5rem;">
@@ -369,44 +580,23 @@
       <div class="vt-stat"><div class="vt-num">720p</div><div class="vt-lbl">at 24 fps</div></div>
     </div>
 
-    <div class="content" style="margin-top: 2rem;">
-      <p style="color:#425466;">
-        Each clip ships with the source video, a propagated per-frame binary mask of the editable text region,
-        and a source–target string pair. The training split additionally provides a paired edited video
-        produced by our two-strategy construction pipeline (alpha composition for static-text clips,
-        a fine-tuned PISCO inserter for dynamic clips). The 157-clip evaluation split is permanently frozen
-        and withholds edited ground truth, so the benchmark cannot leak edit-side information into training.
-        Source and target strings range from single characters to ~40-character phrases, covering both
-        short edits (where per-frame editors can in principle recover the full string) and longer phrases
-        that stress temporal consistency.
-      </p>
-    </div>
-
-    <!-- Image carousel slot — user will replace with dataset sample frames -->
-    <div id="dataset-carousel" class="carousel results-carousel" style="margin-top: 2rem;">
-      <div class="item">
-        <img src="static/images/carousel1.jpg" alt="Sample frame from the dataset" loading="lazy"/>
-        <h2 class="subtitle has-text-centered">Sample frame — to be replaced.</h2>
-      </div>
-      <div class="item">
-        <img src="static/images/carousel2.jpg" alt="Sample frame from the dataset" loading="lazy"/>
-        <h2 class="subtitle has-text-centered">Sample frame — to be replaced.</h2>
-      </div>
-      <div class="item">
-        <img src="static/images/carousel3.jpg" alt="Sample frame from the dataset" loading="lazy"/>
-        <h2 class="subtitle has-text-centered">Sample frame — to be replaced.</h2>
-      </div>
-      <div class="item">
-        <img src="static/images/carousel4.jpg" alt="Sample frame from the dataset" loading="lazy"/>
-        <h2 class="subtitle has-text-centered">Sample frame — to be replaced.</h2>
+    <div class="vt-figure" style="margin-top: 1.5rem;">
+      <img src="static/images/pipeline.png" alt="ViTeX-Dataset construction pipeline" loading="lazy"/>
+      <div class="vt-figcap">
+        <b>Construction pipeline.</b> Four assets are produced for every retained clip — the text-region mask
+        (SAM&nbsp;3 keypoint segmentation), the source–target string pair (Qwen3-VL-32B-Instruct), the clean
+        background video (removal-1.3B, a Wan2.1-VACE-1.3B fine-tune), and the first-frame target-text patch
+        (Nano Banana Pro). They are composed into the paired edited video <i>Ṽ</i> via Strategy A
+        (alpha composition, static-text clips only) or Strategy B (a fine-tuned PISCO-based inserter,
+        all clips). Static clips run both strategies and the annotator keeps whichever output is judged higher.
       </div>
     </div>
   </div>
 </section>
-<!-- End dataset overview -->
+<!-- End dataset construction -->
 
 
-<!-- Benchmark protocol -->
+<!-- Benchmark protocol with triangle SVG -->
 <section class="section vt-tight">
   <div class="container is-max-desktop">
     <h2 class="title is-3 has-text-centered">Evaluation protocol</h2>
@@ -414,52 +604,45 @@
       Three orthogonal axes, thirteen complementary metrics, one non-substitutive aggregate.
     </p>
 
-    <div class="vt-axes" style="margin-top: 1.5rem;">
-      <div class="vt-axis">
-        <span class="vt-axis-tag">Axis 1</span>
-        <h4>Text correctness</h4>
-        <p style="color:#425466; font-size:0.92rem;">
-          PP-OCRv5 with per-clip language routing reads the dilated text-region crop;
-          source-detectability gating restricts scoring to frames where the source is readable.
-          Substring (semi-global) edit distance prevents penalizing a correct target embedded in a longer OCR string.
-        </p>
-        <ul>
-          <li><code>SeqAcc</code> — exact-match rate</li>
-          <li><code>CharAcc</code> — substring similarity</li>
-          <li><code>TTS</code> — temporal text stability</li>
-        </ul>
-      </div>
+    <svg class="vt-triangle" viewBox="0 0 640 540" xmlns="http://www.w3.org/2000/svg" style="margin-top: 1.5rem;">
+      <!-- Triangle edges (corner-to-corner, dashed) -->
+      <line class="triangle-edge" x1="320" y1="100" x2="100" y2="450" />
+      <line class="triangle-edge" x1="320" y1="100" x2="540" y2="450" />
+      <line class="triangle-edge" x1="100" y1="450" x2="540" y2="450" />
 
-      <div class="vt-axis">
-        <span class="vt-axis-tag">Axis 2</span>
-        <h4>Visual quality</h4>
-        <p style="color:#425466; font-size:0.92rem;">
-          Six primitives at two scopes (full frame and a static union-mask text crop).
-          Flicker rewards smoothness (hackable by interpolation); Warp uses RAFT optical flow
-          on the source video and only scores low when the prediction follows the same per-pixel motion.
-        </p>
-        <ul>
-          <li><code>Flicker_f / Flicker_c</code> — adjacent-frame MAE</li>
-          <li><code>Warp_f / Warp_c</code> — RAFT-flow warping error</li>
-          <li><code>MUSIQ_f / MUSIQ_c</code> — KonIQ-pretrained no-reference IQA</li>
-        </ul>
-      </div>
+      <!-- Feed lines from corners to center -->
+      <line class="feed-line" x1="320" y1="158" x2="320" y2="305" />
+      <line class="feed-line" x1="160" y1="450" x2="285" y2="375" />
+      <line class="feed-line" x1="480" y1="450" x2="355" y2="375" />
 
-      <div class="vt-axis">
-        <span class="vt-axis-tag">Axis 3</span>
-        <h4>Edit locality</h4>
-        <p style="color:#425466; font-size:0.92rem;">
-          Compose a locality-only prediction by copying source pixels into the masked region,
-          then score four metrics against the source. DreamSim is robust to the codec/VAE noise
-          that pixel-level metrics over-penalize on full-frame regenerative methods.
-        </p>
-        <ul>
-          <li><code>PSNR_loc / SSIM_loc</code></li>
-          <li><code>LPIPS_loc</code> (AlexNet)</li>
-          <li><code>DreamSim_loc</code> — learned identity</li>
-        </ul>
-      </div>
-    </div>
+      <!-- Top corner: Visual quality (6 metrics) -->
+      <circle class="corner-circle" cx="320" cy="100" r="92" />
+      <text class="axis-name" x="320" y="68">Visual quality</text>
+      <text class="metric" x="320" y="90">Flicker_f / Flicker_c</text>
+      <text class="metric" x="320" y="108">Warp_f / Warp_c</text>
+      <text class="metric" x="320" y="126">MUSIQ_f / MUSIQ_c</text>
+
+      <!-- Bottom-left corner: Text correctness (3 metrics) -->
+      <circle class="corner-circle" cx="100" cy="450" r="82" />
+      <text class="axis-name" x="100" y="430">Text correctness</text>
+      <text class="metric" x="100" y="452">SeqAcc</text>
+      <text class="metric" x="100" y="470">CharAcc</text>
+      <text class="metric" x="100" y="488">TTS</text>
+
+      <!-- Bottom-right corner: Edit locality (4 metrics) -->
+      <circle class="corner-circle" cx="540" cy="450" r="84" />
+      <text class="axis-name" x="540" y="423">Edit locality</text>
+      <text class="metric" x="540" y="445">PSNR_loc</text>
+      <text class="metric" x="540" y="463">SSIM_loc</text>
+      <text class="metric" x="540" y="481">LPIPS_loc</text>
+      <text class="metric" x="540" y="499">DreamSim_loc</text>
+
+      <!-- Center: ViTeX-Score -->
+      <circle class="center-circle" cx="320" cy="340" r="58" />
+      <text class="center-text" x="320" y="335" font-size="15">ViTeX-Score</text>
+      <text class="center-sub" x="320" y="358">geomean across</text>
+      <text class="center-sub" x="320" y="372">three axes</text>
+    </svg>
 
     <div class="vt-formula">
       <div class="vt-eq">
@@ -481,12 +664,12 @@
 <!-- End benchmark protocol -->
 
 
-<!-- Live leaderboard preview -->
+<!-- Headline ranking: Table 1 (axis aggregates + ViTeX-Score) -->
 <section class="section hero is-light">
   <div class="container is-max-desktop">
-    <h2 class="title is-3 has-text-centered">Leaderboard</h2>
+    <h2 class="title is-3 has-text-centered">Headline ranking</h2>
     <p class="subtitle has-text-centered" style="color:#697386;">
-      Open submissions at the live Hugging Face Space, moderated by the maintainers.
+      ViTeX-Score and per-axis aggregates on the 157-clip frozen evaluation split.
     </p>
 
     <div class="vt-lb-wrap" style="margin-top: 1.5rem; overflow-x: auto;">
@@ -518,7 +701,8 @@
     </div>
     <p style="margin-top: 1rem; color: #697386; font-size: 0.85rem;">
       Family A: per-frame image editor. B: first-frame edit + I2V propagation. C: mask-conditioned video inpainting. D: instruction-guided V2V.
-      <sup>†</sup>VideoPainter Flicker<sub>f/c</sub> and Warp<sub>f/c</sub> are protocol-adaptation artifacts (CogVideoX-1.0 sub-protocol grid).
+      <sup>†</sup>VideoPainter Flicker<sub>f/c</sub> and Warp<sub>f/c</sub> are excluded from per-metric ranking
+      (CogVideoX-1.0 sub-protocol grid causes temporal-interpolation artifacts).
     </p>
     <div style="text-align: center; margin-top: 1.5rem;">
       <a class="vt-cta" href="https://huggingface.co/spaces/ViTeX-Bench/ViTeX-Bench-Leaderboard" target="_blank">
@@ -527,95 +711,219 @@
     </div>
   </div>
 </section>
-<!-- End leaderboard -->
+<!-- End Table 1 -->
 
 
-<!-- Qualitative results video carousel -->
+<!-- Per-metric breakdown: Table 2 (13 metrics) -->
 <section class="section vt-tight">
   <div class="container is-max-desktop">
-    <h2 class="title is-3 has-text-centered">Qualitative results</h2>
+    <h2 class="title is-3 has-text-centered">Per-metric breakdown</h2>
     <p class="subtitle has-text-centered" style="color:#697386;">
-      ViTeX-14B on the 157-clip frozen evaluation split. Source on the left, edit on the right (placeholder videos).
+      Test-split means on the 13 primitives that feed ViTeX-Score.
     </p>
-    <div id="qual-carousel" class="carousel results-carousel" style="margin-top: 1.5rem;">
-      <div class="item item-video1">
-        <video poster="" id="video1" controls muted loop height="100%" preload="metadata">
-          <source src="static/videos/carousel1.mp4" type="video/mp4">
-        </video>
-      </div>
-      <div class="item item-video2">
-        <video poster="" id="video2" controls muted loop height="100%" preload="metadata">
-          <source src="static/videos/carousel2.mp4" type="video/mp4">
-        </video>
-      </div>
-      <div class="item item-video3">
-        <video poster="" id="video3" controls muted loop height="100%" preload="metadata">
-          <source src="static/videos/carousel3.mp4" type="video/mp4">
-        </video>
+
+    <div class="vt-lb-wrap vt-lb-wide" style="margin-top: 1.5rem; overflow-x: auto;">
+      <table class="vt-lb vt-lb-wide">
+        <thead>
+          <tr>
+            <th class="left">Method</th>
+            <th class="left">Fam</th>
+            <th>SeqAcc ↑</th>
+            <th>CharAcc ↑</th>
+            <th>TTS ↑</th>
+            <th>Flk_f ↓</th>
+            <th>Flk_c ↓</th>
+            <th>Wp_f ↓</th>
+            <th>Wp_c ↓</th>
+            <th>MUSIQ_f ↑</th>
+            <th>MUSIQ_c ↑</th>
+            <th>PSNR ↑</th>
+            <th>SSIM ↑</th>
+            <th>LPIPS ↓</th>
+            <th>DSim ↓</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="left method">Identity (sanity)</td><td class="left"><span class="vt-fam O">—</span></td><td class="num0">0.000</td><td>0.317</td><td>0.760</td><td>3.72</td><td>3.68</td><td>1.46</td><td>1.27</td><td>70.33</td><td>45.12</td><td>100.00</td><td>1.000</td><td class="num0">0.000</td><td class="num0">0.000</td></tr>
+          <tr><td class="left method">AnyText2</td><td class="left"><span class="vt-fam A">A</span></td><td>0.280</td><td>0.633</td><td>0.382</td><td>3.34</td><td>4.95</td><td>2.04</td><td>3.95</td><td>66.68</td><td>41.65</td><td>25.56</td><td>0.905</td><td>0.092</td><td>0.043</td></tr>
+          <tr><td class="left method">TextCtrl</td><td class="left"><span class="vt-fam A">A</span></td><td>0.475</td><td>0.733</td><td>0.511</td><td>3.80</td><td>4.29</td><td>1.59</td><td>2.09</td><td>70.32</td><td>42.77</td><td>41.14</td><td>0.994</td><td>0.008</td><td>0.004</td></tr>
+          <tr><td class="left method">FLUX-Text</td><td class="left"><span class="vt-fam A">A</span></td><td>0.528</td><td>0.737</td><td>0.326</td><td>5.11</td><td>14.81</td><td>3.03</td><td>13.01</td><td>70.26</td><td>43.85</td><td>31.49</td><td>0.975</td><td>0.029</td><td>0.012</td></tr>
+          <tr><td class="left method">RS-STE</td><td class="left"><span class="vt-fam A">A</span></td><td>0.354</td><td>0.626</td><td>0.534</td><td>3.73</td><td>3.66</td><td>1.61</td><td>1.81</td><td>69.57</td><td>34.26</td><td>37.00</td><td>0.983</td><td>0.024</td><td>0.007</td></tr>
+          <tr><td class="left method">TextCtrl + AnyV2V</td><td class="left"><span class="vt-fam B">B</span></td><td>0.057</td><td>0.308</td><td>0.257</td><td>4.98</td><td>4.98</td><td>4.11</td><td>3.97</td><td>69.41</td><td>33.85</td><td>21.08</td><td>0.785</td><td>0.225</td><td>0.073</td></tr>
+          <tr><td class="left method">Wan2.1-VACE-14B</td><td class="left"><span class="vt-fam C">C</span></td><td class="num0">0.000</td><td>0.298</td><td>0.690</td><td>3.78</td><td>3.84</td><td>1.69</td><td>1.56</td><td>70.54</td><td>45.26</td><td>35.21</td><td>0.976</td><td>0.022</td><td>0.007</td></tr>
+          <tr><td class="left method">VideoPainter<sup>†</sup></td><td class="left"><span class="vt-fam C">C</span></td><td>0.365</td><td>0.619</td><td>0.606</td><td>2.38<sup>†</sup></td><td>2.62<sup>†</sup></td><td>2.93<sup>†</sup></td><td>3.35<sup>†</sup></td><td>67.16</td><td>40.59</td><td>28.56</td><td>0.915</td><td>0.104</td><td>0.024</td></tr>
+          <tr><td class="left method">Kling Video 3.0 Omni</td><td class="left"><span class="vt-fam D">D</span></td><td class="num0">0.000</td><td>0.208</td><td>0.641</td><td>4.25</td><td>4.08</td><td>3.12</td><td>2.90</td><td>72.23</td><td>47.75</td><td>21.18</td><td>0.843</td><td>0.176</td><td>0.061</td></tr>
+          <tr><td class="left method"><b>ViTeX-14B</b></td><td class="left"><span class="vt-fam O">ours</span></td><td>0.341</td><td>0.688</td><td>0.648</td><td>3.27</td><td>3.42</td><td>1.55</td><td>1.53</td><td>69.64</td><td>43.53</td><td>29.08</td><td>0.951</td><td>0.060</td><td>0.024</td></tr>
+          <tr><td class="left method"><b>ViTeX-14B (Corp)</b></td><td class="left"><span class="vt-fam O">ours</span></td><td>0.345</td><td>0.689</td><td>0.666</td><td>3.73</td><td>3.83</td><td>1.51</td><td>1.56</td><td>70.27</td><td>44.94</td><td>42.95</td><td>0.992</td><td>0.006</td><td>0.002</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-top: 0.85rem; color: #697386; font-size: 0.82rem;">
+      Subscripts <code>_f</code> / <code>_c</code> denote full-frame and text-crop scopes;
+      <code>Wp</code> = Warp, <code>DSim</code> = DreamSim.
+      <sup>†</sup>VideoPainter Flicker<sub>f/c</sub> and Warp<sub>f/c</sub> are protocol-adaptation artifacts.
+    </p>
+  </div>
+</section>
+<!-- End Table 2 -->
+
+
+<!-- ViTeX-14B reference model architecture (Figure 3) -->
+<section class="section hero is-light">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">ViTeX-14B: open reference model</h2>
+    <p class="subtitle has-text-centered" style="color:#697386;">
+      Wan2.1-VACE-14B extended with a glyph-video conditioning pathway, fine-tuned on the 230-clip training split.
+    </p>
+
+    <div class="vt-figure" style="margin-top: 1.5rem;">
+      <img src="static/images/arch.png" alt="ViTeX-14B architecture" loading="lazy"/>
+      <div class="vt-figcap">
+        <b>Architecture.</b> Three streams enter the model: <b>(i)</b> the target text <i>s</i><sub>tgt</sub>
+        via the frozen uMT5-XXL text encoder; <b>(ii)</b> the source video <i>V</i> and binary mask <i>M</i>
+        via the standard VACE Video Condition Unit; and <b>(iii)</b> a glyph video built from <i>s</i><sub>tgt</sub>
+        rendered in the source font and warped along the source-text trajectory tracked by CoTracker3,
+        encoded by a frozen Wan VAE and compressed by a learnable GlyphEncoder into glyph tokens
+        <i>E</i><sub>G</sub>. Every VACE block queries <i>E</i><sub>G</sub> through an added zero-initialized
+        ConditionCrossAttention layer, so training learns to route glyph information across the eight
+        injection depths.
       </div>
     </div>
   </div>
 </section>
-<!-- End qualitative -->
+<!-- End architecture -->
 
 
-<!-- Failure modes -->
-<section class="section hero is-light">
+<!-- Failure modes (4 panels matching paper §4.2 Breakdown results) -->
+<section class="section vt-tight">
   <div class="container is-max-desktop">
     <h2 class="title is-3 has-text-centered">Why three axes, jointly</h2>
     <p class="subtitle has-text-centered" style="color:#697386;">
-      Four representative baseline failures, each isolated by a different axis or pair. A single visual impression
-      or a single metric column would miss them.
+      Four representative baseline failures from §4.2 of the paper. Each is invisible from a single visual
+      impression or a single metric column, and each is recovered by a specific axis or pair of axes.
     </p>
-    <div class="vt-failures" style="margin-top: 1.5rem;">
-      <div class="vt-fail">
-        <div class="vt-fail-head">
-          <span class="vt-fail-tag">A</span>
-          <h5>High TTS ≠ successful edit</h5>
-        </div>
-        <div class="vt-fail-placeholder">video placeholder</div>
-        <p>
-          A method that consistently preserves the <i>source</i> string registers high TTS but
-          <code>SeqAcc = 0</code> (Wan2.1-VACE-14B in zero-shot mode). Reading TTS jointly with SeqAcc
-          disambiguates "consistently rendering the target" from "consistently doing nothing".
-        </p>
+
+    <!-- (A) TTS alone is not an editing-quality indicator -->
+    <div class="vt-fail" style="margin-top: 1.5rem;">
+      <div class="vt-fail-head">
+        <span class="vt-fail-tag">A</span>
+        <h5>TTS alone is not an editing-quality indicator</h5>
+        <span class="vt-fail-method">Wan2.1-VACE-14B (zero-shot)</span>
+        <span class="vt-fail-target">target&nbsp;<code>NEW</code>&nbsp;→&nbsp;<code>OLD</code></span>
       </div>
-      <div class="vt-fail">
-        <div class="vt-fail-head">
-          <span class="vt-fail-tag">B</span>
-          <h5>High visual quality ≠ correctness</h5>
-        </div>
-        <div class="vt-fail-placeholder">video placeholder</div>
-        <p>
-          Kling Video 3.0 Omni leads both MUSIQ axes with <code>SeqAcc = 0</code>: visually plausible glyphs
-          that spell the wrong target. A benchmark aggregating visual metrics without conditioning on
-          correctness would rank this first.
-        </p>
+      <div class="vt-fail-grid">
+        <figure>
+          <video controls muted loop playsinline preload="metadata">
+            <source src="static/videos/failures/094_source.mp4" type="video/mp4">
+          </video>
+          <figcaption>Source clip with text-region mask overlay</figcaption>
+        </figure>
+        <figure>
+          <video controls muted loop playsinline preload="metadata">
+            <source src="static/videos/failures/094_vace.mp4" type="video/mp4">
+          </video>
+          <figcaption>Wan2.1-VACE-14B output — text is unchanged</figcaption>
+        </figure>
       </div>
-      <div class="vt-fail">
-        <div class="vt-fail-head">
-          <span class="vt-fail-tag">C</span>
-          <h5>Per-frame ≠ temporally stable</h5>
-        </div>
-        <div class="vt-fail-placeholder">video placeholder</div>
-        <p>
-          FLUX-Text reaches strong SeqAcc and CharAcc on individual frames yet exhibits glyph-identity drift
-          across the video — high per-frame correctness co-occurs with low TTS and an extreme
-          <code>Flicker_c</code> spike.
-        </p>
+      <p>
+        The instruction is to change <code>NEW</code> to <code>OLD</code>, but Wan2.1-VACE leaves the masked
+        region essentially unchanged from the source — the rendered text still reads <code>NEW</code>.
+        TTS is high (consecutive frames decode to the same string) and the source-faithful PSNR is also high,
+        so a benchmark that relied on temporal stability or pixel-level fidelity alone would score this
+        favorably. <code>SeqAcc = 0</code> on this clip surfaces the failure: the model never produced the
+        requested target.
+      </p>
+    </div>
+
+    <!-- (B) High visual quality is not correctness -->
+    <div class="vt-fail">
+      <div class="vt-fail-head">
+        <span class="vt-fail-tag">B</span>
+        <h5>High visual quality is not correctness</h5>
+        <span class="vt-fail-method">Kling Video 3.0 Omni</span>
+        <span class="vt-fail-target">target&nbsp;<code>SOC</code>&nbsp;→&nbsp;<code>COC</code>, edited as&nbsp;<code>ZOO</code></span>
       </div>
-      <div class="vt-fail">
-        <div class="vt-fail-head">
-          <span class="vt-fail-tag">D</span>
-          <h5>Propagation collapses correctness <i>and</i> locality</h5>
-        </div>
-        <div class="vt-fail-placeholder">video placeholder</div>
-        <p>
-          TextCtrl + AnyV2V begins with a correct first-frame edit, then accumulates off-mask drift over time —
-          locality metrics (PSNR / SSIM / LPIPS<sub>loc</sub>) collapse together with text correctness as
-          propagation progresses.
-        </p>
+      <div class="vt-fail-grid">
+        <figure>
+          <video controls muted loop playsinline preload="metadata">
+            <source src="static/videos/failures/0000229_source.mp4" type="video/mp4">
+          </video>
+          <figcaption>Source clip with text-region mask overlay</figcaption>
+        </figure>
+        <figure>
+          <video controls muted loop playsinline preload="metadata">
+            <source src="static/videos/failures/0000229_kling.mp4" type="video/mp4">
+          </video>
+          <figcaption>Kling output — visually plausible but reads <code>ZOO</code> instead of <code>COC</code></figcaption>
+        </figure>
       </div>
+      <p>
+        Kling produces a high-quality clip — both MUSIQ axes lead the table — but the rendered glyphs spell
+        <code>ZOO</code> rather than the requested target <code>COC</code>. A benchmark that aggregated visual
+        quality without conditioning on correctness would put Kling at the top of the leaderboard; the
+        three-axis structure of ViTeX-Bench makes this divergence explicit.
+      </p>
+    </div>
+
+    <!-- (C) Per-frame editors cannot win correctness and temporal stability simultaneously -->
+    <div class="vt-fail">
+      <div class="vt-fail-head">
+        <span class="vt-fail-tag">C</span>
+        <h5>Per-frame editors cannot win correctness and temporal stability simultaneously</h5>
+        <span class="vt-fail-method">FLUX-Text</span>
+      </div>
+      <div class="vt-fail-grid">
+        <figure>
+          <video controls muted loop playsinline preload="metadata">
+            <source src="static/videos/failures/169_source.mp4" type="video/mp4">
+          </video>
+          <figcaption>Source clip with text-region mask overlay</figcaption>
+        </figure>
+        <figure>
+          <video controls muted loop playsinline preload="metadata">
+            <source src="static/videos/failures/169_fluxtext.mp4" type="video/mp4">
+          </video>
+          <figcaption>FLUX-Text output — characters flicker and drift between frames</figcaption>
+        </figure>
+      </div>
+      <p>
+        Family-A methods take the SeqAcc and CharAcc lead because each frame is edited by a strong static
+        scene-text editor, but the same frame-independence that yields character precision removes any
+        temporal coupling. FLUX-Text registers near-correct characters on individual frames yet cycles
+        through different glyph shapes between frames, so high SeqAcc / CharAcc co-occur with low TTS and
+        an extreme Flicker<sub>c</sub> spike — a structural property of per-frame editing rather than a
+        tunable defect.
+      </p>
+    </div>
+
+    <!-- (D) First-frame propagation collapses correctness and locality together -->
+    <div class="vt-fail">
+      <div class="vt-fail-head">
+        <span class="vt-fail-tag">D</span>
+        <h5>First-frame propagation collapses correctness <i>and</i> locality together</h5>
+        <span class="vt-fail-method">TextCtrl + AnyV2V</span>
+      </div>
+      <div class="vt-fail-grid">
+        <figure>
+          <video controls muted loop playsinline preload="metadata">
+            <source src="static/videos/failures/185_source.mp4" type="video/mp4">
+          </video>
+          <figcaption>Source clip with text-region mask overlay</figcaption>
+        </figure>
+        <figure>
+          <video controls muted loop playsinline preload="metadata">
+            <source src="static/videos/failures/185_textctrl_anyv2v.mp4" type="video/mp4">
+          </video>
+          <figcaption>TextCtrl + AnyV2V output — flicker, drift, and off-mask scene corruption</figcaption>
+        </figure>
+      </div>
+      <p>
+        TextCtrl on its own reaches strong SeqAcc with near-perfect locality. Pairing it with AnyV2V to lift
+        that per-frame edit into a video drops SeqAcc by an order of magnitude and produces the worst PSNR /
+        SSIM / LPIPS in the table simultaneously: as the propagation drifts away from the first-frame edit,
+        the unmasked scene drifts with it and the rendered text loses temporal stability. Reporting either
+        correctness or locality in isolation would mask half of the regression.
+      </p>
     </div>
   </div>
 </section>
@@ -636,13 +944,12 @@
   title  = {ViTeX-Bench: Benchmarking High Fidelity Video Scene Text Editing},
   author = {Anonymous},
   year   = {2026},
-  note   = {Submitted to NeurIPS 2026 Datasets and Benchmarks Track.
+  note   = {Submitted to NeurIPS 2026 Track on Evaluations and Datasets.
             Author list and DOI updated after deanonymization.},
   url    = {https://vitex-bench.github.io/}
 }</code></pre>
   </div>
 </section>
-<!-- End BibTeX -->
 
 
 <footer class="footer">
