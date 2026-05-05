@@ -81,16 +81,21 @@
     .vt-tight { padding-top: 2.5rem; padding-bottom: 2.5rem; }
 
     /* ---------- Showcase carousel ---------- */
+    /* Wide section that breaks out of the desktop container so the grid videos
+       are big enough to read every cell. */
+    .vt-showcase-section {
+      max-width: 1400px; margin: 0 auto;
+    }
     .vt-showcase-frame {
       background: #fff;
       border: 1px solid var(--vt-line);
       border-radius: 16px;
       padding: 1rem 1rem 0.75rem;
-      box-shadow: 0 1px 3px var(--vt-ring);
+      box-shadow: 0 2px 6px var(--vt-ring);
     }
     .vt-showcase-frame video {
       width: 100%; height: auto; border-radius: 10px; background: #000;
-      display: block;
+      display: block; max-width: 100%;
     }
     .vt-showcase-meta {
       display: flex; justify-content: space-between; align-items: center;
@@ -232,13 +237,14 @@
     .vt-lb-wide td.method { font-size: 0.84rem; max-width: 180px;
                             overflow: hidden; text-overflow: ellipsis; }
 
-    .vt-cta {
+    a.vt-cta, a.vt-cta:visited, a.vt-cta:link {
       display: inline-flex; align-items: center; gap: 0.5rem;
-      background: var(--vt-navy); color: #fff; padding: 0.7rem 1.3rem;
+      background: var(--vt-navy); color: #ffffff !important;
+      padding: 0.7rem 1.3rem;
       border-radius: 999px; font-weight: 600; text-decoration: none;
       transition: background 0.15s;
     }
-    .vt-cta:hover { background: #1e3a5f; color: #fff; }
+    a.vt-cta:hover { background: #1e3a5f; color: #ffffff !important; }
 
     /* ---------- Failure-mode panels ---------- */
     .vt-fail {
@@ -353,7 +359,7 @@
 
 <!-- Showcase carousel: source + mask overlay alongside all baselines and our methods -->
 <section class="hero teaser vt-tight">
-  <div class="container is-max-desktop">
+  <div class="vt-showcase-section" style="padding: 0 1.5rem;">
     <h2 class="title is-3 has-text-centered">Side-by-side: source vs. all eight baselines and our two models</h2>
     <p class="subtitle has-text-centered" style="color:#697386;">
       Each scene shows the source clip with a semi-transparent text-region mask overlay,
@@ -370,28 +376,6 @@
           <div class="vt-showcase-meta">
             <div><span class="vt-edit">First</span><span class="vt-arrow">→</span><span class="vt-edit">Last</span></div>
             <div class="vt-clip-id">0004547_00000</div>
-          </div>
-        </div>
-      </div>
-      <div class="item">
-        <div class="vt-showcase-frame">
-          <video controls muted loop playsinline preload="metadata">
-            <source src="static/videos/showcase/0008430_00000.mp4" type="video/mp4">
-          </video>
-          <div class="vt-showcase-meta">
-            <div><span class="vt-edit">INTERFERENCE EFFECT</span><span class="vt-arrow">→</span><span class="vt-edit">DIFFRACTION PATTERN</span></div>
-            <div class="vt-clip-id">0008430_00000</div>
-          </div>
-        </div>
-      </div>
-      <div class="item">
-        <div class="vt-showcase-frame">
-          <video controls muted loop playsinline preload="metadata">
-            <source src="static/videos/showcase/0008164_00000.mp4" type="video/mp4">
-          </video>
-          <div class="vt-showcase-meta">
-            <div><span class="vt-edit">POSTED</span><span class="vt-arrow">→</span><span class="vt-edit">BUSTED</span></div>
-            <div class="vt-clip-id">0008164_00000</div>
           </div>
         </div>
       </div>
@@ -458,28 +442,6 @@
           <div class="vt-showcase-meta">
             <div><span class="vt-edit">SOC</span><span class="vt-arrow">→</span><span class="vt-edit">COC</span></div>
             <div class="vt-clip-id">0000229_00000</div>
-          </div>
-        </div>
-      </div>
-      <div class="item">
-        <div class="vt-showcase-frame">
-          <video controls muted loop playsinline preload="metadata">
-            <source src="static/videos/showcase/115.mp4" type="video/mp4">
-          </video>
-          <div class="vt-showcase-meta">
-            <div>Scene 115</div>
-            <div class="vt-clip-id">115</div>
-          </div>
-        </div>
-      </div>
-      <div class="item">
-        <div class="vt-showcase-frame">
-          <video controls muted loop playsinline preload="metadata">
-            <source src="static/videos/showcase/104.mp4" type="video/mp4">
-          </video>
-          <div class="vt-showcase-meta">
-            <div>Scene 104</div>
-            <div class="vt-clip-id">104</div>
           </div>
         </div>
       </div>
@@ -644,20 +606,16 @@
       <text class="center-sub" x="320" y="372">three axes</text>
     </svg>
 
-    <div class="vt-formula">
-      <div class="vt-eq">
-        <b>ViTeX-Score</b> = ∛(Correctness · Visual · Locality)
-      </div>
-      <div class="vt-eq" style="margin-top: 0.4rem;">
-        <small>Axis</small> = geomean<sub>w</sub>(m̃<sub>1</sub>, …, m̃<sub>k</sub>),
-        &nbsp;&nbsp;
-        <small>m̃<sub>i</sub></small> = normalize(m<sub>i</sub>; frozen v1 endpoints) ∈ [0, 1]
-      </div>
-      <div class="vt-note">
-        Geometric mean at both levels enforces non-substitutivity: any axis at zero collapses ViTeX-Score,
-        so visual quality cannot rescue a missing edit. Inside the visual axis the text-crop scope
-        carries double weight (w<sub>crop</sub> = 2, w<sub>full</sub> = 1); correctness and locality use uniform weights.
-      </div>
+    <div class="content" style="margin-top: 1.5rem;">
+      <p style="color: var(--vt-slate); line-height: 1.7;">
+        <b style="color:var(--vt-navy);">Within each axis</b>, the constituent metrics are normalized to <code>[0, 1]</code>
+        through a frozen reference table and combined into one axis score by a weighted geometric mean —
+        within the visual axis the text-crop primitives count twice the full-frame primitives, since the
+        text region is the task focus, while correctness and locality weight all primitives equally.
+        <b style="color:var(--vt-navy);">Across axes</b>, ViTeX-Score is the unweighted geometric mean of the three axis scores.
+        The geometric mean is non-substitutive: any axis at zero collapses ViTeX-Score, so visual quality
+        cannot rescue a missing edit and a method that fails any single axis is dominated overall.
+      </p>
     </div>
   </div>
 </section>
@@ -813,13 +771,13 @@
       </div>
       <div class="vt-fail-grid">
         <figure>
-          <video controls muted loop playsinline preload="metadata">
+          <video autoplay controls muted loop playsinline preload="metadata">
             <source src="static/videos/failures/094_source.mp4" type="video/mp4">
           </video>
           <figcaption>Source clip with text-region mask overlay</figcaption>
         </figure>
         <figure>
-          <video controls muted loop playsinline preload="metadata">
+          <video autoplay controls muted loop playsinline preload="metadata">
             <source src="static/videos/failures/094_vace.mp4" type="video/mp4">
           </video>
           <figcaption>Wan2.1-VACE-14B output — text is unchanged</figcaption>
@@ -845,13 +803,13 @@
       </div>
       <div class="vt-fail-grid">
         <figure>
-          <video controls muted loop playsinline preload="metadata">
+          <video autoplay controls muted loop playsinline preload="metadata">
             <source src="static/videos/failures/0000229_00000_source.mp4" type="video/mp4">
           </video>
           <figcaption>Source clip with text-region mask overlay</figcaption>
         </figure>
         <figure>
-          <video controls muted loop playsinline preload="metadata">
+          <video autoplay controls muted loop playsinline preload="metadata">
             <source src="static/videos/failures/0000229_00000_kling.mp4" type="video/mp4">
           </video>
           <figcaption>Kling output — visually plausible but reads <code>ZOO</code> instead of <code>COC</code></figcaption>
@@ -874,13 +832,13 @@
       </div>
       <div class="vt-fail-grid">
         <figure>
-          <video controls muted loop playsinline preload="metadata">
+          <video autoplay controls muted loop playsinline preload="metadata">
             <source src="static/videos/failures/169_source.mp4" type="video/mp4">
           </video>
           <figcaption>Source clip with text-region mask overlay</figcaption>
         </figure>
         <figure>
-          <video controls muted loop playsinline preload="metadata">
+          <video autoplay controls muted loop playsinline preload="metadata">
             <source src="static/videos/failures/169_fluxtext.mp4" type="video/mp4">
           </video>
           <figcaption>FLUX-Text output — characters flicker and drift between frames</figcaption>
@@ -905,13 +863,13 @@
       </div>
       <div class="vt-fail-grid">
         <figure>
-          <video controls muted loop playsinline preload="metadata">
+          <video autoplay controls muted loop playsinline preload="metadata">
             <source src="static/videos/failures/185_source.mp4" type="video/mp4">
           </video>
           <figcaption>Source clip with text-region mask overlay</figcaption>
         </figure>
         <figure>
-          <video controls muted loop playsinline preload="metadata">
+          <video autoplay controls muted loop playsinline preload="metadata">
             <source src="static/videos/failures/185_textctrl_anyv2v.mp4" type="video/mp4">
           </video>
           <figcaption>TextCtrl + AnyV2V output — flicker, drift, and off-mask scene corruption</figcaption>
