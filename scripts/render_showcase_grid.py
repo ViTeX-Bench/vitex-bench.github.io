@@ -1,53 +1,191 @@
-"""Render the 4x3 showcase grid videos for the project page.
+"""Render the composite showcase videos for the project page carousel.
 
-Picks one clip ID and produces 11 separate mp4s, one per cell:
-  cell 1 (top-left): source video with the dilated text mask drawn as a
-                     translucent red tint, so reviewers can see exactly
-                     which region is being edited.
-  cells 2..11      : raw output from each baseline / our two models, at
-                     the same scale and duration as cell 1.
+For each chosen clip, produce ONE mp4 that lays the eleven methods plus
+a text-replacement panel out as a 4 x 3 grid baked into the frame, with
+each cell's method label drawn in its top-left corner. The bottom-right
+cell is a text panel showing s_src -> s_tgt for that scene.
 
-The 12th cell of the grid is a static HTML text panel showing the source
-and target strings, rendered directly in index.html — no video needed.
-
-Each cell is encoded at 480 x 270 (16:9, four cells across at 1920px wide
-or three cells across at 1440px wide). Output goes to
-static/videos/showcase_grid/.
+Outputs go to static/videos/showcase_v2/<clip_id>.mp4.
 
 Usage:
+    python scripts/render_showcase_grid.py                 # default 5 scenes
     python scripts/render_showcase_grid.py --clip 0006286_00000
+    python scripts/render_showcase_grid.py --clips 0004547_00000,0001942_00000
 """
 
 import argparse
 import glob
+import json
 import os
 import subprocess
 import sys
-import tempfile
 
 import cv2
 import numpy as np
 
 
-METHODS = [
-    # (cell label, baseline output dir)
-    ("identity",         "identity"),
-    ("anytext2",         "anytext2"),
-    ("textctrl",         "text_ctrl"),
-    ("fluxtext",         "fluxtext"),
-    ("rs_ste",           "re-ste"),
-    ("textctrl_anyv2v",  "text_ctrl+anyv2v"),
-    ("wan_vace",         "wan2.2vace14b"),
-    ("videopainter",     "videopainter"),
-    ("kling",            "kling"),
-    ("vitex_14b",        "ViTeX-14B"),
-    ("vitex_composite",  "ViTeX-14B_Corp"),
+# Cell layout (4 columns, 3 rows). Each entry is the method directory under
+# data/baseline_outputs/, the public label drawn in the cell, and a family tag
+# used to colour the badge.
+GRID = [
+    # row 0
+    [("__source_mask",  "Source + mask",          "src"),
+     ("ViTeX-14B",      "ViTeX-14B",              "ours"),
+     ("ViTeX-14B_Corp", "ViTeX-14B (Composite)",  "ours"),
+     ("anytext2",       "AnyText2",               "A")],
+    # row 1
+    [("text_ctrl",        "TextCtrl",               "A"),
+     ("fluxtext",         "FLUX-Text",              "A"),
+     ("re-ste",           "RS-STE",                 "A"),
+     ("text_ctrl+anyv2v", "TextCtrl + AnyV2V",      "B")],
+    # row 2
+    [("wan2.2vace14b", "Wan2.1-VACE-14B",        "C"),
+     ("videopainter",  "VideoPainter",           "C"),
+     ("kling",         "Kling Video 3.0 Omni",   "D"),
+     ("__text_panel",  "",                       "tgt")],
+]
+
+# Cell badge background colours (BGR), tuned to match the page palette.
+BADGE_BG = {
+    "src":  (88, 18, 125),     # purple-ish, matches page src tag
+    "ours": (64, 37, 10),      # navy (vt-navy)
+    "A":    (40, 110, 60),     # green
+    "B":    (40, 80, 145),     # amber/orange
+    "C":    (90, 60, 175),     # rose
+    "D":    (180, 110, 60),    # blue-violet
+    "tgt":  (245, 245, 245),   # neutral light
+}
+BADGE_FG = {
+    "src":  (255, 255, 255),
+    "ours": (255, 255, 255),
+    "A":    (255, 255, 255),
+    "B":    (255, 255, 255),
+    "C":    (255, 255, 255),
+    "D":    (255, 255, 255),
+    "tgt":  (60, 30, 12),
+}
+
+DEFAULT_CLIPS = [
+    "0006286_00000",  # COLLIER -> WASHING
+    "0005186_00000",  # ONLY -> STOP
+    "0004547_00000",  # First -> Last
+    "0001942_00000",  # BULB? -> LAMP?
+    "0000229_00000",  # SOC -> COC
 ]
 
 
+def find_one(pattern):
+    matches = sorted(glob.glob(pattern))
+    if not matches:
+        sys.exit(f"no match: {pattern}")
+    return matches[0]
+
+
+def read_video(path, size, max_frames=120):
+    cap = cv2.VideoCapture(path)
+    if not cap.isOpened():
+        sys.exit(f"could not open {path}")
+    fps = cap.get(cv2.CAP_PROP_FPS) or 24.0
+    out = []
+    while len(out) < max_frames:
+        ok, frame = cap.read()
+        if not ok:
+            break
+        if size is not None:
+            frame = cv2.resize(frame, size, interpolation=cv2.INTER_AREA)
+        out.append(frame)
+    cap.release()
+    return out, fps
+
+
+def overlay_mask(src_frame, mask_frame, alpha=0.45):
+    """Translucent red wash inside the dilated text mask."""
+    s = src_frame.astype(np.float32)
+    m = cv2.cvtColor(mask_frame, cv2.COLOR_BGR2GRAY).astype(np.float32) / 255.0
+    m = m[..., None]
+    red = np.zeros_like(s)
+    red[..., 2] = 255.0
+    blended = s * (1 - m * alpha) + red * (m * alpha)
+    return np.clip(blended, 0, 255).astype(np.uint8)
+
+
+def draw_badge(frame, label, family, font_scale=0.42, pad_x=7, pad_y=4):
+    """Draw a rounded label pill in the top-left corner of `frame`."""
+    if not label:
+        return frame
+    font = cv2.FONT_HERSHEY_DUPLEX
+    (tw, th), baseline = cv2.getTextSize(label, font, font_scale, 1)
+    box_w = tw + 2 * pad_x
+    box_h = th + 2 * pad_y + 2
+    x0, y0 = 6, 6
+    bg = BADGE_BG.get(family, (60, 60, 60))
+    fg = BADGE_FG.get(family, (255, 255, 255))
+    overlay = frame.copy()
+    cv2.rectangle(overlay, (x0, y0), (x0 + box_w, y0 + box_h), bg, -1, cv2.LINE_AA)
+    cv2.addWeighted(overlay, 0.92, frame, 0.08, 0, dst=frame)
+    cv2.putText(frame, label, (x0 + pad_x, y0 + pad_y + th),
+                font, font_scale, fg, 1, cv2.LINE_AA)
+    return frame
+
+
+def render_text_panel(cell_w, cell_h, src_text, tgt_text, clip_id):
+    """Render the bottom-right text-replacement cell as a static frame."""
+    img = np.zeros((cell_h, cell_w, 3), dtype=np.uint8)
+    # Vertical gradient from #0a2540 (top) to #1e3a5f (bottom).
+    top = np.array([64, 37, 10], dtype=np.float32)      # BGR
+    bot = np.array([95, 58, 30], dtype=np.float32)
+    for y in range(cell_h):
+        t = y / max(cell_h - 1, 1)
+        img[y, :, :] = (top * (1 - t) + bot * t).astype(np.uint8)
+
+    font = cv2.FONT_HERSHEY_DUPLEX
+
+    def centered_text(text, y, scale, color, thickness=1):
+        (tw, th), _ = cv2.getTextSize(text, font, scale, thickness)
+        x = (cell_w - tw) // 2
+        cv2.putText(img, text, (x, y), font, scale, color, thickness, cv2.LINE_AA)
+        return th
+
+    # Compact layout: tag / src / arrow / tag / tgt / clip-id.
+    s_lab = "SOURCE TEXT"
+    t_lab = "TARGET TEXT"
+    arrow = "v"
+
+    word_scale = max(0.7, min(1.4, cell_w / 380.0))
+    tag_scale  = max(0.34, min(0.55, cell_w / 720.0))
+    arrow_scale = word_scale * 0.95
+    clip_scale  = max(0.32, min(0.5, cell_w / 800.0))
+
+    pale = (207, 179, 160)  # #a0b3cf
+    white = (255, 255, 255)
+    pill_bg_src = (84, 51, 27)        # darker navy
+    pill_bg_tgt = (170, 144, 99)      # tinted lavender
+
+    def pill(text, scale, y_baseline, bg, fg, pad_x=14, pad_y=8):
+        (tw, th), _ = cv2.getTextSize(text, font, scale, 1)
+        bx = (cell_w - tw - 2 * pad_x) // 2
+        by = y_baseline - th - pad_y
+        cv2.rectangle(img, (bx, by), (bx + tw + 2 * pad_x, by + th + 2 * pad_y),
+                      bg, -1, cv2.LINE_AA)
+        cv2.putText(img, text, (bx + pad_x, by + th + pad_y - 2),
+                    font, scale, fg, 1, cv2.LINE_AA)
+
+    cy = int(cell_h * 0.18)
+    centered_text(s_lab, cy, tag_scale, pale)
+    cy += int(cell_h * 0.13)
+    pill(src_text, word_scale, cy, pill_bg_src, white)
+    cy += int(cell_h * 0.10)
+    centered_text(arrow, cy, arrow_scale, pale)
+    cy += int(cell_h * 0.10)
+    centered_text(t_lab, cy, tag_scale, pale)
+    cy += int(cell_h * 0.13)
+    pill(tgt_text, word_scale, cy, pill_bg_tgt, white)
+    cy = cell_h - int(cell_h * 0.06)
+    centered_text(f"clip {clip_id}", cy, clip_scale, (96, 130, 156))
+    return img
+
+
 def write_mp4(frames_iter, out_path, fps, size):
-    """Write H.264 mp4 by piping rawvideo to ffmpeg (avoids OpenCV's
-    fragile internal encoder selection)."""
     w, h = size
     cmd = [
         "ffmpeg", "-y", "-loglevel", "error",
@@ -69,83 +207,108 @@ def write_mp4(frames_iter, out_path, fps, size):
     return n
 
 
-def read_video(path, size, max_frames=120):
-    cap = cv2.VideoCapture(path)
-    if not cap.isOpened():
-        sys.exit(f"could not open {path}")
-    fps = cap.get(cv2.CAP_PROP_FPS) or 24.0
-    out = []
-    while len(out) < max_frames:
-        ok, frame = cap.read()
-        if not ok:
-            break
-        if size is not None:
-            frame = cv2.resize(frame, size, interpolation=cv2.INTER_AREA)
-        out.append(frame)
-    cap.release()
-    return out, fps
+def render_one_clip(clip_id, data_root, out_dir,
+                    cell_w=320, cell_h=180, fps=24.0, max_frames=120):
+    grid_w = cell_w * 4
+    grid_h = cell_h * 3
 
+    # Per-cell frame buffers
+    cell_videos = {}   # (row, col) -> list[np.ndarray]
+    n_frames = max_frames
 
-def find_one(pattern):
-    matches = sorted(glob.glob(pattern))
-    if not matches:
-        sys.exit(f"no match: {pattern}")
-    return matches[0]
+    src_path = os.path.join(data_root, "source_videos", f"{clip_id}.mp4")
+    mask_path = find_one(os.path.join(data_root, "text_masks", f"{clip_id}_*.mp4"))
 
+    src_frames, _ = read_video(src_path, size=(cell_w, cell_h))
+    mask_frames, _ = read_video(mask_path, size=(cell_w, cell_h))
+    n_frames = min(n_frames, len(src_frames), len(mask_frames))
 
-def render_source_with_mask(src_path, mask_path, size, alpha=0.45):
-    """Source frames with a translucent red wash inside the dilated mask."""
-    src, fps = read_video(src_path, size=size)
-    mask_full, _ = read_video(mask_path, size=size)
-    n = min(len(src), len(mask_full))
-    out = []
-    for i in range(n):
-        s = src[i].astype(np.float32)
-        m = cv2.cvtColor(mask_full[i], cv2.COLOR_BGR2GRAY).astype(np.float32) / 255.0
-        m = m[..., None]  # (h, w, 1)
-        red = np.zeros_like(s)
-        red[..., 2] = 255.0  # BGR red channel
-        blended = s * (1 - m * alpha) + red * (m * alpha)
-        out.append(np.clip(blended, 0, 255).astype(np.uint8))
-    return out, fps
+    # Pull per-clip text from the eval results (cached on disk).
+    eval_all_path = os.path.join(data_root, "..", "outputs", "eval_all.json")
+    src_text, tgt_text = clip_id, clip_id
+    try:
+        with open(eval_all_path) as f:
+            ea = json.load(f)
+        rec = ea["baselines"]["ViTeX-14B"]["per_clip"].get(clip_id) \
+            or ea["baselines"]["identity"]["per_clip"].get(clip_id) \
+            or {}
+        src_text = rec.get("source_text", clip_id)
+        tgt_text = rec.get("target_text", clip_id)
+    except Exception as e:
+        print(f"  warn: could not read text for {clip_id} ({e})")
+
+    # Cell (0, 0): source + mask
+    cell_videos[(0, 0)] = [
+        overlay_mask(src_frames[i], mask_frames[i]) for i in range(n_frames)
+    ]
+    # All method cells
+    for r, row in enumerate(GRID):
+        for c, (method_dir, _label, _fam) in enumerate(row):
+            if method_dir.startswith("__"):
+                continue
+            method_path = find_one(os.path.join(
+                data_root, "baseline_outputs", method_dir, f"{clip_id}*.mp4"))
+            frames, _ = read_video(method_path, size=(cell_w, cell_h),
+                                   max_frames=n_frames)
+            # Pad short outputs by holding the last frame.
+            while len(frames) < n_frames:
+                frames.append(frames[-1].copy() if frames else
+                              np.zeros((cell_h, cell_w, 3), dtype=np.uint8))
+            cell_videos[(r, c)] = frames
+
+    # Bottom-right cell: static text panel reused on every frame
+    panel = render_text_panel(cell_w, cell_h, src_text, tgt_text, clip_id)
+    cell_videos[(2, 3)] = [panel] * n_frames
+
+    # Now compose every frame.
+    def frames_iter():
+        for i in range(n_frames):
+            canvas = np.zeros((grid_h, grid_w, 3), dtype=np.uint8)
+            for r, row in enumerate(GRID):
+                for c, (_method_dir, label, fam) in enumerate(row):
+                    cell = cell_videos[(r, c)][i].copy()
+                    if label:
+                        draw_badge(cell, label, fam)
+                    canvas[r * cell_h:(r + 1) * cell_h,
+                           c * cell_w:(c + 1) * cell_w] = cell
+            yield canvas
+
+    os.makedirs(out_dir, exist_ok=True)
+    out_path = os.path.join(out_dir, f"{clip_id}.mp4")
+    n = write_mp4(frames_iter(), out_path, fps, (grid_w, grid_h))
+    print(f"  wrote {out_path}  ({n} frames, {grid_w}x{grid_h})")
+    return out_path
 
 
 def main():
-    ap = argparse.ArgumentParser()
-    ap.add_argument("--clip", default="0006286_00000")
     here = os.path.dirname(os.path.abspath(__file__))
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--clip",
+                    help="Render a single clip (overrides --clips and --default).")
+    ap.add_argument("--clips",
+                    help="Comma-separated list of clip IDs to render.")
     ap.add_argument("--data_root",
                     default=os.path.normpath(os.path.join(here, "..", "..", "data")),
                     help="Root containing source_videos/, text_masks/, baseline_outputs/<method>/.")
     ap.add_argument("--out_dir",
-                    default=os.path.normpath(os.path.join(here, "..", "static", "videos", "showcase_grid")))
-    ap.add_argument("--width", type=int, default=480)
-    ap.add_argument("--height", type=int, default=270)
+                    default=os.path.normpath(os.path.join(here, "..", "static", "videos", "showcase_v2")))
+    ap.add_argument("--cell_w", type=int, default=320)
+    ap.add_argument("--cell_h", type=int, default=180)
     ap.add_argument("--fps", type=float, default=24.0)
     args = ap.parse_args()
 
-    os.makedirs(args.out_dir, exist_ok=True)
-    size = (args.width, args.height)
+    if args.clip:
+        clips = [args.clip]
+    elif args.clips:
+        clips = [c.strip() for c in args.clips.split(",") if c.strip()]
+    else:
+        clips = DEFAULT_CLIPS
 
-    # Cell 1: source + mask overlay
-    src_path = os.path.join(args.data_root, "source_videos", f"{args.clip}.mp4")
-    mask_path = find_one(os.path.join(args.data_root, "text_masks", f"{args.clip}_*.mp4"))
-    print(f"[source+mask] {os.path.basename(src_path)} + mask")
-    src_frames, fps = render_source_with_mask(src_path, mask_path, size=size)
-    n = write_mp4(iter(src_frames), os.path.join(args.out_dir, "source_mask.mp4"),
-                  fps=args.fps, size=size)
-    print(f"  -> source_mask.mp4 ({n} frames)")
-
-    # Cells 2..11: per-method outputs
-    for label, method_dir in METHODS:
-        method_path = find_one(
-            os.path.join(args.data_root, "baseline_outputs", method_dir, f"{args.clip}*.mp4"))
-        frames, _ = read_video(method_path, size=size)
-        out_path = os.path.join(args.out_dir, f"{label}.mp4")
-        n = write_mp4(iter(frames), out_path, fps=args.fps, size=size)
-        print(f"[{label:18s}] {os.path.basename(method_path)} -> {os.path.basename(out_path)} ({n} frames)")
-
-    print(f"\nDone. {args.out_dir}")
+    print(f"Rendering {len(clips)} clip(s) into {args.out_dir}")
+    for cid in clips:
+        print(f"[{cid}]")
+        render_one_clip(cid, args.data_root, args.out_dir,
+                        cell_w=args.cell_w, cell_h=args.cell_h, fps=args.fps)
 
 
 if __name__ == "__main__":
