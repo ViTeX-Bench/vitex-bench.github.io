@@ -215,6 +215,8 @@
     .vt-fam.C { background: #ffd1d8; color: #7d122c; }
     .vt-fam.D { background: #dadcff; color: #322a87; }
     .vt-fam.O { background: #e3e8ee; color: var(--vt-navy); }
+    .vt-fam.Admin { background: var(--vt-navy); color: var(--vt-pale); }
+    .vt-fam.User  { background: #635bff; color: #fff; }
 
     /* Wide 13-metric breakdown table */
     .vt-lb-wide { font-size: 0.78rem; }
@@ -619,6 +621,7 @@
             <th></th>
             <th class="left">Method</th>
             <th class="left">Fam</th>
+            <th class="left">Src</th>
             <th>TextScore ↑</th>
             <th>SeqAcc ↑</th>
             <th>CharAcc ↑</th>
@@ -636,17 +639,17 @@
           </tr>
         </thead>
         <tbody>
-          <tr><td class="vt-rank">1</td><td class="left method">TextCtrl</td><td class="left"><span class="vt-fam A">A</span></td><td class="score">0.5624</td><td>0.475</td><td>0.733</td><td>0.511</td><td>3.80</td><td>4.29</td><td>1.59</td><td>2.09</td><td>70.32</td><td>42.77</td><td>41.14</td><td>0.994</td><td>0.008</td><td>0.004</td></tr>
-          <tr><td class="vt-rank">2</td><td class="left method"><b>ViTeX-14B (Composite)</b></td><td class="left"><span class="vt-fam O">ours</span></td><td class="score">0.5410</td><td>0.345</td><td>0.689</td><td>0.666</td><td>3.73</td><td>3.83</td><td>1.51</td><td>1.56</td><td>70.27</td><td>44.94</td><td>42.95</td><td>0.992</td><td>0.006</td><td>0.002</td></tr>
-          <tr><td class="vt-rank">3</td><td class="left method"><b>ViTeX-14B</b></td><td class="left"><span class="vt-fam O">ours</span></td><td class="score">0.5338</td><td>0.341</td><td>0.688</td><td>0.648</td><td>3.27</td><td>3.42</td><td>1.55</td><td>1.53</td><td>69.64</td><td>43.53</td><td>29.08</td><td>0.951</td><td>0.060</td><td>0.024</td></tr>
-          <tr><td class="vt-rank">4</td><td class="left method">VideoPainter<sup>†</sup></td><td class="left"><span class="vt-fam C">C</span></td><td class="score">0.5151</td><td>0.365</td><td>0.619</td><td>0.606</td><td>2.38<sup>†</sup></td><td>2.62<sup>†</sup></td><td>2.93<sup>†</sup></td><td>3.35<sup>†</sup></td><td>67.16</td><td>40.59</td><td>28.56</td><td>0.915</td><td>0.104</td><td>0.024</td></tr>
-          <tr><td class="vt-rank">5</td><td class="left method">FLUX-Text</td><td class="left"><span class="vt-fam A">A</span></td><td class="score">0.5023</td><td>0.528</td><td>0.737</td><td>0.326</td><td>5.11</td><td>14.81</td><td>3.03</td><td>13.01</td><td>70.26</td><td>43.85</td><td>31.49</td><td>0.975</td><td>0.029</td><td>0.012</td></tr>
-          <tr><td class="vt-rank">6</td><td class="left method">RS-STE</td><td class="left"><span class="vt-fam A">A</span></td><td class="score">0.4908</td><td>0.354</td><td>0.626</td><td>0.534</td><td>3.73</td><td>3.66</td><td>1.61</td><td>1.81</td><td>69.57</td><td>34.26</td><td>37.00</td><td>0.983</td><td>0.024</td><td>0.007</td></tr>
-          <tr><td class="vt-rank">7</td><td class="left method">AnyText2</td><td class="left"><span class="vt-fam A">A</span></td><td class="score">0.4074</td><td>0.280</td><td>0.633</td><td>0.382</td><td>3.34</td><td>4.95</td><td>2.04</td><td>3.95</td><td>66.68</td><td>41.65</td><td>25.56</td><td>0.905</td><td>0.092</td><td>0.043</td></tr>
-          <tr><td class="vt-rank">8</td><td class="left method">TextCtrl + AnyV2V</td><td class="left"><span class="vt-fam B">B</span></td><td class="score">0.1649</td><td>0.057</td><td>0.308</td><td>0.257</td><td>4.98</td><td>4.98</td><td>4.11</td><td>3.97</td><td>69.41</td><td>33.85</td><td>21.08</td><td>0.785</td><td>0.225</td><td>0.073</td></tr>
-          <tr><td class="vt-rank">—</td><td class="left method" style="color:#697386;font-style:italic;">Identity (sanity)</td><td class="left"><span class="vt-fam O">—</span></td><td class="score num0">0.0000</td><td class="num0">0.000</td><td>0.317</td><td>0.760</td><td>3.72</td><td>3.68</td><td>1.46</td><td>1.27</td><td>70.33</td><td>45.12</td><td>100.00</td><td>1.000</td><td class="num0">0.000</td><td class="num0">0.000</td></tr>
-          <tr><td class="vt-rank">—</td><td class="left method">Wan2.1-VACE-14B</td><td class="left"><span class="vt-fam C">C</span></td><td class="score num0">0.0000</td><td class="num0">0.000</td><td>0.298</td><td>0.690</td><td>3.78</td><td>3.84</td><td>1.69</td><td>1.56</td><td>70.54</td><td>45.26</td><td>35.21</td><td>0.976</td><td>0.022</td><td>0.007</td></tr>
-          <tr><td class="vt-rank">—</td><td class="left method">Kling Video 3.0 Omni</td><td class="left"><span class="vt-fam D">D</span></td><td class="score num0">0.0000</td><td class="num0">0.000</td><td>0.208</td><td>0.641</td><td>4.25</td><td>4.08</td><td>3.12</td><td>2.90</td><td>72.23</td><td>47.75</td><td>21.18</td><td>0.843</td><td>0.176</td><td>0.061</td></tr>
+          <tr><td class="vt-rank">1</td><td class="left method">TextCtrl</td><td class="left"><span class="vt-fam A">A</span></td><td class="left"><span class="vt-fam Admin">Admin</span></td><td class="score">0.5624</td><td>0.475</td><td>0.733</td><td>0.511</td><td>3.80</td><td>4.29</td><td>1.59</td><td>2.09</td><td>70.32</td><td>42.77</td><td>41.14</td><td>0.994</td><td>0.008</td><td>0.004</td></tr>
+          <tr><td class="vt-rank">2</td><td class="left method"><b>ViTeX-14B (Composite)</b></td><td class="left"><span class="vt-fam O">ours</span></td><td class="left"><span class="vt-fam Admin">Admin</span></td><td class="score">0.5410</td><td>0.345</td><td>0.689</td><td>0.666</td><td>3.73</td><td>3.83</td><td>1.51</td><td>1.56</td><td>70.27</td><td>44.94</td><td>42.95</td><td>0.992</td><td>0.006</td><td>0.002</td></tr>
+          <tr><td class="vt-rank">3</td><td class="left method"><b>ViTeX-14B</b></td><td class="left"><span class="vt-fam O">ours</span></td><td class="left"><span class="vt-fam Admin">Admin</span></td><td class="score">0.5338</td><td>0.341</td><td>0.688</td><td>0.648</td><td>3.27</td><td>3.42</td><td>1.55</td><td>1.53</td><td>69.64</td><td>43.53</td><td>29.08</td><td>0.951</td><td>0.060</td><td>0.024</td></tr>
+          <tr><td class="vt-rank">4</td><td class="left method">VideoPainter<sup>†</sup></td><td class="left"><span class="vt-fam C">C</span></td><td class="left"><span class="vt-fam Admin">Admin</span></td><td class="score">0.5151</td><td>0.365</td><td>0.619</td><td>0.606</td><td>2.38<sup>†</sup></td><td>2.62<sup>†</sup></td><td>2.93<sup>†</sup></td><td>3.35<sup>†</sup></td><td>67.16</td><td>40.59</td><td>28.56</td><td>0.915</td><td>0.104</td><td>0.024</td></tr>
+          <tr><td class="vt-rank">5</td><td class="left method">FLUX-Text</td><td class="left"><span class="vt-fam A">A</span></td><td class="left"><span class="vt-fam Admin">Admin</span></td><td class="score">0.5023</td><td>0.528</td><td>0.737</td><td>0.326</td><td>5.11</td><td>14.81</td><td>3.03</td><td>13.01</td><td>70.26</td><td>43.85</td><td>31.49</td><td>0.975</td><td>0.029</td><td>0.012</td></tr>
+          <tr><td class="vt-rank">6</td><td class="left method">RS-STE</td><td class="left"><span class="vt-fam A">A</span></td><td class="left"><span class="vt-fam Admin">Admin</span></td><td class="score">0.4908</td><td>0.354</td><td>0.626</td><td>0.534</td><td>3.73</td><td>3.66</td><td>1.61</td><td>1.81</td><td>69.57</td><td>34.26</td><td>37.00</td><td>0.983</td><td>0.024</td><td>0.007</td></tr>
+          <tr><td class="vt-rank">7</td><td class="left method">AnyText2</td><td class="left"><span class="vt-fam A">A</span></td><td class="left"><span class="vt-fam Admin">Admin</span></td><td class="score">0.4074</td><td>0.280</td><td>0.633</td><td>0.382</td><td>3.34</td><td>4.95</td><td>2.04</td><td>3.95</td><td>66.68</td><td>41.65</td><td>25.56</td><td>0.905</td><td>0.092</td><td>0.043</td></tr>
+          <tr><td class="vt-rank">8</td><td class="left method">TextCtrl + AnyV2V</td><td class="left"><span class="vt-fam B">B</span></td><td class="left"><span class="vt-fam Admin">Admin</span></td><td class="score">0.1649</td><td>0.057</td><td>0.308</td><td>0.257</td><td>4.98</td><td>4.98</td><td>4.11</td><td>3.97</td><td>69.41</td><td>33.85</td><td>21.08</td><td>0.785</td><td>0.225</td><td>0.073</td></tr>
+          <tr><td class="vt-rank">—</td><td class="left method" style="color:#697386;font-style:italic;">Identity (sanity)</td><td class="left"><span class="vt-fam O">—</span></td><td class="left"><span class="vt-fam Admin">Admin</span></td><td class="score num0">0.0000</td><td class="num0">0.000</td><td>0.317</td><td>0.760</td><td>3.72</td><td>3.68</td><td>1.46</td><td>1.27</td><td>70.33</td><td>45.12</td><td>100.00</td><td>1.000</td><td class="num0">0.000</td><td class="num0">0.000</td></tr>
+          <tr><td class="vt-rank">—</td><td class="left method">Wan2.1-VACE-14B</td><td class="left"><span class="vt-fam C">C</span></td><td class="left"><span class="vt-fam Admin">Admin</span></td><td class="score num0">0.0000</td><td class="num0">0.000</td><td>0.298</td><td>0.690</td><td>3.78</td><td>3.84</td><td>1.69</td><td>1.56</td><td>70.54</td><td>45.26</td><td>35.21</td><td>0.976</td><td>0.022</td><td>0.007</td></tr>
+          <tr><td class="vt-rank">—</td><td class="left method">Kling Video 3.0 Omni</td><td class="left"><span class="vt-fam D">D</span></td><td class="left"><span class="vt-fam Admin">Admin</span></td><td class="score num0">0.0000</td><td class="num0">0.000</td><td>0.208</td><td>0.641</td><td>4.25</td><td>4.08</td><td>3.12</td><td>2.90</td><td>72.23</td><td>47.75</td><td>21.18</td><td>0.843</td><td>0.176</td><td>0.061</td></tr>
         </tbody>
       </table>
     </div>
@@ -919,10 +922,14 @@
       const dagger = noteOnVideoPainter(e);
       const dimSc = tsZero || sanity ? ' num0' : '';
       const dim = (tsZero || sanity);
+      const submitter = ((e.submitter || 'user') + '').toLowerCase();
+      const srcCls = submitter === 'admin' ? 'Admin' : 'User';
+      const srcLabel = submitter === 'admin' ? 'Admin' : 'User';
       return '<tr>' +
         rank +
         '<td class="left method">' + methodCell(e) + '</td>' +
         '<td class="left"><span class="vt-fam ' + familyClass(e.family) + '">' + familyShort(e.family, e.method) + '</span></td>' +
+        '<td class="left"><span class="vt-fam ' + srcCls + '">' + srcLabel + '</span></td>' +
         '<td class="score' + dimSc + '">' + fmt(ts, 4, dim) + '</td>' +
         '<td>' + fmt(e.SeqAcc, 3, true) + '</td>' +
         '<td>' + fmt(e.CharAcc, 3) + '</td>' +
