@@ -83,35 +83,22 @@
 
     /* ---------- Showcase carousel (composite 4x3 video per scene) ---------- */
     /* Wide section that breaks out of the desktop container so each cell of
-       the baked-in 4x3 grid is large enough to read. */
-    .vt-showcase-section { max-width: 1400px; margin: 0 auto; }
+       the baked-in 4x3 grid is large enough to read every method label. */
+    .vt-showcase-section { max-width: 1680px; margin: 0 auto; }
     .vt-showcase-frame {
-      background: #fff;
+      background: #000;
       border: 1px solid var(--vt-line);
-      border-radius: 16px;
-      padding: 1rem 1rem 0.75rem;
+      border-radius: 14px;
+      overflow: hidden;
       box-shadow: 0 2px 6px var(--vt-ring);
     }
     .vt-showcase-frame video {
-      width: 100%; height: auto; border-radius: 10px; background: #000;
-      display: block; max-width: 100%;
+      width: 100%; height: auto; display: block; background: #000;
     }
-    .vt-showcase-meta {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 0.65rem 0.4rem 0.25rem; gap: 1rem;
-      font-size: 0.92rem; color: var(--vt-slate);
-    }
-    .vt-showcase-meta .vt-edit {
-      font-family: ui-monospace, "SF Mono", Menlo, monospace;
-      color: var(--vt-navy); font-weight: 600;
-    }
-    .vt-showcase-meta .vt-arrow {
-      color: var(--vt-mute); margin: 0 0.35rem;
-    }
-    .vt-showcase-meta .vt-clip-id {
-      color: var(--vt-mute); font-size: 0.78rem;
-      font-family: ui-monospace, monospace;
-    }
+    /* Force the bulma-carousel slide to fill the section width so the
+       composite video renders at the full available size; the carousel
+       only needs to switch one full-width slide at a time. */
+    #showcase-carousel .item { width: 100% !important; }
 
     /* ---------- Contribution cards ---------- */
     .vt-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem; }
