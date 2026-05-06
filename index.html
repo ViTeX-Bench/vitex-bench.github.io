@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <meta name="title" content="ViTeX-Bench: Benchmarking High Fidelity Video Scene Text Editing">
-  <meta name="description" content="A 387-clip paired dataset, a 13-metric three-axis evaluation protocol with the ViTeX-Score aggregate, and an open reference model (ViTeX-14B) for video scene text editing.">
-  <meta name="keywords" content="video scene text editing, video editing, scene text, benchmark, NeurIPS 2026, dataset, leaderboard, ViTeX-Bench, ViTeX-14B">
+  <meta name="description" content="A 387-clip paired dataset, a 13-metric three-axis evaluation protocol, and an open reference model (ViTeX-14B) for video scene text editing. Leaderboard sorted by TextScore = geomean(SeqAcc, CharAcc, TTS).">
+  <meta name="keywords" content="video scene text editing, video editing, scene text, benchmark, NeurIPS 2026, dataset, leaderboard, TextScore, ViTeX-Bench, ViTeX-14B">
   <meta name="author" content="Anonymous">
   <meta name="robots" content="index, follow">
   <meta name="language" content="English">
@@ -14,14 +14,14 @@
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="ViTeX-Bench">
   <meta property="og:title" content="ViTeX-Bench: Benchmarking High Fidelity Video Scene Text Editing">
-  <meta property="og:description" content="A 387-clip paired dataset, a 13-metric three-axis evaluation protocol with the ViTeX-Score aggregate, and an open reference model (ViTeX-14B) for video scene text editing.">
+  <meta property="og:description" content="A 387-clip paired dataset, a 13-metric three-axis evaluation protocol, and an open reference model (ViTeX-14B) for video scene text editing. Leaderboard sorted by TextScore = geomean(SeqAcc, CharAcc, TTS).">
   <meta property="og:url" content="https://vitex-bench.github.io/">
   <meta property="og:image" content="https://vitex-bench.github.io/static/images/vitex_icon.png">
   <meta property="og:image:alt" content="ViTeX-Bench">
 
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="ViTeX-Bench: Benchmarking High Fidelity Video Scene Text Editing">
-  <meta name="twitter:description" content="A 387-clip paired dataset, a 13-metric three-axis evaluation protocol with the ViTeX-Score aggregate, and an open reference model (ViTeX-14B) for video scene text editing.">
+  <meta name="twitter:description" content="A 387-clip paired dataset, a 13-metric three-axis evaluation protocol, and an open reference model (ViTeX-14B) for video scene text editing. Leaderboard sorted by TextScore = geomean(SeqAcc, CharAcc, TTS).">
   <meta name="twitter:image" content="https://vitex-bench.github.io/static/images/vitex_icon.png">
 
   <meta name="citation_title" content="ViTeX-Bench: Benchmarking High Fidelity Video Scene Text Editing">
@@ -81,38 +81,96 @@
 
     .vt-tight { padding-top: 2.5rem; padding-bottom: 2.5rem; }
 
-    /* ---------- Showcase carousel ---------- */
-    /* Wide section that breaks out of the desktop container so the grid videos
-       are big enough to read every cell. */
-    .vt-showcase-section {
-      max-width: 1400px; margin: 0 auto;
+    /* ---------- Showcase grid (4x3, one cell per method) ---------- */
+    /* Wide section so the 4-column grid stays readable on desktop. */
+    .vt-showcase-section { max-width: 1400px; margin: 0 auto; }
+
+    .vt-showcase-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-auto-rows: auto;
+      gap: 0.85rem;
+      margin-top: 1.5rem;
     }
-    .vt-showcase-frame {
+    @media (max-width: 900px) {
+      .vt-showcase-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 540px) {
+      .vt-showcase-grid { grid-template-columns: 1fr; }
+    }
+
+    .vt-cell {
+      position: relative;
       background: #fff;
       border: 1px solid var(--vt-line);
-      border-radius: 16px;
-      padding: 1rem 1rem 0.75rem;
-      box-shadow: 0 2px 6px var(--vt-ring);
+      border-radius: 12px;
+      box-shadow: 0 1px 2px var(--vt-ring);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
     }
-    .vt-showcase-frame video {
-      width: 100%; height: auto; border-radius: 10px; background: #000;
-      display: block; max-width: 100%;
+    .vt-cell video {
+      width: 100%; aspect-ratio: 16/9; display: block; background: #000;
+      object-fit: cover;
     }
-    .vt-showcase-meta {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 0.65rem 0.4rem 0.25rem; gap: 1rem;
-      font-size: 0.92rem; color: var(--vt-slate);
+    .vt-cell-label {
+      padding: 0.4rem 0.6rem 0.45rem;
+      display: flex; align-items: center; justify-content: space-between;
+      font-size: 0.78rem; color: var(--vt-slate);
+      background: var(--vt-pale);
+      border-top: 1px solid var(--vt-line);
     }
-    .vt-showcase-meta .vt-edit {
+    .vt-cell-label .vt-name {
+      font-weight: 600; color: var(--vt-navy);
+    }
+    .vt-cell-label .vt-fam {
+      display: inline-block; padding: 1px 6px;
+      font-size: 0.66rem; font-weight: 500; border-radius: 999px;
+      letter-spacing: 0.02em;
+    }
+    .vt-cell-label .vt-fam.A    { background: #cff5d1; color: #0a3514; }
+    .vt-cell-label .vt-fam.B    { background: #fff5cc; color: #7e3503; }
+    .vt-cell-label .vt-fam.C    { background: #ffd1d8; color: #7d122c; }
+    .vt-cell-label .vt-fam.D    { background: #dadcff; color: #322a87; }
+    .vt-cell-label .vt-fam.Ours { background: #0a2540; color: #f6f9fc; }
+    .vt-cell-label .vt-fam.Src  { background: #ffd1d8; color: #7d122c; }
+    .vt-cell-label .vt-fam.Sane { background: #e3e8ee; color: var(--vt-navy); }
+
+    /* Bottom-right text panel: shows source -> target replacement */
+    .vt-cell-text {
+      aspect-ratio: 16 / 9;
+      background: linear-gradient(135deg, #0a2540 0%, #1e3a5f 100%);
+      color: #fff;
+      display: grid;
+      place-items: center;
+      padding: 1rem;
+    }
+    .vt-cell-text .vt-replace {
+      display: flex; flex-direction: column; align-items: center;
+      gap: 0.45rem; width: 100%;
+    }
+    .vt-cell-text .vt-tag {
+      font-size: 0.62rem; letter-spacing: 0.16em; text-transform: uppercase;
+      color: #a0b3cf; font-weight: 500;
+    }
+    .vt-cell-text .vt-word {
       font-family: ui-monospace, "SF Mono", Menlo, monospace;
-      color: var(--vt-navy); font-weight: 600;
+      font-weight: 700; font-size: clamp(1.2rem, 2.4vw, 1.85rem);
+      letter-spacing: 0.04em;
+      padding: 0.3rem 0.85rem; border-radius: 8px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.14);
     }
-    .vt-showcase-meta .vt-arrow {
-      color: var(--vt-mute); margin: 0 0.35rem;
+    .vt-cell-text .vt-word.tgt {
+      background: rgba(99,91,255,0.22);
+      border-color: rgba(180,170,255,0.45);
     }
-    .vt-showcase-meta .vt-clip-id {
-      color: var(--vt-mute); font-size: 0.78rem;
-      font-family: ui-monospace, monospace;
+    .vt-cell-text .vt-arrow {
+      font-size: 1.1rem; color: #a0b3cf; line-height: 1;
+    }
+    .vt-cell-text .vt-clip {
+      font-family: ui-monospace, monospace; font-size: 0.66rem;
+      color: #5d7497; margin-top: 0.55rem;
     }
 
     /* ---------- Contribution cards ---------- */
@@ -357,95 +415,125 @@
   </section>
 
 
-<!-- Showcase carousel: source + mask overlay alongside all baselines and our methods -->
+<!-- Teaser figure (paper Fig. 1) -->
+<section class="hero teaser vt-tight">
+  <div class="container is-max-desktop">
+    <div class="vt-figure">
+      <img src="static/images/teaser.png" alt="ViTeX-Bench teaser: source-target task and three-axis evaluation" loading="lazy"/>
+      <div class="vt-figcap">
+        <b>The video scene text editing task and ViTeX-Bench protocol.</b>
+        Given a source video <i>V</i>, a text-region mask <i>M</i>, and a source–target string pair
+        (<i>s</i><sub>src</sub>, <i>s</i><sub>tgt</sub>), the task is to edit <i>only</i> the masked
+        scene text. Representative outputs from four method families exhibit distinct failure modes,
+        and ViTeX-Bench scores each edit along three axes: text correctness, visual quality, and edit locality.
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End teaser -->
+
+
+<!-- Showcase 4x3 grid: 11 method outputs on a single scene + a text-replacement panel -->
 <section class="hero teaser vt-tight">
   <div class="vt-showcase-section" style="padding: 0 1.5rem;">
-    <h2 class="title is-3 has-text-centered">Side-by-side: source vs. all eight baselines and our two models</h2>
+    <h2 class="title is-3 has-text-centered">All eleven methods, one scene</h2>
     <p class="subtitle has-text-centered" style="color:#697386;">
-      Each scene shows the source clip with a semi-transparent text-region mask overlay,
-      next to every baseline output and ViTeX-14B / ViTeX-14B (Corp). Use the carousel
-      arrows to switch scenes.
+      Source clip with a translucent text-region mask overlay (top-left), next to every baseline output
+      and ViTeX-14B / ViTeX-14B&nbsp;(Composite). All cells play in sync. The bottom-right panel shows the
+      requested character-level replacement.
     </p>
 
-    <div id="showcase-carousel" class="carousel results-carousel" style="margin-top: 1.5rem;">
-      <div class="item">
-        <div class="vt-showcase-frame">
-          <video controls muted loop playsinline preload="metadata">
-            <source src="static/videos/showcase/0004547_00000.mp4" type="video/mp4">
-          </video>
-          <div class="vt-showcase-meta">
-            <div><span class="vt-edit">First</span><span class="vt-arrow">→</span><span class="vt-edit">Last</span></div>
-            <div class="vt-clip-id">0004547_00000</div>
-          </div>
-        </div>
+    <div class="vt-showcase-grid">
+      <!-- Row 1 -->
+      <div class="vt-cell">
+        <video autoplay muted loop playsinline preload="metadata">
+          <source src="static/videos/showcase_grid/source_mask.mp4" type="video/mp4">
+        </video>
+        <div class="vt-cell-label"><span class="vt-name">Source + mask</span><span class="vt-fam Src">src</span></div>
       </div>
-      <div class="item">
-        <div class="vt-showcase-frame">
-          <video controls muted loop playsinline preload="metadata">
-            <source src="static/videos/showcase/0006286_00000.mp4" type="video/mp4">
-          </video>
-          <div class="vt-showcase-meta">
-            <div><span class="vt-edit">COLLIER</span><span class="vt-arrow">→</span><span class="vt-edit">WASHING</span></div>
-            <div class="vt-clip-id">0006286_00000</div>
-          </div>
-        </div>
+      <div class="vt-cell">
+        <video autoplay muted loop playsinline preload="metadata">
+          <source src="static/videos/showcase_grid/vitex_14b.mp4" type="video/mp4">
+        </video>
+        <div class="vt-cell-label"><span class="vt-name">ViTeX-14B</span><span class="vt-fam Ours">ours</span></div>
       </div>
-      <div class="item">
-        <div class="vt-showcase-frame">
-          <video controls muted loop playsinline preload="metadata">
-            <source src="static/videos/showcase/0005273_00000.mp4" type="video/mp4">
-          </video>
-          <div class="vt-showcase-meta">
-            <div><span class="vt-edit">HOURS</span><span class="vt-arrow">→</span><span class="vt-edit">WEEKS</span></div>
-            <div class="vt-clip-id">0005273_00000</div>
-          </div>
-        </div>
+      <div class="vt-cell">
+        <video autoplay muted loop playsinline preload="metadata">
+          <source src="static/videos/showcase_grid/vitex_composite.mp4" type="video/mp4">
+        </video>
+        <div class="vt-cell-label"><span class="vt-name">ViTeX-14B (Composite)</span><span class="vt-fam Ours">ours</span></div>
       </div>
-      <div class="item">
-        <div class="vt-showcase-frame">
-          <video controls muted loop playsinline preload="metadata">
-            <source src="static/videos/showcase/0005186_00000.mp4" type="video/mp4">
-          </video>
-          <div class="vt-showcase-meta">
-            <div><span class="vt-edit">ONLY</span><span class="vt-arrow">→</span><span class="vt-edit">STOP</span></div>
-            <div class="vt-clip-id">0005186_00000</div>
-          </div>
-        </div>
+      <div class="vt-cell">
+        <video autoplay muted loop playsinline preload="metadata">
+          <source src="static/videos/showcase_grid/anytext2.mp4" type="video/mp4">
+        </video>
+        <div class="vt-cell-label"><span class="vt-name">AnyText2</span><span class="vt-fam A">A</span></div>
       </div>
-      <div class="item">
-        <div class="vt-showcase-frame">
-          <video controls muted loop playsinline preload="metadata">
-            <source src="static/videos/showcase/0001942_00000.mp4" type="video/mp4">
-          </video>
-          <div class="vt-showcase-meta">
-            <div><span class="vt-edit">BULB?</span><span class="vt-arrow">→</span><span class="vt-edit">LAMP?</span></div>
-            <div class="vt-clip-id">0001942_00000</div>
-          </div>
-        </div>
+
+      <!-- Row 2 -->
+      <div class="vt-cell">
+        <video autoplay muted loop playsinline preload="metadata">
+          <source src="static/videos/showcase_grid/textctrl.mp4" type="video/mp4">
+        </video>
+        <div class="vt-cell-label"><span class="vt-name">TextCtrl</span><span class="vt-fam A">A</span></div>
       </div>
-      <div class="item">
-        <div class="vt-showcase-frame">
-          <video controls muted loop playsinline preload="metadata">
-            <source src="static/videos/showcase/0001716_00000.mp4" type="video/mp4">
-          </video>
-          <div class="vt-showcase-meta">
-            <div><span class="vt-edit">GO</span><span class="vt-arrow">→</span><span class="vt-edit">BE</span></div>
-            <div class="vt-clip-id">0001716_00000</div>
-          </div>
-        </div>
+      <div class="vt-cell">
+        <video autoplay muted loop playsinline preload="metadata">
+          <source src="static/videos/showcase_grid/fluxtext.mp4" type="video/mp4">
+        </video>
+        <div class="vt-cell-label"><span class="vt-name">FLUX-Text</span><span class="vt-fam A">A</span></div>
       </div>
-      <div class="item">
-        <div class="vt-showcase-frame">
-          <video controls muted loop playsinline preload="metadata">
-            <source src="static/videos/showcase/0000229_00000.mp4" type="video/mp4">
-          </video>
-          <div class="vt-showcase-meta">
-            <div><span class="vt-edit">SOC</span><span class="vt-arrow">→</span><span class="vt-edit">COC</span></div>
-            <div class="vt-clip-id">0000229_00000</div>
-          </div>
+      <div class="vt-cell">
+        <video autoplay muted loop playsinline preload="metadata">
+          <source src="static/videos/showcase_grid/rs_ste.mp4" type="video/mp4">
+        </video>
+        <div class="vt-cell-label"><span class="vt-name">RS-STE</span><span class="vt-fam A">A</span></div>
+      </div>
+      <div class="vt-cell">
+        <video autoplay muted loop playsinline preload="metadata">
+          <source src="static/videos/showcase_grid/textctrl_anyv2v.mp4" type="video/mp4">
+        </video>
+        <div class="vt-cell-label"><span class="vt-name">TextCtrl + AnyV2V</span><span class="vt-fam B">B</span></div>
+      </div>
+
+      <!-- Row 3 -->
+      <div class="vt-cell">
+        <video autoplay muted loop playsinline preload="metadata">
+          <source src="static/videos/showcase_grid/wan_vace.mp4" type="video/mp4">
+        </video>
+        <div class="vt-cell-label"><span class="vt-name">Wan2.1-VACE-14B</span><span class="vt-fam C">C</span></div>
+      </div>
+      <div class="vt-cell">
+        <video autoplay muted loop playsinline preload="metadata">
+          <source src="static/videos/showcase_grid/videopainter.mp4" type="video/mp4">
+        </video>
+        <div class="vt-cell-label"><span class="vt-name">VideoPainter</span><span class="vt-fam C">C</span></div>
+      </div>
+      <div class="vt-cell">
+        <video autoplay muted loop playsinline preload="metadata">
+          <source src="static/videos/showcase_grid/kling.mp4" type="video/mp4">
+        </video>
+        <div class="vt-cell-label"><span class="vt-name">Kling Video 3.0 Omni</span><span class="vt-fam D">D</span></div>
+      </div>
+
+      <!-- Bottom-right cell: text replacement panel -->
+      <div class="vt-cell vt-cell-text" aria-label="Text replacement: COLLIER to WASHING">
+        <div class="vt-replace">
+          <div class="vt-tag">Source text</div>
+          <div class="vt-word">COLLIER</div>
+          <div class="vt-arrow">↓</div>
+          <div class="vt-tag">Target text</div>
+          <div class="vt-word tgt">WASHING</div>
+          <div class="vt-clip">clip 0006286_00000</div>
         </div>
       </div>
     </div>
+
+    <p style="margin-top: 1rem; color: var(--vt-mute); font-size: 0.83rem; text-align: center;">
+      Family A: per-frame image editor &nbsp;·&nbsp; B: first-frame edit + I2V propagation
+      &nbsp;·&nbsp; C: mask-conditioned video inpainting &nbsp;·&nbsp; D: instruction-guided V2V.
+      The Identity (sanity) baseline simply copies the source and is omitted from the grid.
+    </p>
   </div>
 </section>
 <!-- End showcase -->
@@ -459,22 +547,25 @@
         <h2 class="title is-3">Abstract</h2>
         <div class="content has-text-justified">
           <p>
-            Video scene text editing aims to replace text appearing on signs, whiteboards, jerseys, screens, product labels,
-            and other scene surfaces in a video while preserving the surrounding content, motion, lighting, and camera dynamics.
-            Although scene text editing has been extensively studied for still images, its video counterpart remains underdeveloped:
-            existing resources lack paired real-video edits, current evaluation protocols do not measure character-level correctness over time,
-            and no open reference model exists for systematic comparison.
-            We introduce <b>ViTeX-Bench</b>, a benchmark suite for faithful and temporally consistent video scene text editing.
-            Specifically, we build <b>ViTeX-Dataset</b>, which contains 387 curated real-world 720p video clips,
-            sourced from Panda-70M and InternVid. We construct it through a semi-automatic pipeline that localizes scene text,
-            creates source–target text pairs, removes the original text, and synthesizes temporally consistent edits.
-            We then establish <b>ViTeX-Bench</b>, which evaluates video scene text editing models along three axes:
-            text correctness, visual quality, and edit locality, using thirteen complementary metrics aggregated into a single
-            <b>ViTeX-Score</b>.
-            To demonstrate the effectiveness of our paired dataset, we further introduce <b>ViTeX-14B</b>, an open model based on Wan2.1,
-            with a glyph-video conditioning pathway that supplies temporally aligned target-text structure to the video-editing backbone.
-            Together, ViTeX-Dataset, ViTeX-Bench, and ViTeX-14B provide a common foundation for training, evaluating,
-            and diagnosing video scene text editing systems.
+            Video scene text editing replaces the text rendered on scene surfaces in a video while preserving
+            the surrounding content, motion, lighting, and camera dynamics. Typical cases include text on
+            storefront signs, whiteboards, jerseys, screens, and product labels. Although scene text editing
+            has been extensively studied for still images, its video counterpart remains underdeveloped.
+            Existing resources lack paired real-video edits, current evaluation protocols do not measure
+            character-level correctness over time, and no open reference model exists for systematic comparison.
+            We introduce <b>ViTeX</b>, a coordinated release for faithful and temporally consistent video scene
+            text editing, comprising three components.
+            <b>ViTeX-Dataset</b> provides 387 real-world 720p clips sourced from Panda-70M and InternVid,
+            built through a semi-automatic pipeline that localizes scene text, creates source–target string
+            pairs, removes the source text, and synthesizes temporally consistent edits.
+            <b>ViTeX-Bench</b> evaluates existing methods along three axes — text correctness, visual quality,
+            and edit locality — through a thirteen-metric protocol, with a cross-family reference grid of
+            eight baselines spanning four method families.
+            <b>ViTeX-14B</b> is an open reference editor that augments Wan2.1-VACE-14B with a glyph-video
+            conditioning pathway, simultaneously enforcing target-character identity and source-aligned motion;
+            none of the four prior families exposes this combination natively.
+            Our cross-family analysis reveals complementary failure modes that single-score benchmarks would
+            average away, with no method leading on all three axes simultaneously.
           </p>
         </div>
       </div>
@@ -505,9 +596,9 @@
         <div class="vt-icon">🎯</div>
         <h4>ViTeX-Bench</h4>
         <p>
-          Three orthogonal axes (text correctness, visual quality, edit locality)
-          unfolded into thirteen complementary metrics, aggregated by a non-substitutive
-          geometric mean into the single ViTeX-Score.
+          Three orthogonal axes (text correctness, visual quality, edit locality) unfolded
+          into thirteen complementary metrics. The full vector is the unit of report; the
+          public leaderboard sorts on TextScore = ∛(SeqAcc · CharAcc · TTS) for ranking only.
         </p>
       </div>
       <div class="vt-card">
@@ -515,8 +606,8 @@
         <h4>ViTeX-14B</h4>
         <p>
           Open reference model extending Wan2.1-VACE-14B with a glyph-video conditioning
-          pathway. Trained on the 230-clip training split alone; tops the visual axis
-          on the leaderboard.
+          pathway. Trained on the 230-clip training split alone; the two reference variants
+          ViTeX-14B and ViTeX-14B (Composite) sit on the leaderboard alongside every baseline.
         </p>
       </div>
     </div>
@@ -563,7 +654,7 @@
   <div class="container is-max-desktop">
     <h2 class="title is-3 has-text-centered">Evaluation protocol</h2>
     <p class="subtitle has-text-centered" style="color:#697386;">
-      Three orthogonal axes, thirteen complementary metrics, one non-substitutive aggregate.
+      Three orthogonal axes, thirteen complementary metrics, the vector is the unit of report.
     </p>
 
     <svg class="vt-triangle" viewBox="0 0 640 540" xmlns="http://www.w3.org/2000/svg" style="margin-top: 1.5rem;">
@@ -572,42 +663,39 @@
       <line class="triangle-edge" x1="320" y1="100" x2="540" y2="450" />
       <line class="triangle-edge" x1="100" y1="450" x2="540" y2="450" />
 
-      <!-- Feed lines from corners to center -->
-      <line class="feed-line" x1="320" y1="158" x2="320" y2="305" />
-      <line class="feed-line" x1="160" y1="450" x2="285" y2="375" />
-      <line class="feed-line" x1="480" y1="450" x2="355" y2="375" />
-
       <!-- Top corner: Visual quality -->
-      <circle class="corner-circle" cx="320" cy="100" r="78" />
-      <text class="axis-name" x="320" y="92" font-size="16">Visual</text>
-      <text class="axis-name" x="320" y="114" font-size="16">quality</text>
+      <circle class="corner-circle" cx="320" cy="100" r="86" />
+      <text class="axis-name" x="320" y="86" font-size="16">Visual</text>
+      <text class="axis-name" x="320" y="108" font-size="16">quality</text>
+      <text class="metric" x="320" y="130">6 primitives · Flicker / Warp / MUSIQ</text>
 
-      <!-- Bottom-left corner: Text correctness -->
-      <circle class="corner-circle" cx="100" cy="450" r="78" />
-      <text class="axis-name" x="100" y="442" font-size="16">Text</text>
-      <text class="axis-name" x="100" y="464" font-size="16">correctness</text>
+      <!-- Bottom-left corner: Text correctness (highlighted as the sort-key axis) -->
+      <circle class="corner-circle" cx="100" cy="450" r="86"
+              style="fill: #0a2540; stroke: #0a2540;" />
+      <text class="axis-name" x="100" y="436" font-size="16" style="fill: #fff;">Text</text>
+      <text class="axis-name" x="100" y="458" font-size="16" style="fill: #fff;">correctness</text>
+      <text class="metric" x="100" y="480" style="fill: #a0b3cf;">SeqAcc · CharAcc · TTS</text>
+      <text class="metric" x="100" y="498" style="fill: #a0b3cf; font-weight:600;">→ TextScore (sort key)</text>
 
       <!-- Bottom-right corner: Edit locality -->
-      <circle class="corner-circle" cx="540" cy="450" r="78" />
-      <text class="axis-name" x="540" y="442" font-size="16">Edit</text>
-      <text class="axis-name" x="540" y="464" font-size="16">locality</text>
-
-      <!-- Center: ViTeX-Score -->
-      <circle class="center-circle" cx="320" cy="340" r="62" />
-      <text class="center-text" x="320" y="334" font-size="15">ViTeX-Score</text>
-      <text class="center-sub" x="320" y="356">geomean across</text>
-      <text class="center-sub" x="320" y="370">three axes</text>
+      <circle class="corner-circle" cx="540" cy="450" r="86" />
+      <text class="axis-name" x="540" y="436" font-size="16">Edit</text>
+      <text class="axis-name" x="540" y="458" font-size="16">locality</text>
+      <text class="metric" x="540" y="480">PSNR · SSIM · LPIPS · DreamSim</text>
     </svg>
 
     <div class="content" style="margin-top: 1.5rem;">
       <p style="color: var(--vt-slate); line-height: 1.7;">
-        <b style="color:var(--vt-navy);">Within each axis</b>, the constituent metrics are normalized to <code>[0, 1]</code>
-        through a frozen reference table and combined into one axis score by a weighted geometric mean —
-        within the visual axis the text-crop primitives count twice the full-frame primitives, since the
-        text region is the task focus, while correctness and locality weight all primitives equally.
-        <b style="color:var(--vt-navy);">Across axes</b>, ViTeX-Score is the unweighted geometric mean of the three axis scores.
-        The geometric mean is non-substitutive: any axis at zero collapses ViTeX-Score, so visual quality
-        cannot rescue a missing edit and a method that fails any single axis is dominated overall.
+        <b style="color:var(--vt-navy);">Each method is reported as a thirteen-metric vector</b> along three
+        orthogonal axes. No cross-axis aggregate is published, because no axis substitutes for another:
+        a method with the wrong characters is not redeemed by visual quality, and a method that re-renders
+        the entire scene is not redeemed by text accuracy. Two methods with similar overall numbers can
+        differ on which axis they fail.
+        <b style="color:var(--vt-navy);">For ranking purposes only</b>, the public leaderboard sorts on
+        <b>TextScore</b> = ∛(<code>SeqAcc</code> · <code>CharAcc</code> · <code>TTS</code>) — the geometric
+        mean of the three text-correctness primitives. SeqAcc = 0 collapses TextScore to zero, the intended
+        semantics for methods that never produce the requested target string. The remaining ten primitives
+        appear next to TextScore on every leaderboard row, so the full vector is always visible.
       </p>
     </div>
   </div>
@@ -615,70 +703,23 @@
 <!-- End benchmark protocol -->
 
 
-<!-- Headline ranking: Table 1 (axis aggregates + ViTeX-Score) -->
+<!-- Leaderboard table: full thirteen-metric vector + TextScore sort key -->
 <section class="section hero is-light">
   <div class="container is-max-desktop">
-    <h2 class="title is-3 has-text-centered">Headline ranking</h2>
+    <h2 class="title is-3 has-text-centered">Public leaderboard (157-clip frozen test split)</h2>
     <p class="subtitle has-text-centered" style="color:#697386;">
-      ViTeX-Score and per-axis aggregates on the 157-clip frozen evaluation split.
+      Sorted by <b>TextScore</b> = ∛(SeqAcc · CharAcc · TTS). The full thirteen-metric vector is shown alongside —
+      the vector is the unit of report; TextScore is the sort key only.
     </p>
 
-    <div class="vt-lb-wrap" style="margin-top: 1.5rem; overflow-x: auto;">
-      <table class="vt-lb" id="headline-table">
+    <div class="vt-lb-wrap vt-lb-wide" style="margin-top: 1.5rem; overflow-x: auto;">
+      <table class="vt-lb vt-lb-wide" id="leaderboard-table">
         <thead>
           <tr>
             <th></th>
             <th class="left">Method</th>
-            <th class="left">Family</th>
-            <th>Correctness ↑</th>
-            <th>Visual ↑</th>
-            <th>Locality ↑</th>
-            <th>ViTeX-Score ↑</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td class="vt-rank">1</td><td class="left method">ViTeX-14B (Corp)</td><td class="left"><span class="vt-fam O">ours</span></td><td class="axis">0.541</td><td class="axis">0.635</td><td class="axis">0.954</td><td class="score">0.689</td></tr>
-          <tr><td class="vt-rank">2</td><td class="left method">TextCtrl</td><td class="left"><span class="vt-fam A">A</span></td><td class="axis">0.562</td><td class="axis">0.613</td><td class="axis">0.939</td><td class="score">0.686</td></tr>
-          <tr><td class="vt-rank">3</td><td class="left method">ViTeX-14B</td><td class="left"><span class="vt-fam O">ours</span></td><td class="axis">0.534</td><td class="axis">0.647</td><td class="axis">0.794</td><td class="score">0.650</td></tr>
-          <tr><td class="vt-rank">4</td><td class="left method">RS-STE</td><td class="left"><span class="vt-fam A">A</span></td><td class="axis">0.491</td><td class="axis">0.594</td><td class="axis">0.901</td><td class="score">0.641</td></tr>
-          <tr><td class="vt-rank">5</td><td class="left method">VideoPainter<sup>†</sup></td><td class="left"><span class="vt-fam C">C</span></td><td class="axis">0.515</td><td class="axis">0.608</td><td class="axis">0.773</td><td class="score">0.623</td></tr>
-          <tr><td class="vt-rank">6</td><td class="left method">AnyText2</td><td class="left"><span class="vt-fam A">A</span></td><td class="axis">0.407</td><td class="axis">0.580</td><td class="axis">0.699</td><td class="score">0.549</td></tr>
-          <tr><td class="vt-rank">7</td><td class="left method">FLUX-Text</td><td class="left"><span class="vt-fam A">A</span></td><td class="axis">0.502</td><td class="axis">0.140</td><td class="axis">0.851</td><td class="score">0.392</td></tr>
-          <tr><td class="vt-rank">8</td><td class="left method">TextCtrl + AnyV2V</td><td class="left"><span class="vt-fam B">B</span></td><td class="axis">0.165</td><td class="axis">0.437</td><td class="axis">0.512</td><td class="score">0.333</td></tr>
-          <tr><td class="vt-rank">9</td><td class="left method">Wan2.1-VACE-14B</td><td class="left"><span class="vt-fam C">C</span></td><td class="axis">0.000</td><td class="axis">0.631</td><td class="axis">0.889</td><td class="score">0.000</td></tr>
-          <tr><td class="vt-rank">10</td><td class="left method">Kling Video 3.0 Omni</td><td class="left"><span class="vt-fam D">D</span></td><td class="axis">0.000</td><td class="axis">0.569</td><td class="axis">0.583</td><td class="score">0.000</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p style="margin-top: 1rem; color: #697386; font-size: 0.85rem;">
-      Family A: per-frame image editor. B: first-frame edit + I2V propagation. C: mask-conditioned video inpainting. D: instruction-guided V2V.
-      <sup>†</sup>VideoPainter Flicker<sub>f/c</sub> and Warp<sub>f/c</sub> are excluded from per-metric ranking
-      (CogVideoX-1.0 sub-protocol grid causes temporal-interpolation artifacts).
-    </p>
-    <div style="text-align: center; margin-top: 1.5rem;">
-      <a class="vt-cta" href="https://huggingface.co/spaces/ViTeX-Bench/ViTeX-Bench-Leaderboard" target="_blank">
-        🏆 View live leaderboard &amp; submit
-      </a>
-    </div>
-  </div>
-</section>
-<!-- End Table 1 -->
-
-
-<!-- Per-metric breakdown: Table 2 (13 metrics) -->
-<section class="section vt-tight">
-  <div class="container is-max-desktop">
-    <h2 class="title is-3 has-text-centered">Per-metric breakdown</h2>
-    <p class="subtitle has-text-centered" style="color:#697386;">
-      Test-split means on the 13 primitives that feed ViTeX-Score.
-    </p>
-
-    <div class="vt-lb-wrap vt-lb-wide" style="margin-top: 1.5rem; overflow-x: auto;">
-      <table class="vt-lb vt-lb-wide" id="breakdown-table">
-        <thead>
-          <tr>
-            <th class="left">Method</th>
             <th class="left">Fam</th>
+            <th>TextScore ↑</th>
             <th>SeqAcc ↑</th>
             <th>CharAcc ↑</th>
             <th>TTS ↑</th>
@@ -695,28 +736,37 @@
           </tr>
         </thead>
         <tbody>
-          <tr><td class="left method"><b>ViTeX-14B (Corp)</b></td><td class="left"><span class="vt-fam O">ours</span></td><td>0.345</td><td>0.689</td><td>0.666</td><td>3.73</td><td>3.83</td><td>1.51</td><td>1.56</td><td>70.27</td><td>44.94</td><td>42.95</td><td>0.992</td><td>0.006</td><td>0.002</td></tr>
-          <tr><td class="left method">TextCtrl</td><td class="left"><span class="vt-fam A">A</span></td><td>0.475</td><td>0.733</td><td>0.511</td><td>3.80</td><td>4.29</td><td>1.59</td><td>2.09</td><td>70.32</td><td>42.77</td><td>41.14</td><td>0.994</td><td>0.008</td><td>0.004</td></tr>
-          <tr><td class="left method"><b>ViTeX-14B</b></td><td class="left"><span class="vt-fam O">ours</span></td><td>0.341</td><td>0.688</td><td>0.648</td><td>3.27</td><td>3.42</td><td>1.55</td><td>1.53</td><td>69.64</td><td>43.53</td><td>29.08</td><td>0.951</td><td>0.060</td><td>0.024</td></tr>
-          <tr><td class="left method">RS-STE</td><td class="left"><span class="vt-fam A">A</span></td><td>0.354</td><td>0.626</td><td>0.534</td><td>3.73</td><td>3.66</td><td>1.61</td><td>1.81</td><td>69.57</td><td>34.26</td><td>37.00</td><td>0.983</td><td>0.024</td><td>0.007</td></tr>
-          <tr><td class="left method">VideoPainter<sup>†</sup></td><td class="left"><span class="vt-fam C">C</span></td><td>0.365</td><td>0.619</td><td>0.606</td><td>2.38<sup>†</sup></td><td>2.62<sup>†</sup></td><td>2.93<sup>†</sup></td><td>3.35<sup>†</sup></td><td>67.16</td><td>40.59</td><td>28.56</td><td>0.915</td><td>0.104</td><td>0.024</td></tr>
-          <tr><td class="left method">AnyText2</td><td class="left"><span class="vt-fam A">A</span></td><td>0.280</td><td>0.633</td><td>0.382</td><td>3.34</td><td>4.95</td><td>2.04</td><td>3.95</td><td>66.68</td><td>41.65</td><td>25.56</td><td>0.905</td><td>0.092</td><td>0.043</td></tr>
-          <tr><td class="left method">FLUX-Text</td><td class="left"><span class="vt-fam A">A</span></td><td>0.528</td><td>0.737</td><td>0.326</td><td>5.11</td><td>14.81</td><td>3.03</td><td>13.01</td><td>70.26</td><td>43.85</td><td>31.49</td><td>0.975</td><td>0.029</td><td>0.012</td></tr>
-          <tr><td class="left method">TextCtrl + AnyV2V</td><td class="left"><span class="vt-fam B">B</span></td><td>0.057</td><td>0.308</td><td>0.257</td><td>4.98</td><td>4.98</td><td>4.11</td><td>3.97</td><td>69.41</td><td>33.85</td><td>21.08</td><td>0.785</td><td>0.225</td><td>0.073</td></tr>
-          <tr><td class="left method">Wan2.1-VACE-14B</td><td class="left"><span class="vt-fam C">C</span></td><td class="num0">0.000</td><td>0.298</td><td>0.690</td><td>3.78</td><td>3.84</td><td>1.69</td><td>1.56</td><td>70.54</td><td>45.26</td><td>35.21</td><td>0.976</td><td>0.022</td><td>0.007</td></tr>
-          <tr><td class="left method">Kling Video 3.0 Omni</td><td class="left"><span class="vt-fam D">D</span></td><td class="num0">0.000</td><td>0.208</td><td>0.641</td><td>4.25</td><td>4.08</td><td>3.12</td><td>2.90</td><td>72.23</td><td>47.75</td><td>21.18</td><td>0.843</td><td>0.176</td><td>0.061</td></tr>
-          <tr><td class="left method" style="color:#697386;font-style:italic;">Identity (sanity)</td><td class="left"><span class="vt-fam O">—</span></td><td class="num0">0.000</td><td>0.317</td><td>0.760</td><td>3.72</td><td>3.68</td><td>1.46</td><td>1.27</td><td>70.33</td><td>45.12</td><td>100.00</td><td>1.000</td><td class="num0">0.000</td><td class="num0">0.000</td></tr>
+          <tr><td class="vt-rank">1</td><td class="left method">TextCtrl</td><td class="left"><span class="vt-fam A">A</span></td><td class="score">0.5624</td><td>0.475</td><td>0.733</td><td>0.511</td><td>3.80</td><td>4.29</td><td>1.59</td><td>2.09</td><td>70.32</td><td>42.77</td><td>41.14</td><td>0.994</td><td>0.008</td><td>0.004</td></tr>
+          <tr><td class="vt-rank">2</td><td class="left method"><b>ViTeX-14B (Composite)</b></td><td class="left"><span class="vt-fam O">ours</span></td><td class="score">0.5410</td><td>0.345</td><td>0.689</td><td>0.666</td><td>3.73</td><td>3.83</td><td>1.51</td><td>1.56</td><td>70.27</td><td>44.94</td><td>42.95</td><td>0.992</td><td>0.006</td><td>0.002</td></tr>
+          <tr><td class="vt-rank">3</td><td class="left method"><b>ViTeX-14B</b></td><td class="left"><span class="vt-fam O">ours</span></td><td class="score">0.5338</td><td>0.341</td><td>0.688</td><td>0.648</td><td>3.27</td><td>3.42</td><td>1.55</td><td>1.53</td><td>69.64</td><td>43.53</td><td>29.08</td><td>0.951</td><td>0.060</td><td>0.024</td></tr>
+          <tr><td class="vt-rank">4</td><td class="left method">VideoPainter<sup>†</sup></td><td class="left"><span class="vt-fam C">C</span></td><td class="score">0.5151</td><td>0.365</td><td>0.619</td><td>0.606</td><td>2.38<sup>†</sup></td><td>2.62<sup>†</sup></td><td>2.93<sup>†</sup></td><td>3.35<sup>†</sup></td><td>67.16</td><td>40.59</td><td>28.56</td><td>0.915</td><td>0.104</td><td>0.024</td></tr>
+          <tr><td class="vt-rank">5</td><td class="left method">FLUX-Text</td><td class="left"><span class="vt-fam A">A</span></td><td class="score">0.5023</td><td>0.528</td><td>0.737</td><td>0.326</td><td>5.11</td><td>14.81</td><td>3.03</td><td>13.01</td><td>70.26</td><td>43.85</td><td>31.49</td><td>0.975</td><td>0.029</td><td>0.012</td></tr>
+          <tr><td class="vt-rank">6</td><td class="left method">RS-STE</td><td class="left"><span class="vt-fam A">A</span></td><td class="score">0.4908</td><td>0.354</td><td>0.626</td><td>0.534</td><td>3.73</td><td>3.66</td><td>1.61</td><td>1.81</td><td>69.57</td><td>34.26</td><td>37.00</td><td>0.983</td><td>0.024</td><td>0.007</td></tr>
+          <tr><td class="vt-rank">7</td><td class="left method">AnyText2</td><td class="left"><span class="vt-fam A">A</span></td><td class="score">0.4074</td><td>0.280</td><td>0.633</td><td>0.382</td><td>3.34</td><td>4.95</td><td>2.04</td><td>3.95</td><td>66.68</td><td>41.65</td><td>25.56</td><td>0.905</td><td>0.092</td><td>0.043</td></tr>
+          <tr><td class="vt-rank">8</td><td class="left method">TextCtrl + AnyV2V</td><td class="left"><span class="vt-fam B">B</span></td><td class="score">0.1649</td><td>0.057</td><td>0.308</td><td>0.257</td><td>4.98</td><td>4.98</td><td>4.11</td><td>3.97</td><td>69.41</td><td>33.85</td><td>21.08</td><td>0.785</td><td>0.225</td><td>0.073</td></tr>
+          <tr><td class="vt-rank">—</td><td class="left method" style="color:#697386;font-style:italic;">Identity (sanity)</td><td class="left"><span class="vt-fam O">—</span></td><td class="score num0">0.0000</td><td class="num0">0.000</td><td>0.317</td><td>0.760</td><td>3.72</td><td>3.68</td><td>1.46</td><td>1.27</td><td>70.33</td><td>45.12</td><td>100.00</td><td>1.000</td><td class="num0">0.000</td><td class="num0">0.000</td></tr>
+          <tr><td class="vt-rank">—</td><td class="left method">Wan2.1-VACE-14B</td><td class="left"><span class="vt-fam C">C</span></td><td class="score num0">0.0000</td><td class="num0">0.000</td><td>0.298</td><td>0.690</td><td>3.78</td><td>3.84</td><td>1.69</td><td>1.56</td><td>70.54</td><td>45.26</td><td>35.21</td><td>0.976</td><td>0.022</td><td>0.007</td></tr>
+          <tr><td class="vt-rank">—</td><td class="left method">Kling Video 3.0 Omni</td><td class="left"><span class="vt-fam D">D</span></td><td class="score num0">0.0000</td><td class="num0">0.000</td><td>0.208</td><td>0.641</td><td>4.25</td><td>4.08</td><td>3.12</td><td>2.90</td><td>72.23</td><td>47.75</td><td>21.18</td><td>0.843</td><td>0.176</td><td>0.061</td></tr>
         </tbody>
       </table>
     </div>
     <p style="margin-top: 0.85rem; color: #697386; font-size: 0.82rem;">
-      Subscripts <code>_f</code> / <code>_c</code> denote full-frame and text-crop scopes;
-      <code>Wp</code> = Warp, <code>DSim</code> = DreamSim.
-      <sup>†</sup>VideoPainter Flicker<sub>f/c</sub> and Warp<sub>f/c</sub> are protocol-adaptation artifacts.
+      The three rows at the bottom tie at TextScore = 0 because <code>SeqAcc = 0</code> collapses the geometric mean —
+      these methods never produce the requested target string. Their remaining ten primitives are still informative.
+      Family A: per-frame image editor &nbsp;·&nbsp; B: first-frame edit + I2V propagation &nbsp;·&nbsp;
+      C: mask-conditioned video inpainting &nbsp;·&nbsp; D: instruction-guided V2V.
+      Subscripts <code>_f</code> / <code>_c</code> = full-frame / text-crop scopes; <code>Wp</code> = Warp,
+      <code>DSim</code> = DreamSim. <sup>†</sup>VideoPainter Flicker<sub>f/c</sub> and Warp<sub>f/c</sub>
+      are protocol-adaptation artifacts (CogVideoX-1.0 sub-protocol grid).
     </p>
+    <div style="text-align: center; margin-top: 1.5rem;">
+      <a class="vt-cta" href="https://huggingface.co/spaces/ViTeX-Bench/ViTeX-Bench-Leaderboard" target="_blank">
+        🏆 Live leaderboard &amp; submit
+      </a>
+    </div>
   </div>
 </section>
-<!-- End Table 2 -->
+<!-- End leaderboard -->
 
 
 <!-- ViTeX-14B reference model architecture (Figure 3) -->
@@ -745,13 +795,40 @@
 <!-- End architecture -->
 
 
-<!-- Failure modes (4 panels matching paper §4.2 Breakdown results) -->
+<!-- Qualitative figure (paper Fig. 5) -->
+<section class="section vt-tight">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">Cross-family qualitative comparison</h2>
+    <p class="subtitle has-text-centered" style="color:#697386;">
+      Four diagnosed failures, one per method family. Each is invisible from a single metric column, and
+      each is recovered by a specific axis or pair of axes.
+    </p>
+    <div class="vt-figure" style="margin-top: 1.5rem;">
+      <img src="static/images/qualitative.png" alt="Four diagnosed baseline failures, one per family" loading="lazy"/>
+      <div class="vt-figcap">
+        <b>Four diagnosed failures.</b>
+        <b>(A)</b> Wan2.1-VACE-14B leaves the source text essentially unchanged (<code>SeqAcc = 0</code>
+        despite high TTS).
+        <b>(B)</b> FLUX-Text leads SeqAcc / CharAcc but its independently-edited frames drift in character
+        identity, producing low TTS and a <code>Flicker_crop</code> spike.
+        <b>(C)</b> Kling Video 3.0 Omni renders visually plausible glyphs but spells the wrong characters
+        (high MUSIQ, <code>SeqAcc = 0</code>).
+        <b>(D)</b> TextCtrl&nbsp;+&nbsp;AnyV2V starts from a clean per-frame edit; propagation drifts the
+        text and the unmasked scene together — the worst PSNR / SSIM / LPIPS in the table.
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End qualitative figure -->
+
+
+<!-- Failure modes (4 panels with side-by-side videos) -->
 <section class="section vt-tight">
   <div class="container is-max-desktop">
     <h2 class="title is-3 has-text-centered">Why three axes, jointly</h2>
     <p class="subtitle has-text-centered" style="color:#697386;">
-      Four representative baseline failures from §4.2 of the paper. Each is invisible from a single visual
-      impression or a single metric column, and each is recovered by a specific axis or pair of axes.
+      The same four cases as videos. Each case shows the source clip alongside the failing baseline so the
+      cross-axis failure mode is easy to verify.
     </p>
 
     <!-- (A) TTS alone is not an editing-quality indicator -->
@@ -904,12 +981,12 @@
 
 
 <script>
-/* ----- Live sync of leaderboard tables from HF Space ----------------------
+/* ----- Live sync of leaderboard table from HF Space ----------------------
  * Fetches submissions.jsonl from the ViTeX-Bench-Leaderboard Space, filters to
- * approved entries, sorts by ViTeX-Score descending, and replaces the static
- * <tbody> of both tables. Falls back silently if the fetch fails so the
- * pre-rendered baselines stay visible.
- * --------------------------------------------------------------------------*/
+ * approved entries, sorts by TextScore descending (ties by CharAcc then TTS),
+ * and replaces the <tbody> of #leaderboard-table. Falls back silently if the
+ * fetch fails so the pre-rendered baselines stay visible.
+ * -------------------------------------------------------------------------*/
 (function () {
   const LEADERBOARD_URL =
     'https://huggingface.co/spaces/ViTeX-Bench/ViTeX-Bench-Leaderboard/resolve/main/submissions.jsonl';
@@ -922,9 +999,11 @@
     if (/^D/i.test(s)) return 'D';
     return 'O';
   }
-  function familyShort(fam) {
+  function familyShort(fam, method) {
     const s = (fam || '').trim();
+    if (/identity/i.test(method || '')) return '—';
     if (!s || s === '—') return 'ours';
+    if (/^ref/i.test(s) || /vitex-14b/i.test(method || '')) return 'ours';
     const c = s.charAt(0);
     if ('ABCD'.indexOf(c) >= 0) return c;
     return 'ours';
@@ -938,40 +1017,54 @@
   }
   function isOurs(method, family) {
     return /vitex-14b/i.test(method || '') ||
-           /^our|ours/i.test(family || '');
+           /^ref|reference/i.test(family || '');
+  }
+  function isSanity(method) {
+    return /identity/i.test(method || '');
   }
   function methodCell(e) {
     const dagger = (e.method || '').toLowerCase().includes('videopainter') ? '<sup>†</sup>' : '';
-    const name = e.method + dagger;
+    const name = (e.method || '') + dagger;
+    if (isSanity(e.method)) {
+      return '<span style="color:#697386;font-style:italic;">' + name + '</span>';
+    }
     return isOurs(e.method, e.family) ? '<b>' + name + '</b>' : name;
   }
-
-  function buildHeadlineRows(entries) {
-    return entries.map(function (e, i) {
-      return '<tr>' +
-        '<td class="vt-rank">' + (i + 1) + '</td>' +
-        '<td class="left method">' + methodCell(e) + '</td>' +
-        '<td class="left"><span class="vt-fam ' + familyClass(e.family) + '">' + familyShort(e.family) + '</span></td>' +
-        '<td class="axis">' + fmt(e.correctness, 3) + '</td>' +
-        '<td class="axis">' + fmt(e.visual, 3) + '</td>' +
-        '<td class="axis">' + fmt(e.locality, 3) + '</td>' +
-        '<td class="score">' + fmt(e.vitex_score, 3) + '</td>' +
-      '</tr>';
-    }).join('');
+  function rankCell(e, rankActive) {
+    if (isSanity(e.method)) return '<td class="vt-rank">—</td>';
+    const ts = e.TextScore;
+    if (ts !== null && ts !== undefined && Number(ts) === 0) {
+      return '<td class="vt-rank">—</td>';
+    }
+    return '<td class="vt-rank">' + rankActive + '</td>';
+  }
+  function noteOnVideoPainter(e) {
+    return /videopainter/i.test(e.method || '');
   }
 
-  function buildBreakdownRows(entries) {
-    const rows = entries.map(function (e) {
+  function buildRows(entries) {
+    let activeRank = 0;
+    return entries.map(function (e) {
+      const ts = e.TextScore;
+      const tsZero = ts !== null && ts !== undefined && Number(ts) === 0;
+      const sanity = isSanity(e.method);
+      if (!sanity && !tsZero) activeRank += 1;
+      const rank = rankCell(e, activeRank);
+      const dagger = noteOnVideoPainter(e);
+      const dimSc = tsZero || sanity ? ' num0' : '';
+      const dim = (tsZero || sanity);
       return '<tr>' +
+        rank +
         '<td class="left method">' + methodCell(e) + '</td>' +
-        '<td class="left"><span class="vt-fam ' + familyClass(e.family) + '">' + familyShort(e.family) + '</span></td>' +
+        '<td class="left"><span class="vt-fam ' + familyClass(e.family) + '">' + familyShort(e.family, e.method) + '</span></td>' +
+        '<td class="score' + dimSc + '">' + fmt(ts, 4, dim) + '</td>' +
         '<td>' + fmt(e.SeqAcc, 3, true) + '</td>' +
         '<td>' + fmt(e.CharAcc, 3) + '</td>' +
         '<td>' + fmt(e.TTS, 3) + '</td>' +
-        '<td>' + fmt(e.Flicker_full, 2) + (e.note ? '<sup>†</sup>' : '') + '</td>' +
-        '<td>' + fmt(e.Flicker_crop, 2) + (e.note ? '<sup>†</sup>' : '') + '</td>' +
-        '<td>' + fmt(e.Warp_full, 2) + (e.note ? '<sup>†</sup>' : '') + '</td>' +
-        '<td>' + fmt(e.Warp_crop, 2) + (e.note ? '<sup>†</sup>' : '') + '</td>' +
+        '<td>' + fmt(e.Flicker_full, 2) + (dagger ? '<sup>†</sup>' : '') + '</td>' +
+        '<td>' + fmt(e.Flicker_crop, 2) + (dagger ? '<sup>†</sup>' : '') + '</td>' +
+        '<td>' + fmt(e.Warp_full, 2) + (dagger ? '<sup>†</sup>' : '') + '</td>' +
+        '<td>' + fmt(e.Warp_crop, 2) + (dagger ? '<sup>†</sup>' : '') + '</td>' +
         '<td>' + fmt(e.MUSIQ_full, 2) + '</td>' +
         '<td>' + fmt(e.MUSIQ_crop, 2) + '</td>' +
         '<td>' + fmt(e.PSNR_loc, 2) + '</td>' +
@@ -980,16 +1073,6 @@
         '<td>' + fmt(e.DreamSim_loc, 4, true) + '</td>' +
       '</tr>';
     }).join('');
-    /* Append a static Identity (sanity) row at the bottom for reference. */
-    rows.push('');
-    return rows + '<tr>' +
-      '<td class="left method" style="color:#697386;font-style:italic;">Identity (sanity)</td>' +
-      '<td class="left"><span class="vt-fam O">—</span></td>' +
-      '<td class="num0">0.000</td><td>0.317</td><td>0.760</td>' +
-      '<td>3.72</td><td>3.68</td><td>1.46</td><td>1.27</td>' +
-      '<td>70.33</td><td>45.12</td>' +
-      '<td>100.00</td><td>1.000</td><td class="num0">0.000</td><td class="num0">0.000</td>' +
-      '</tr>';
   }
 
   fetch(LEADERBOARD_URL, { cache: 'no-cache' })
@@ -1001,14 +1084,23 @@
       const entries = text.split('\n')
         .filter(function (l) { return l.trim().length > 0; })
         .map(function (l) { try { return JSON.parse(l); } catch (e) { return null; } })
-        .filter(function (e) { return e && e.status === 'approved' && typeof e.vitex_score === 'number'; });
+        .filter(function (e) { return e && e.status === 'approved' &&
+                                     typeof e.TextScore === 'number'; });
       if (entries.length === 0) return;
-      entries.sort(function (a, b) { return b.vitex_score - a.vitex_score; });
+      /* Sort: TextScore desc, then CharAcc desc (tiebreak), then TTS desc.
+         Identity (sanity) bumped to the bottom of the TextScore=0 group. */
+      entries.sort(function (a, b) {
+        const sa = a.TextScore, sb = b.TextScore;
+        if (sb !== sa) return sb - sa;
+        const sanA = /identity/i.test(a.method || '') ? 1 : 0;
+        const sanB = /identity/i.test(b.method || '') ? 1 : 0;
+        if (sanA !== sanB) return sanA - sanB;
+        if ((b.CharAcc || 0) !== (a.CharAcc || 0)) return (b.CharAcc || 0) - (a.CharAcc || 0);
+        return (b.TTS || 0) - (a.TTS || 0);
+      });
 
-      const headline = document.querySelector('#headline-table tbody');
-      if (headline) headline.innerHTML = buildHeadlineRows(entries);
-      const breakdown = document.querySelector('#breakdown-table tbody');
-      if (breakdown) breakdown.innerHTML = buildBreakdownRows(entries);
+      const tbody = document.querySelector('#leaderboard-table tbody');
+      if (tbody) tbody.innerHTML = buildRows(entries);
     })
     .catch(function (err) {
       /* Static rows already render the paper baselines; silently ignore. */
