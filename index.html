@@ -245,6 +245,13 @@
     }
     .vt-lb thead th.score.sorted-active { box-shadow: inset 0 -2px 0 #f6f9fc; }
 
+    /* Cell shading: above column mean (for the natural direction) gets a
+       light green tint; below mean gets a light pink tint. Applied by JS. */
+    .vt-lb td.cell-good { background: #ebf6ee !important; }
+    .vt-lb td.cell-bad  { background: #fbedef !important; }
+    .vt-lb tbody tr:hover td.cell-good { background: #ddeee2 !important; }
+    .vt-lb tbody tr:hover td.cell-bad  { background: #f4dde1 !important; }
+
     a.vt-cta, a.vt-cta:visited, a.vt-cta:link {
       display: inline-flex; align-items: center; gap: 0.5rem;
       background: var(--vt-navy); color: #ffffff !important;
@@ -331,22 +338,22 @@
                 <span class="link-block">
                   <a href="https://huggingface.co/datasets/ViTeX-Bench/ViTeX-Dataset" target="_blank"
                      class="external-link button is-normal is-rounded is-dark">
-                    <span class="icon">🤗</span>
+                    <span class="icon">📊</span>
                     <span>Dataset</span>
                   </a>
                 </span>
                 <span class="link-block">
                   <a href="https://huggingface.co/ViTeX-Bench/ViTeX-Bench" target="_blank"
                      class="external-link button is-normal is-rounded is-dark">
-                    <span class="icon">💻</span>
-                    <span>Code</span>
+                    <span class="icon">🧪</span>
+                    <span>Benchmark code</span>
                   </a>
                 </span>
                 <span class="link-block">
                   <a href="https://huggingface.co/ViTeX-Bench/ViTeX-14B" target="_blank"
                      class="external-link button is-normal is-rounded is-dark">
                     <span class="icon">🤖</span>
-                    <span>Model</span>
+                    <span>Model &amp; Inference code</span>
                   </a>
                 </span>
                 <span class="link-block">
@@ -552,7 +559,7 @@
       Three orthogonal axes, thirteen complementary metrics, the vector is the unit of report.
     </p>
 
-    <svg class="vt-triangle" viewBox="0 0 800 560" xmlns="http://www.w3.org/2000/svg"
+    <svg class="vt-triangle" viewBox="0 0 800 580" xmlns="http://www.w3.org/2000/svg"
          preserveAspectRatio="xMidYMid meet" style="margin-top: 1.5rem;">
       <!-- Triangle edges (corner-to-corner, dashed). Inset from the viewBox so
            the corner circles never get clipped at narrow widths. -->
@@ -671,7 +678,7 @@
       Wan2.1-VACE-14B extended with a glyph-video conditioning pathway, fine-tuned on the 230-clip training split.
     </p>
 
-    <div class="vt-figure" style="margin-top: 1.5rem;">
+    <div class="vt-figure" style="margin: 1.5rem auto 0; max-width: 760px;">
       <img src="static/images/arch.png" alt="ViTeX-14B architecture" loading="lazy"/>
       <div class="vt-figcap">
         <b>Architecture.</b> Three streams enter the model: <b>(i)</b> the target text <i>s</i><sub>tgt</sub>
@@ -970,6 +977,9 @@
 
       const tbody = document.querySelector('#leaderboard-table tbody');
       if (tbody) tbody.innerHTML = buildRows(entries);
+      if (typeof window.__vitexRefreshShading === 'function') {
+        window.__vitexRefreshShading();
+      }
     })
     .catch(function (err) {
       /* Static rows already render the paper baselines; silently ignore. */
@@ -977,14 +987,14 @@
     });
 })();
 
-/* ----- Click-to-sort on the leaderboard table -------------------------- *
- * Click any header cell to re-sort the rows by that column. Defaults to
- * the natural direction implied by the up / down arrow in the header
- * label (↑ -> sort descending, ↓ -> sort ascending). Re-clicking the same
- * header toggles direction. The first (#) column shows fresh ranks 1..N
- * after every sort.
+/* ----- Leaderboard: click-to-sort + above/below-mean shading ----------- *
+ * applyMeanShading() tints each numeric cell light green or light pink
+ * depending on whether it beats the column mean (in the natural higher /
+ * lower-better direction implied by the ↑ / ↓ arrow on the header). The
+ * sort handler re-sorts on header click and re-applies ranks afterward.
+ * Both run after live-sync replaces tbody innerHTML.
  * ----------------------------------------------------------------------*/
-(function attachLeaderboardSort() {
+(function () {
   const table = document.querySelector('#leaderboard-table');
   if (!table) return;
   const tbody = table.querySelector('tbody');
@@ -992,13 +1002,47 @@
 
   function cellNumber(cell) {
     if (!cell) return null;
-    const txt = cell.textContent.replace(/[†\s]/g, '');
+    const txt = (cell.textContent || '').replace(/[†\s]/g, '');
     if (txt === '' || txt === '—') return null;
     const n = Number(txt);
     return isNaN(n) ? null : n;
   }
   function cellText(cell) {
     return (cell && cell.textContent || '').replace(/\s+/g, ' ').trim();
+  }
+  function dirFor(th) {
+    const t = th.textContent || '';
+    if (t.indexOf('↑') >= 0) return 'up';
+    if (t.indexOf('↓') >= 0) return 'down';
+    return null;
+  }
+
+  function applyMeanShading() {
+    const rows = Array.from(tbody.querySelectorAll('tr'));
+    rows.forEach(r => Array.from(r.cells).forEach(c => {
+      c.classList.remove('cell-good', 'cell-bad');
+    }));
+    headers.forEach((th, col) => {
+      const dir = dirFor(th);
+      if (!dir) return;
+      const values = [];
+      rows.forEach(r => {
+        const cell = r.children[col];
+        if (!cell || cell.classList.contains('score')) return;
+        const n = cellNumber(cell);
+        if (n !== null) values.push(n);
+      });
+      if (values.length < 2) return;
+      const mean = values.reduce((a, b) => a + b, 0) / values.length;
+      rows.forEach(r => {
+        const cell = r.children[col];
+        if (!cell || cell.classList.contains('score')) return;
+        const n = cellNumber(cell);
+        if (n === null) return;
+        const better = (dir === 'up') ? n > mean : n < mean;
+        cell.classList.add(better ? 'cell-good' : 'cell-bad');
+      });
+    });
   }
 
   function sortBy(idx, dir) {
@@ -1023,21 +1067,21 @@
 
   let lastIdx = -1, lastDir = 0;
   headers.forEach((th, i) => {
-    if (i === 0) return;  // skip rank column
+    if (i === 0) return;
     th.classList.add('sortable');
     th.addEventListener('click', () => {
-      const txt = th.textContent;
-      let dir;
-      if (i === lastIdx) {
-        dir = -lastDir;
-      } else {
-        dir = txt.includes('↓') ? +1 : -1;  // ↓ = lower-better → ascending
-      }
-      lastIdx = i;
-      lastDir = dir;
+      const txt = th.textContent || '';
+      const dir = (i === lastIdx) ? -lastDir : (txt.indexOf('↓') >= 0 ? +1 : -1);
+      lastIdx = i; lastDir = dir;
       sortBy(i, dir);
     });
   });
+
+  // Expose a hook so the live-sync block can refresh shading after it
+  // replaces tbody.innerHTML with the latest leaderboard data.
+  window.__vitexRefreshShading = applyMeanShading;
+
+  applyMeanShading();
 })();
 </script>
 

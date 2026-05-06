@@ -273,8 +273,8 @@ def main():
                     help="Root containing source_videos/, text_masks/, baseline_outputs/<method>/.")
     ap.add_argument("--out_dir",
                     default=os.path.normpath(os.path.join(here, "..", "static", "videos", "showcase_v2")))
-    ap.add_argument("--cell_w", type=int, default=320)
-    ap.add_argument("--cell_h", type=int, default=180)
+    ap.add_argument("--cell_w", type=int, default=480)
+    ap.add_argument("--cell_h", type=int, default=270)
     ap.add_argument("--fps", type=float, default=24.0)
     args = ap.parse_args()
 
