@@ -82,22 +82,25 @@
     .vt-tight { padding-top: 2.5rem; padding-bottom: 2.5rem; }
 
     /* ---------- Showcase carousel (composite 4x3 video per scene) ---------- */
-    /* Wide section that breaks out of the desktop container so each cell of
-       the baked-in 4x3 grid is large enough to read every method label. */
-    .vt-showcase-section { max-width: 1680px; margin: 0 auto; }
+    /* Section width tracks the viewport so the composite renders large on
+       desktop and shrinks proportionally on smaller screens; each carousel
+       slide is wrapped in a white card with padding so the video does not
+       run edge-to-edge with the page background. */
+    .vt-showcase-section { width: 92vw; margin: 0 auto; }
     .vt-showcase-frame {
-      background: #000;
+      background: #fff;
       border: 1px solid var(--vt-line);
-      border-radius: 14px;
-      overflow: hidden;
+      border-radius: 16px;
+      padding: 1rem 1rem 0.75rem;
       box-shadow: 0 2px 6px var(--vt-ring);
     }
     .vt-showcase-frame video {
-      width: 100%; height: auto; display: block; background: #000;
+      width: 100%; height: auto; border-radius: 10px; background: #000;
+      display: block; max-width: 100%;
     }
     /* Force the bulma-carousel slide to fill the section width so the
-       composite video renders at the full available size; the carousel
-       only needs to switch one full-width slide at a time. */
+       composite renders at the full available size; the carousel just
+       advances one full-width slide at a time. */
     #showcase-carousel .item { width: 100% !important; }
 
     /* ---------- Contribution cards ---------- */
@@ -361,7 +364,7 @@
 
 <!-- Showcase carousel: composite 4x3 video per scene, all eleven methods baked in -->
 <section class="hero teaser vt-tight">
-  <div class="vt-showcase-section" style="padding: 0 1.5rem;">
+  <div class="vt-showcase-section">
     <h2 class="title is-3 has-text-centered">All eleven methods, scene by scene</h2>
 
     <div id="showcase-carousel" class="carousel results-carousel" style="margin-top: 1.5rem;">
