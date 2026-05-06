@@ -132,7 +132,7 @@ def render_text_panel(cell_w, cell_h, src_text, tgt_text, clip_id):
     """Render the bottom-right text-replacement cell.
 
     Plain black background, three centered rows: source string, a down
-    arrow, target string. No tags, no clip ID, no pills.
+    arrow drawn as a polygon (not the letter v), target string.
     """
     img = np.zeros((cell_h, cell_w, 3), dtype=np.uint8)
     font = cv2.FONT_HERSHEY_DUPLEX
@@ -152,7 +152,6 @@ def render_text_panel(cell_w, cell_h, src_text, tgt_text, clip_id):
     word_base = max(0.9, min(1.6, cell_w / 320.0))
     src_scale = fit_scale(src_text, word_max_w, word_base)
     tgt_scale = fit_scale(tgt_text, word_max_w, word_base)
-    arrow_scale = max(src_scale, tgt_scale) * 1.05
 
     def centered(text, y_center, scale, thickness=2):
         (tw, th), _ = cv2.getTextSize(text, font, scale, thickness)
@@ -160,8 +159,32 @@ def render_text_panel(cell_w, cell_h, src_text, tgt_text, clip_id):
         y = y_center + th // 2
         cv2.putText(img, text, (x, y), font, scale, white, thickness, cv2.LINE_AA)
 
+    def draw_down_arrow(y_center, height, shaft_w):
+        """Vertical shaft + filled triangle head, centered on (cell_w/2, y_center)."""
+        cx = cell_w // 2
+        head_h = int(height * 0.55)
+        shaft_h = height - head_h
+        shaft_top = y_center - height // 2
+        shaft_bot = shaft_top + shaft_h
+        # Shaft (rectangle)
+        cv2.rectangle(img,
+                      (cx - shaft_w // 2, shaft_top),
+                      (cx + shaft_w // 2, shaft_bot),
+                      white, -1, cv2.LINE_AA)
+        # Triangle head
+        head_half_w = int(height * 0.45)
+        tip_y = shaft_top + height
+        head = np.array([
+            [cx - head_half_w, shaft_bot],
+            [cx + head_half_w, shaft_bot],
+            [cx,               tip_y],
+        ], dtype=np.int32)
+        cv2.fillPoly(img, [head], white, lineType=cv2.LINE_AA)
+
     centered(src_text, int(cell_h * 0.27), src_scale)
-    centered("v",      int(cell_h * 0.50), arrow_scale)
+    arrow_h = int(cell_h * 0.20)
+    shaft_w = max(4, int(cell_h * 0.025))
+    draw_down_arrow(int(cell_h * 0.50), arrow_h, shaft_w)
     centered(tgt_text, int(cell_h * 0.75), tgt_scale)
     return img
 
