@@ -154,7 +154,8 @@
 
     /* ---------- Triangle protocol diagram ---------- */
     .vt-triangle {
-      max-width: 640px; margin: 0 auto; display: block;
+      width: 100%; max-width: 760px; height: auto;
+      margin: 0 auto; display: block;
     }
     .vt-triangle text { font-family: Inter, sans-serif; }
     .vt-triangle .corner-circle { fill: #fff; stroke: var(--vt-navy); stroke-width: 1.6; }
@@ -234,6 +235,15 @@
     .vt-lb-wide .num0 { color: #c1c9d2; }
     .vt-lb-wide td.method { font-size: 0.84rem; max-width: 180px;
                             overflow: hidden; text-overflow: ellipsis; }
+
+    /* Click-to-sort affordance on every header except the # column */
+    .vt-lb thead th.sortable { cursor: pointer; user-select: none; }
+    .vt-lb thead th.sortable:hover { background: #eef2f8; color: #0a2540; }
+    .vt-lb thead th.sorted-active {
+      background: #eef2f8; color: #0a2540;
+      box-shadow: inset 0 -2px 0 #0a2540;
+    }
+    .vt-lb thead th.score.sorted-active { box-shadow: inset 0 -2px 0 #f6f9fc; }
 
     a.vt-cta, a.vt-cta:visited, a.vt-cta:link {
       display: inline-flex; align-items: center; gap: 0.5rem;
@@ -359,22 +369,20 @@
 <section class="hero teaser vt-tight">
   <div class="vt-showcase-section" style="padding: 0 1.5rem;">
     <h2 class="title is-3 has-text-centered">All eleven methods, scene by scene</h2>
-    <p class="subtitle has-text-centered" style="color:#697386;">
-      Each composite shows the source clip with a translucent text-region mask (top-left), every baseline,
-      ViTeX-14B and ViTeX-14B (Composite), and the requested character-level replacement (bottom-right).
-      Use the carousel arrows to switch scenes.
-    </p>
 
     <div id="showcase-carousel" class="carousel results-carousel" style="margin-top: 1.5rem;">
       <div class="item">
         <div class="vt-showcase-frame">
           <video controls muted loop playsinline preload="metadata">
+            <source src="static/videos/showcase_v2/0004547_00000.mp4" type="video/mp4">
+          </video>
+        </div>
+      </div>
+      <div class="item">
+        <div class="vt-showcase-frame">
+          <video controls muted loop playsinline preload="metadata">
             <source src="static/videos/showcase_v2/0006286_00000.mp4" type="video/mp4">
           </video>
-          <div class="vt-showcase-meta">
-            <div><span class="vt-edit">COLLIER</span><span class="vt-arrow">→</span><span class="vt-edit">WASHING</span></div>
-            <div class="vt-clip-id">0006286_00000</div>
-          </div>
         </div>
       </div>
       <div class="item">
@@ -382,21 +390,6 @@
           <video controls muted loop playsinline preload="metadata">
             <source src="static/videos/showcase_v2/0005186_00000.mp4" type="video/mp4">
           </video>
-          <div class="vt-showcase-meta">
-            <div><span class="vt-edit">ONLY</span><span class="vt-arrow">→</span><span class="vt-edit">STOP</span></div>
-            <div class="vt-clip-id">0005186_00000</div>
-          </div>
-        </div>
-      </div>
-      <div class="item">
-        <div class="vt-showcase-frame">
-          <video controls muted loop playsinline preload="metadata">
-            <source src="static/videos/showcase_v2/0004547_00000.mp4" type="video/mp4">
-          </video>
-          <div class="vt-showcase-meta">
-            <div><span class="vt-edit">First</span><span class="vt-arrow">→</span><span class="vt-edit">Last</span></div>
-            <div class="vt-clip-id">0004547_00000</div>
-          </div>
         </div>
       </div>
       <div class="item">
@@ -404,10 +397,6 @@
           <video controls muted loop playsinline preload="metadata">
             <source src="static/videos/showcase_v2/0001942_00000.mp4" type="video/mp4">
           </video>
-          <div class="vt-showcase-meta">
-            <div><span class="vt-edit">BULB?</span><span class="vt-arrow">→</span><span class="vt-edit">LAMP?</span></div>
-            <div class="vt-clip-id">0001942_00000</div>
-          </div>
         </div>
       </div>
       <div class="item">
@@ -415,19 +404,9 @@
           <video controls muted loop playsinline preload="metadata">
             <source src="static/videos/showcase_v2/0000229_00000.mp4" type="video/mp4">
           </video>
-          <div class="vt-showcase-meta">
-            <div><span class="vt-edit">SOC</span><span class="vt-arrow">→</span><span class="vt-edit">COC</span></div>
-            <div class="vt-clip-id">0000229_00000</div>
-          </div>
         </div>
       </div>
     </div>
-
-    <p style="margin-top: 1rem; color: var(--vt-mute); font-size: 0.83rem; text-align: center;">
-      Family A: per-frame image editor &nbsp;·&nbsp; B: first-frame edit + I2V propagation
-      &nbsp;·&nbsp; C: mask-conditioned video inpainting &nbsp;·&nbsp; D: instruction-guided V2V.
-      The Identity (sanity) baseline simply copies the source and is omitted from the grid.
-    </p>
   </div>
 </section>
 <!-- End showcase -->
@@ -573,37 +552,39 @@
       Three orthogonal axes, thirteen complementary metrics, the vector is the unit of report.
     </p>
 
-    <svg class="vt-triangle" viewBox="0 0 720 560" xmlns="http://www.w3.org/2000/svg" style="margin-top: 1.5rem;">
-      <!-- Triangle edges (corner-to-corner, dashed) -->
-      <line class="triangle-edge" x1="360" y1="100" x2="120" y2="470" />
-      <line class="triangle-edge" x1="360" y1="100" x2="600" y2="470" />
-      <line class="triangle-edge" x1="120" y1="470" x2="600" y2="470" />
+    <svg class="vt-triangle" viewBox="0 0 800 560" xmlns="http://www.w3.org/2000/svg"
+         preserveAspectRatio="xMidYMid meet" style="margin-top: 1.5rem;">
+      <!-- Triangle edges (corner-to-corner, dashed). Inset from the viewBox so
+           the corner circles never get clipped at narrow widths. -->
+      <line class="triangle-edge" x1="400" y1="105" x2="135" y2="465" />
+      <line class="triangle-edge" x1="400" y1="105" x2="665" y2="465" />
+      <line class="triangle-edge" x1="135" y1="465" x2="665" y2="465" />
 
       <!-- Feed lines from corners to center -->
-      <line class="feed-line" x1="360" y1="170" x2="360" y2="300" />
-      <line class="feed-line" x1="180" y1="450" x2="305" y2="370" />
-      <line class="feed-line" x1="540" y1="450" x2="415" y2="370" />
+      <line class="feed-line" x1="400" y1="170" x2="400" y2="295" />
+      <line class="feed-line" x1="195" y1="450" x2="335" y2="365" />
+      <line class="feed-line" x1="605" y1="450" x2="465" y2="365" />
 
       <!-- Top corner: Visual quality -->
-      <circle class="corner-circle" cx="360" cy="100" r="92" />
-      <text class="axis-name" x="360" y="89" font-size="15">Visual quality</text>
-      <text class="metric" x="360" y="113">Flicker / Warp / MUSIQ</text>
+      <circle class="corner-circle" cx="400" cy="105" r="95" />
+      <text class="axis-name" x="400" y="93" font-size="15">Visual quality</text>
+      <text class="metric"    x="400" y="118">Flicker / Warp / MUSIQ</text>
 
       <!-- Bottom-left corner: Text correctness -->
-      <circle class="corner-circle" cx="120" cy="470" r="92" />
-      <text class="axis-name" x="120" y="459" font-size="15">Text correctness</text>
-      <text class="metric" x="120" y="483">SeqAcc · CharAcc · TTS</text>
+      <circle class="corner-circle" cx="135" cy="465" r="95" />
+      <text class="axis-name" x="135" y="453" font-size="15">Text correctness</text>
+      <text class="metric"    x="135" y="478">SeqAcc · CharAcc · TTS</text>
 
       <!-- Bottom-right corner: Edit locality -->
-      <circle class="corner-circle" cx="600" cy="470" r="92" />
-      <text class="axis-name" x="600" y="459" font-size="15">Edit locality</text>
-      <text class="metric" x="600" y="483">PSNR · SSIM · LPIPS · DreamSim</text>
+      <circle class="corner-circle" cx="665" cy="465" r="95" />
+      <text class="axis-name" x="665" y="453" font-size="15">Edit locality</text>
+      <text class="metric"    x="665" y="478">PSNR · SSIM · LPIPS · DreamSim</text>
 
       <!-- Center: ViTeX-Bench -->
-      <circle class="center-circle" cx="360" cy="335" r="68" />
-      <text class="center-text" x="360" y="332" font-size="16">ViTeX-Bench</text>
-      <text class="center-sub" x="360" y="354">three axes ·</text>
-      <text class="center-sub" x="360" y="368">13 metrics</text>
+      <circle class="center-circle" cx="400" cy="330" r="70" />
+      <text class="center-text" x="400" y="327" font-size="16">ViTeX-Bench</text>
+      <text class="center-sub"  x="400" y="349">three axes ·</text>
+      <text class="center-sub"  x="400" y="363">13 metrics</text>
     </svg>
 
     <div class="content" style="margin-top: 1.5rem;">
@@ -628,10 +609,10 @@
 <!-- Leaderboard table: full thirteen-metric vector + TextScore sort key -->
 <section class="section hero is-light">
   <div class="container is-max-desktop">
-    <h2 class="title is-3 has-text-centered">Public leaderboard (157-clip frozen test split)</h2>
+    <h2 class="title is-3 has-text-centered">Public leaderboard</h2>
     <p class="subtitle has-text-centered" style="color:#697386;">
-      Sorted by <b>TextScore</b> = ∛(SeqAcc · CharAcc · TTS). The full thirteen-metric vector is shown alongside —
-      the vector is the unit of report; TextScore is the sort key only.
+      Ranked by <b>TextScore</b>, the geometric mean of the three text-correctness primitives.
+      Click any column header to re-sort by that metric.
     </p>
 
     <div class="vt-lb-wrap vt-lb-wide" style="margin-top: 1.5rem; overflow-x: auto;">
@@ -672,18 +653,9 @@
         </tbody>
       </table>
     </div>
-    <p style="margin-top: 0.85rem; color: #697386; font-size: 0.82rem;">
-      The three rows at the bottom tie at TextScore = 0 because <code>SeqAcc = 0</code> collapses the geometric mean —
-      these methods never produce the requested target string. Their remaining ten primitives are still informative.
-      Family A: per-frame image editor &nbsp;·&nbsp; B: first-frame edit + I2V propagation &nbsp;·&nbsp;
-      C: mask-conditioned video inpainting &nbsp;·&nbsp; D: instruction-guided V2V.
-      Subscripts <code>_f</code> / <code>_c</code> = full-frame / text-crop scopes; <code>Wp</code> = Warp,
-      <code>DSim</code> = DreamSim. <sup>†</sup>VideoPainter Flicker<sub>f/c</sub> and Warp<sub>f/c</sub>
-      are protocol-adaptation artifacts (CogVideoX-1.0 sub-protocol grid).
-    </p>
     <div style="text-align: center; margin-top: 1.5rem;">
       <a class="vt-cta" href="https://huggingface.co/spaces/ViTeX-Bench/ViTeX-Bench-Leaderboard" target="_blank">
-        🏆 Live leaderboard &amp; submit
+        🏆 View leaderboard &amp; submit
       </a>
     </div>
   </div>
@@ -1003,6 +975,69 @@
       /* Static rows already render the paper baselines; silently ignore. */
       console.warn('[ViTeX] live leaderboard sync failed, falling back to static data:', err);
     });
+})();
+
+/* ----- Click-to-sort on the leaderboard table -------------------------- *
+ * Click any header cell to re-sort the rows by that column. Defaults to
+ * the natural direction implied by the up / down arrow in the header
+ * label (↑ -> sort descending, ↓ -> sort ascending). Re-clicking the same
+ * header toggles direction. The first (#) column shows fresh ranks 1..N
+ * after every sort.
+ * ----------------------------------------------------------------------*/
+(function attachLeaderboardSort() {
+  const table = document.querySelector('#leaderboard-table');
+  if (!table) return;
+  const tbody = table.querySelector('tbody');
+  const headers = Array.from(table.querySelectorAll('thead th'));
+
+  function cellNumber(cell) {
+    if (!cell) return null;
+    const txt = cell.textContent.replace(/[†\s]/g, '');
+    if (txt === '' || txt === '—') return null;
+    const n = Number(txt);
+    return isNaN(n) ? null : n;
+  }
+  function cellText(cell) {
+    return (cell && cell.textContent || '').replace(/\s+/g, ' ').trim();
+  }
+
+  function sortBy(idx, dir) {
+    const rows = Array.from(tbody.querySelectorAll('tr'));
+    rows.sort((ra, rb) => {
+      const va = cellNumber(ra.children[idx]);
+      const vb = cellNumber(rb.children[idx]);
+      if (va !== null && vb !== null) return (va - vb) * dir;
+      if (va !== null) return -1;
+      if (vb !== null) return  1;
+      return cellText(ra.children[idx]).localeCompare(cellText(rb.children[idx])) * dir;
+    });
+    rows.forEach((row, k) => {
+      if (row.children[0] && row.children[0].classList.contains('vt-rank')) {
+        row.children[0].textContent = String(k + 1);
+      }
+      tbody.appendChild(row);
+    });
+    headers.forEach(h => h.classList.remove('sorted-active'));
+    headers[idx].classList.add('sorted-active');
+  }
+
+  let lastIdx = -1, lastDir = 0;
+  headers.forEach((th, i) => {
+    if (i === 0) return;  // skip rank column
+    th.classList.add('sortable');
+    th.addEventListener('click', () => {
+      const txt = th.textContent;
+      let dir;
+      if (i === lastIdx) {
+        dir = -lastDir;
+      } else {
+        dir = txt.includes('↓') ? +1 : -1;  // ↓ = lower-better → ascending
+      }
+      lastIdx = i;
+      lastDir = dir;
+      sortBy(i, dir);
+    });
+  });
 })();
 </script>
 

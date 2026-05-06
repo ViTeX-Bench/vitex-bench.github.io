@@ -66,9 +66,9 @@ BADGE_FG = {
 }
 
 DEFAULT_CLIPS = [
+    "0004547_00000",  # First -> Last
     "0006286_00000",  # COLLIER -> WASHING
     "0005186_00000",  # ONLY -> STOP
-    "0004547_00000",  # First -> Last
     "0001942_00000",  # BULB? -> LAMP?
     "0000229_00000",  # SOC -> COC
 ]
@@ -129,59 +129,40 @@ def draw_badge(frame, label, family, font_scale=0.42, pad_x=7, pad_y=4):
 
 
 def render_text_panel(cell_w, cell_h, src_text, tgt_text, clip_id):
-    """Render the bottom-right text-replacement cell as a static frame."""
+    """Render the bottom-right text-replacement cell.
+
+    Plain black background, three centered rows: source string, a down
+    arrow, target string. No tags, no clip ID, no pills.
+    """
     img = np.zeros((cell_h, cell_w, 3), dtype=np.uint8)
-    # Vertical gradient from #0a2540 (top) to #1e3a5f (bottom).
-    top = np.array([64, 37, 10], dtype=np.float32)      # BGR
-    bot = np.array([95, 58, 30], dtype=np.float32)
-    for y in range(cell_h):
-        t = y / max(cell_h - 1, 1)
-        img[y, :, :] = (top * (1 - t) + bot * t).astype(np.uint8)
-
     font = cv2.FONT_HERSHEY_DUPLEX
+    white = (255, 255, 255)
 
-    def centered_text(text, y, scale, color, thickness=1):
+    def fit_scale(text, max_w, base_scale):
+        """Shrink the requested scale so `text` still fits in max_w pixels."""
+        scale = base_scale
+        while scale > 0.4:
+            (tw, _), _ = cv2.getTextSize(text, font, scale, 2)
+            if tw <= max_w:
+                return scale
+            scale -= 0.05
+        return scale
+
+    word_max_w = int(cell_w * 0.86)
+    word_base = max(0.9, min(1.6, cell_w / 320.0))
+    src_scale = fit_scale(src_text, word_max_w, word_base)
+    tgt_scale = fit_scale(tgt_text, word_max_w, word_base)
+    arrow_scale = max(src_scale, tgt_scale) * 1.05
+
+    def centered(text, y_center, scale, thickness=2):
         (tw, th), _ = cv2.getTextSize(text, font, scale, thickness)
         x = (cell_w - tw) // 2
-        cv2.putText(img, text, (x, y), font, scale, color, thickness, cv2.LINE_AA)
-        return th
+        y = y_center + th // 2
+        cv2.putText(img, text, (x, y), font, scale, white, thickness, cv2.LINE_AA)
 
-    # Compact layout: tag / src / arrow / tag / tgt / clip-id.
-    s_lab = "SOURCE TEXT"
-    t_lab = "TARGET TEXT"
-    arrow = "v"
-
-    word_scale = max(0.7, min(1.4, cell_w / 380.0))
-    tag_scale  = max(0.34, min(0.55, cell_w / 720.0))
-    arrow_scale = word_scale * 0.95
-    clip_scale  = max(0.32, min(0.5, cell_w / 800.0))
-
-    pale = (207, 179, 160)  # #a0b3cf
-    white = (255, 255, 255)
-    pill_bg_src = (84, 51, 27)        # darker navy
-    pill_bg_tgt = (170, 144, 99)      # tinted lavender
-
-    def pill(text, scale, y_baseline, bg, fg, pad_x=14, pad_y=8):
-        (tw, th), _ = cv2.getTextSize(text, font, scale, 1)
-        bx = (cell_w - tw - 2 * pad_x) // 2
-        by = y_baseline - th - pad_y
-        cv2.rectangle(img, (bx, by), (bx + tw + 2 * pad_x, by + th + 2 * pad_y),
-                      bg, -1, cv2.LINE_AA)
-        cv2.putText(img, text, (bx + pad_x, by + th + pad_y - 2),
-                    font, scale, fg, 1, cv2.LINE_AA)
-
-    cy = int(cell_h * 0.18)
-    centered_text(s_lab, cy, tag_scale, pale)
-    cy += int(cell_h * 0.13)
-    pill(src_text, word_scale, cy, pill_bg_src, white)
-    cy += int(cell_h * 0.10)
-    centered_text(arrow, cy, arrow_scale, pale)
-    cy += int(cell_h * 0.10)
-    centered_text(t_lab, cy, tag_scale, pale)
-    cy += int(cell_h * 0.13)
-    pill(tgt_text, word_scale, cy, pill_bg_tgt, white)
-    cy = cell_h - int(cell_h * 0.06)
-    centered_text(f"clip {clip_id}", cy, clip_scale, (96, 130, 156))
+    centered(src_text, int(cell_h * 0.27), src_scale)
+    centered("v",      int(cell_h * 0.50), arrow_scale)
+    centered(tgt_text, int(cell_h * 0.75), tgt_scale)
     return img
 
 
