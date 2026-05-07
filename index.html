@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <meta name="title" content="ViTeX-Bench: Benchmarking High Fidelity Video Scene Text Editing">
-  <meta name="description" content="A 387-clip paired dataset, a 13-metric three-axis evaluation protocol, and an open reference model (ViTeX-14B) for video scene text editing. Leaderboard sorted by TextScore = geomean(SeqAcc, CharAcc, TTS).">
-  <meta name="keywords" content="video scene text editing, video editing, scene text, benchmark, NeurIPS 2026, dataset, leaderboard, TextScore, ViTeX-Bench, ViTeX-14B">
+  <meta name="description" content="A 387-clip paired dataset, a 13-metric three-axis evaluation protocol, and an open reference model (ViTeX-Edit-14B) for video scene text editing. Leaderboard sorted by TextScore = geomean(SeqAcc, CharAcc, TTS).">
+  <meta name="keywords" content="video scene text editing, video editing, scene text, benchmark, NeurIPS 2026, dataset, leaderboard, TextScore, ViTeX-Bench, ViTeX-Edit-14B">
   <meta name="author" content="Anonymous">
   <meta name="robots" content="index, follow">
   <meta name="language" content="English">
@@ -14,14 +14,14 @@
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="ViTeX-Bench">
   <meta property="og:title" content="ViTeX-Bench: Benchmarking High Fidelity Video Scene Text Editing">
-  <meta property="og:description" content="A 387-clip paired dataset, a 13-metric three-axis evaluation protocol, and an open reference model (ViTeX-14B) for video scene text editing. Leaderboard sorted by TextScore = geomean(SeqAcc, CharAcc, TTS).">
+  <meta property="og:description" content="A 387-clip paired dataset, a 13-metric three-axis evaluation protocol, and an open reference model (ViTeX-Edit-14B) for video scene text editing. Leaderboard sorted by TextScore = geomean(SeqAcc, CharAcc, TTS).">
   <meta property="og:url" content="https://vitex-bench.github.io/">
   <meta property="og:image" content="https://vitex-bench.github.io/static/images/vitex_icon.png">
   <meta property="og:image:alt" content="ViTeX-Bench">
 
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="ViTeX-Bench: Benchmarking High Fidelity Video Scene Text Editing">
-  <meta name="twitter:description" content="A 387-clip paired dataset, a 13-metric three-axis evaluation protocol, and an open reference model (ViTeX-14B) for video scene text editing. Leaderboard sorted by TextScore = geomean(SeqAcc, CharAcc, TTS).">
+  <meta name="twitter:description" content="A 387-clip paired dataset, a 13-metric three-axis evaluation protocol, and an open reference model (ViTeX-Edit-14B) for video scene text editing. Leaderboard sorted by TextScore = geomean(SeqAcc, CharAcc, TTS).">
   <meta name="twitter:image" content="https://vitex-bench.github.io/static/images/vitex_icon.png">
 
   <meta name="citation_title" content="ViTeX-Bench: Benchmarking High Fidelity Video Scene Text Editing">
@@ -451,7 +451,7 @@
             <b>ViTeX-Bench</b> evaluates existing methods along three axes — text correctness, visual quality,
             and edit locality — through a thirteen-metric protocol, with a cross-family reference grid of
             eight baselines spanning four method families.
-            <b>ViTeX-14B</b> is an open reference editor that augments Wan2.1-VACE-14B with a glyph-video
+            <b>ViTeX-Edit-14B</b> is an open reference editor that augments Wan2.1-VACE-14B with a glyph-video
             conditioning pathway, simultaneously enforcing target-character identity and source-aligned motion;
             none of the four prior families exposes this combination natively.
             Our cross-family analysis reveals complementary failure modes that single-score benchmarks would
@@ -496,7 +496,7 @@
       </div>
       <div class="vt-card">
         <div class="vt-icon">🤖</div>
-        <h4>ViTeX-14B</h4>
+        <h4>ViTeX-Edit-14B</h4>
         <p>
           An open reference model that augments Wan2.1-VACE-14B with a glyph-video
           conditioning pathway for target-character identity and source-aligned motion.
@@ -640,8 +640,8 @@
         </thead>
         <tbody>
           <tr><td class="vt-rank">1</td><td class="left method">TextCtrl</td><td class="left"><span class="vt-fam A">A</span></td><td class="left"><span class="vt-fam Admin">Admin</span></td><td class="score">0.5624</td><td>0.475</td><td>0.733</td><td>0.511</td><td>3.80</td><td>4.29</td><td>1.59</td><td>2.09</td><td>70.32</td><td>42.77</td><td>41.14</td><td>0.994</td><td>0.008</td><td>0.004</td></tr>
-          <tr><td class="vt-rank">2</td><td class="left method"><b>ViTeX-14B (Composite)</b></td><td class="left"><span class="vt-fam O">ours</span></td><td class="left"><span class="vt-fam Admin">Admin</span></td><td class="score">0.5410</td><td>0.345</td><td>0.689</td><td>0.666</td><td>3.73</td><td>3.83</td><td>1.51</td><td>1.56</td><td>70.27</td><td>44.94</td><td>42.95</td><td>0.992</td><td>0.006</td><td>0.002</td></tr>
-          <tr><td class="vt-rank">3</td><td class="left method"><b>ViTeX-14B</b></td><td class="left"><span class="vt-fam O">ours</span></td><td class="left"><span class="vt-fam Admin">Admin</span></td><td class="score">0.5338</td><td>0.341</td><td>0.688</td><td>0.648</td><td>3.27</td><td>3.42</td><td>1.55</td><td>1.53</td><td>69.64</td><td>43.53</td><td>29.08</td><td>0.951</td><td>0.060</td><td>0.024</td></tr>
+          <tr><td class="vt-rank">2</td><td class="left method"><b>ViTeX-Edit-14B (Composite)</b></td><td class="left"><span class="vt-fam O">ours</span></td><td class="left"><span class="vt-fam Admin">Admin</span></td><td class="score">0.5410</td><td>0.345</td><td>0.689</td><td>0.666</td><td>3.73</td><td>3.83</td><td>1.51</td><td>1.56</td><td>70.27</td><td>44.94</td><td>42.95</td><td>0.992</td><td>0.006</td><td>0.002</td></tr>
+          <tr><td class="vt-rank">3</td><td class="left method"><b>ViTeX-Edit-14B</b></td><td class="left"><span class="vt-fam O">ours</span></td><td class="left"><span class="vt-fam Admin">Admin</span></td><td class="score">0.5338</td><td>0.341</td><td>0.688</td><td>0.648</td><td>3.27</td><td>3.42</td><td>1.55</td><td>1.53</td><td>69.64</td><td>43.53</td><td>29.08</td><td>0.951</td><td>0.060</td><td>0.024</td></tr>
           <tr><td class="vt-rank">4</td><td class="left method">VideoPainter<sup>†</sup></td><td class="left"><span class="vt-fam C">C</span></td><td class="left"><span class="vt-fam Admin">Admin</span></td><td class="score">0.5151</td><td>0.365</td><td>0.619</td><td>0.606</td><td>2.38<sup>†</sup></td><td>2.62<sup>†</sup></td><td>2.93<sup>†</sup></td><td>3.35<sup>†</sup></td><td>67.16</td><td>40.59</td><td>28.56</td><td>0.915</td><td>0.104</td><td>0.024</td></tr>
           <tr><td class="vt-rank">5</td><td class="left method">FLUX-Text</td><td class="left"><span class="vt-fam A">A</span></td><td class="left"><span class="vt-fam Admin">Admin</span></td><td class="score">0.5023</td><td>0.528</td><td>0.737</td><td>0.326</td><td>5.11</td><td>14.81</td><td>3.03</td><td>13.01</td><td>70.26</td><td>43.85</td><td>31.49</td><td>0.975</td><td>0.029</td><td>0.012</td></tr>
           <tr><td class="vt-rank">6</td><td class="left method">RS-STE</td><td class="left"><span class="vt-fam A">A</span></td><td class="left"><span class="vt-fam Admin">Admin</span></td><td class="score">0.4908</td><td>0.354</td><td>0.626</td><td>0.534</td><td>3.73</td><td>3.66</td><td>1.61</td><td>1.81</td><td>69.57</td><td>34.26</td><td>37.00</td><td>0.983</td><td>0.024</td><td>0.007</td></tr>
@@ -663,10 +663,10 @@
 <!-- End leaderboard -->
 
 
-<!-- ViTeX-14B reference model architecture (Figure 3) -->
+<!-- ViTeX-Edit-14B reference model architecture (Figure 3) -->
 <section class="section hero is-light">
   <div class="container is-max-desktop">
-    <h2 class="title is-3 has-text-centered">ViTeX-14B: open reference model</h2>
+    <h2 class="title is-3 has-text-centered">ViTeX-Edit-14B: open reference model</h2>
     <p class="subtitle has-text-centered" style="color:#697386;">
       Wan2.1-VACE-14B extended with a glyph-video conditioning pathway, fine-tuned on the 230-clip training split.
     </p>
@@ -872,7 +872,7 @@
     const s = (fam || '').trim();
     if (/identity/i.test(method || '')) return '—';
     if (!s || s === '—') return 'ours';
-    if (/^ref/i.test(s) || /vitex-14b/i.test(method || '')) return 'ours';
+    if (/^ref/i.test(s) || /vitex-(edit-)?14b/i.test(method || '')) return 'ours';
     const c = s.charAt(0);
     if ('ABCD'.indexOf(c) >= 0) return c;
     return 'ours';
@@ -885,7 +885,7 @@
     return s;
   }
   function isOurs(method, family) {
-    return /vitex-14b/i.test(method || '') ||
+    return /vitex-(edit-)?14b/i.test(method || '') ||
            /^ref|reference/i.test(family || '');
   }
   function isSanity(method) {

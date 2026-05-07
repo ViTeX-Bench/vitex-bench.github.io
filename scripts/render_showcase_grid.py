@@ -29,10 +29,10 @@ import numpy as np
 # used to colour the badge.
 GRID = [
     # row 0
-    [("__source_mask",  "Source + mask",          "src"),
-     ("ViTeX-14B",      "ViTeX-14B",              "ours"),
-     ("ViTeX-14B_Corp", "ViTeX-14B (Composite)",  "ours"),
-     ("anytext2",       "AnyText2",               "A")],
+    [("__source_mask",  "Source + mask",                "src"),
+     ("ViTeX-14B",      "ViTeX-Edit-14B",               "ours"),
+     ("ViTeX-14B_Corp", "ViTeX-Edit-14B (Composite)",   "ours"),
+     ("anytext2",       "AnyText2",                     "A")],
     # row 1
     [("text_ctrl",        "TextCtrl",               "A"),
      ("fluxtext",         "FLUX-Text",              "A"),
