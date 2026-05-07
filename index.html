@@ -437,25 +437,31 @@
         <h2 class="title is-3">Abstract</h2>
         <div class="content has-text-justified">
           <p>
-            Video scene text editing replaces the text rendered on scene surfaces in a video while preserving
-            the surrounding content, motion, lighting, and camera dynamics. Typical cases include text on
-            storefront signs, whiteboards, jerseys, screens, and product labels. Although scene text editing
-            has been extensively studied for still images, its video counterpart remains underdeveloped.
-            Existing resources lack paired real-video edits, current evaluation protocols do not measure
-            character-level correctness over time, and no open reference model exists for systematic comparison.
-            We introduce <b>ViTeX</b>, a coordinated release for faithful and temporally consistent video scene
-            text editing, comprising three components.
-            <b>ViTeX-Dataset</b> provides 387 real-world 720p clips sourced from Panda-70M and InternVid,
-            built through a semi-automatic pipeline that localizes scene text, creates source–target string
-            pairs, removes the source text, and synthesizes temporally consistent edits.
-            <b>ViTeX-Bench</b> evaluates existing methods along three axes — text correctness, visual quality,
-            and edit locality — through a thirteen-metric protocol, with a cross-family reference grid of
-            eight baselines spanning four method families.
-            <b>ViTeX-Edit-14B</b> is an open reference editor that augments Wan2.1-VACE-14B with a glyph-video
-            conditioning pathway, simultaneously enforcing target-character identity and source-aligned motion;
-            none of the four prior families exposes this combination natively.
-            Our cross-family analysis reveals complementary failure modes that single-score benchmarks would
-            average away, with no method leading on all three axes simultaneously.
+            Video scene text editing aims to replace text appearing on scene surfaces in a video,
+            such as storefront signs, whiteboards, and product labels, while preserving the surrounding
+            content, motion, and camera dynamics. Although scene text editing has been extensively
+            studied for still images, its video counterpart remains underdeveloped. Existing resources
+            do not provide paired edits over real-world videos, current protocols rarely measure whether
+            the edited region reads as the target string over time, and there is no large-scale
+            open-source benchmark for systematic comparison.
+            To close these gaps, we introduce <b>ViTeX-Bench</b>, a comprehensive benchmark suite for
+            high-fidelity and temporally consistent video scene text editing.
+            Specifically, we first built <b>ViTeX-Dataset</b>, containing 387 real-world 720p videos
+            with precise text-region masks and editing instructions; the 230-clip training split provides
+            the first such resource with paired editing results built through a semi-automatic pipeline,
+            with the rest forming the evaluation set for standardized benchmarking.
+            In ViTeX-Bench, we propose a three-axis evaluation protocol — text correctness, visual
+            quality, and edit locality — totalling 13 metrics that combine character-level OCR signals
+            with motion and preservation metrics.
+            Our benchmarking experiments indicate that all eight leading video editing models, both
+            public and commercial, fail in distinct ways: they either flicker or drift over time, or
+            simply fail to produce the requested editing effects.
+            To further validate the efficacy of our proposed dataset, we trained <b>ViTeX-Edit-14B</b>
+            on the paired training split with a motion-aligned glyph-video conditioning stream.
+            Trained on only 230 high-quality paired videos, ViTeX-Edit-14B sets the strongest CharAcc
+            among all the compared editors (0.688, +11.1% over VideoPainter) and leads three ranked
+            temporal metrics, reducing the previous best by 2.1% (Flicker<sub>f</sub>),
+            6.6% (Flicker<sub>c</sub>), and 1.9% (Warp<sub>c</sub>), respectively.
           </p>
         </div>
       </div>
@@ -478,9 +484,9 @@
         <h4>ViTeX-Dataset</h4>
         <p>
           The first paired real-video resource for video scene text editing, releasing both
-          a 230-clip training split with paired edited references and a permanently frozen
-          157-clip evaluation split. It closes the paired-data gap that prior image-only
-          datasets and STRIVE-style ROI-centric resources left open.
+          a training split with paired edited references and an evaluation split. It closes
+          the paired-data gap left open by image-only datasets and by STRIVE, which only have
+          synthetic paired data and unpaired real-world data.
         </p>
       </div>
       <div class="vt-card">
@@ -488,20 +494,18 @@
         <h4>ViTeX-Bench</h4>
         <p>
           A task-specific evaluation protocol that scores character-level correctness,
-          temporal visual quality, and edit locality on three independent axes, released with
-          a cross-family reference grid covering all four practical strategies — per-frame
-          image editing, first-frame propagation, mask-conditioned inpainting, and
-          instruction-guided V2V.
+          temporal visual quality, and edit locality on three complementary axes, released
+          with a cross-family reference grid covering all four practical strategies.
         </p>
       </div>
       <div class="vt-card">
         <div class="vt-icon">🤖</div>
         <h4>ViTeX-Edit-14B</h4>
         <p>
-          An open reference model that augments Wan2.1-VACE-14B with a glyph-video
+          An open-source reference editor that augments Wan2.1-VACE-14B with a glyph-video
           conditioning pathway for target-character identity and source-aligned motion.
-          We fine-tune it on the ViTeX-Dataset training split and release the trained
-          weights as a reproducible baseline for the public leaderboard.
+          We fine-tune it on the ViTeX-Dataset training split and release the trained weights
+          as a reproducible baseline for the public leaderboard.
         </p>
       </div>
     </div>
