@@ -32,18 +32,12 @@ colors:
   on-video-light: "#FFFFFF"
   on-video-scrim: "rgba(0, 0, 0, 0.55)"
 typography:
-  display-name:
+  title:
     fontFamily: "Atkinson Hyperlegible Next, ui-sans-serif, system-ui, sans-serif"
-    fontSize: "clamp(2.9rem, 6.4vw, 5.2rem)"
-    fontWeight: 600
-    lineHeight: 1
-    letterSpacing: "-0.03em"
-  display-sub:
-    fontFamily: "Atkinson Hyperlegible Next, ui-sans-serif, system-ui, sans-serif"
-    fontSize: "clamp(1.45rem, 2.9vw, 2.35rem)"
+    fontSize: "clamp(2.3rem, 4.9vw, 4rem)"
     fontWeight: 300
-    lineHeight: 1.06
-    letterSpacing: "-0.022em"
+    lineHeight: 1.04
+    letterSpacing: "-0.024em"
   headline:
     fontFamily: "Atkinson Hyperlegible Next, ui-sans-serif, system-ui, sans-serif"
     fontSize: "clamp(1.9rem, 3.2vw, 2.6rem)"
@@ -101,12 +95,12 @@ typography:
     fontWeight: 500
     lineHeight: 1
     letterSpacing: "0.01em"
-  edit-caption:
-    fontFamily: "Atkinson Hyperlegible Mono, ui-monospace, SF Mono, Menlo, monospace"
-    fontSize: "clamp(1.4rem, 2.4vw, 1.9rem)"
-    fontWeight: 400
-    lineHeight: 1.1
-    letterSpacing: "-0.01em"
+  display-word:
+    fontFamily: "Atkinson Hyperlegible Next, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "min(184px, 12vw)"
+    fontWeight: 300
+    lineHeight: 1
+    letterSpacing: "-0.03em"
   figure:
     fontFamily: "Atkinson Hyperlegible Mono, ui-monospace, SF Mono, Menlo, monospace"
     fontSize: "20px"
@@ -148,11 +142,10 @@ spacing:
   column: "32px"
   row: "40px"
   gutter: "clamp(20px, 5vw, 56px)"
-  hero-top: "clamp(48px, 7vh, 88px)"
+  hero-top: "clamp(44px, 7vh, 96px)"
   section: "clamp(88px, 12vw, 152px)"
   section-tight: "clamp(64px, 9vw, 112px)"
   footer: "clamp(96px, 13vw, 168px)"
-  teaser-width: "1120px"
   max-width: "1200px"
   header-height: "60px"
 components:
@@ -275,12 +268,12 @@ This page lives in the same world as the ViTeX-Bench Leaderboard (`/home/xh/PJ/V
 
 The one deliberate departure is colour. The leaderboard stays strictly monochrome under its No Hue Rule. The project page adds a single lavender accent derived from the ViTeX logo (#9C90F0), tuned per theme. This is a homepage-level extension (approved 2026-09-26), not a change to the shared world. The accent marks a short list of things: the venue, the Pareto front, the target string of an edit, the metric that catches a failure, each axis's primary metric, and interaction affordances. Everything else stays monochrome. The clip behind the teaser now casts its own colour, blurred, and paper figures appear in full colour on a light plate.
 
-The page opens on the paper: the centred project name, subtitle, authors, affiliations, the venue badge and four equal release buttons. Below that is one gesture, a vertical line sweeping across a real clip with the edit on the left and the source on the right, while the mono caption under it lights the target string as the line crosses the text. The same wipe returns in the comparator. Everything else is quiet reading space in hairline columns. Density is low, and sections open with a lot of top space.
+The page opens on the paper, set as an editorial title block: a large left-aligned thin title with the bold project name, authors, affiliations, the venue badge and four equal release buttons, and a lab credit (TACO Group, Texas A&M University) behind a hairline on the right. Below that is one gesture: a vertical line sweeping across a real clip with the edit on the left and the source on the right, while a display word beside it turns from the source string into the target string, in the accent, as the line crosses the text. The same wipe returns in the comparator. Everything else is quiet reading space in hairline columns. Density is low, and sections open with a lot of top space.
 
 **Key Characteristics:**
 - Inherits the leaderboard's Field/Desk neutrals, type pairing, hairlines, pills and 3-D Pareto star space.
 - One lavender accent per theme, used sparingly for a fixed set of roles. Status never depends on the hue alone.
-- A title-first, centred first viewport, then the teaser wipe over the clip's own blurred colour.
+- A title-first, left-aligned editorial first viewport with a lab credit aside, then the glyph stage: display word left, wipe right, over the clip's own blurred colour.
 - A draggable, keyboard-operable wipe over real video as the signature interaction, shared by the teaser and the comparator.
 - Chrome over video uses fixed white-on-black scrims in both themes.
 
@@ -331,7 +324,8 @@ Two lightings of one monochrome object (inherited), one lavender accent tuned to
 **Character:** The leaderboard's pairing. One humanist sans, thin and large for headings and plain for reading, with its mono sibling for every figure, metric key and edited string.
 
 ### Hierarchy
-- **Display name** (600, `clamp(2.9rem, 6.4vw, 5.2rem)`, 1, −0.03em): "ViTeX-Bench" in the first viewport, centred. It is the only heavy display setting on the page.
+- **Title** (300, `clamp(2.3rem, 4.9vw, 4rem)`, 1.04, −0.024em, max 22ch): the paper title, left-aligned, with "ViTeX-Bench:" at 500.
+- **Display word** (300, fitted, line-height 1, −0.03em): the glyph stage's source/target string, in the sans. Script scales the wider string to fill the 5/12 word column, capped at min(184px, 12vw) on desktop, 136px below 1000px and 104px below 600px. The target string is set in the accent.
 - **Display subtitle** (300, `clamp(1.45rem, 2.9vw, 2.35rem)`, 1.06, −0.022em): the paper subtitle under the name, in full foreground, balanced.
 - **Headline** (300, `clamp(1.9rem, 3.2vw, 2.6rem)`, 1.1): every section title, including the Pareto space heading. Section intros under them are dim and capped at 640px.
 - **Side headline** (300, `clamp(1.5rem, 2.2vw, 1.9rem)`): the left-column heading in 3/9 splits (Abstract, Cite).
@@ -343,13 +337,12 @@ Two lightings of one monochrome object (inherited), one lavender accent tuned to
 - **Label** (500, 13–14.5px): buttons (14.5px), segments and tabs (13px), nav (14px), captions (12.5–14px).
 - **Venue** (600, 15px, +0.005em): the NeurIPS 2026 badge. The track name beside it is 400.
 - **Badge** (500, 11.5px, +0.01em): the "Pareto front" pill.
-- **Edit caption** (mono 400, `clamp(1.4rem, 2.4vw, 1.9rem)`, 1.1, −0.01em): the teaser's `source → target` line.
 - **Figure** (mono 400, tabular numerals): readout values at 20px (17px below 600px), selected-star row at 17px, calibration values at 19px, release facts at 13.5px.
 - **Metric key** (mono 400, 12.5–13px): readout and pick keys, metric chips, axis chips. Subscripts are 0.72em.
 - **Edit string** (mono 400, 12.5–13.5px): scene chips (`First → Last`), failure task codes (`NEW → OLD`).
 
 ### Named Rules
-**The Words Sans, Numbers Mono Rule** (inherited). Every measurement and rank is set in the mono with tabular figures. This page extends it to edited strings: a source or target string is always set in the mono, from the teaser caption to the scene chips.
+**The Words Sans, Numbers Mono Rule** (inherited). Every measurement and rank is set in the mono with tabular figures. This page extends it to edited strings: a source or target string is always set in the mono, in the scene chips, failure task codes and the grid pair tile. The one exception is the glyph stage's display word, which shows the string at display size in the sans.
 
 **The Thin Display Rule** (inherited, with one exception). Headlines, the subtitle and the lede use weight 300 with negative tracking. The project name is the single 600 display setting. Emphasis in running text is 500 in the foreground colour, never italic.
 
@@ -357,7 +350,7 @@ Two lightings of one monochrome object (inherited), one lavender accent tuned to
 
 The page uses the leaderboard's 1200px column, `clamp(20px, 5vw, 56px)` gutter and sticky 60px header. Sections open with `clamp(88px, 12vw, 152px)` of top space (the abstract uses the tight step, `clamp(64px, 9vw, 112px)`), and the footer opens with `clamp(96px, 13vw, 168px)`.
 
-**First viewport.** Title-first and centred. The head block opens `clamp(48px, 7vh, 88px)` below the header: the name, the subtitle 14px under it, authors 26px below, affiliations, then the venue badge (24px) and a centred, wrapping row of four equal ghost buttons (28px, 10px gaps). The teaser follows. It has a narrower 1120px column, so the wipe runs up to about 1008px wide over the full-bleed coloured ambient. Under the frame, a bar holds the edit caption on the left and the scene chips on the right, with a one-line dim caption below.
+**First viewport.** Title-first and left-aligned. The title block opens `clamp(44px, 7vh, 96px)` below the header on a `1fr : 280px` grid: title, authors (18px), affiliations, the venue badge row (22px) and a wrapping row of four equal ghost buttons (30px, 10px gaps) on the left, and the lab credit on the right behind a strong-hairline left rule, bottom-aligned. The glyph stage follows `clamp(40px, 6vh, 72px)` lower: a 5/12 : 7/12 grid with the display word bottom-left, the scene chips and caption under it, and the wipe on the right spanning both rows, all over the full-bleed coloured ambient, which fades in and out with a vertical mask.
 
 **Recurring splits.**
 - **5/7**: failure rows (text left, a two-up source/output video pair right).
@@ -369,7 +362,7 @@ The page uses the leaderboard's 1200px column, `clamp(20px, 5vw, 56px)` gutter a
 **Breakpoints.**
 - **1000px**: the comparator's method list becomes one horizontally scrolling row of outlined pills with the group labels dropped. Failure rows stack, and the readout and pick rows go to three columns.
 - **860px**: the nav hides, keeping only the Leaderboard link. Axes, release columns, notes, calibration, abstract, cite and figures collapse to one column, with horizontal hairlines replacing vertical ones.
-- **600px**: the four release buttons form a 2-column grid. The venue stacks: the badge stays a pill and the track name sits under it in dim text, without the outer border. The teaser bar stacks (caption above chips). The comparator bar stacks, and the view switch becomes a full-width 2-column grid with a 20px track. The wipe radius drops to 10px and on-video tags shrink.
+- **600px**: the four release buttons form a 2-column grid. The venue stacks: the badge stays a pill and the track name sits under it in dim text, without the outer border. The glyph stage stacks at 1000px (wipe, word, chips) and the credit moves under the title with a top rule. The comparator bar stacks, and the view switch becomes a full-width 2-column grid with a 20px track. The wipe radius drops to 10px and on-video tags shrink.
 
 ## Elevation & Depth
 
@@ -415,9 +408,9 @@ A two-part pill with a 1px accent border: a filled accent segment with a 15px st
 - **Caught / primary chips:** a failure's catching metrics and each axis's primary metric take an accent border, accent text and the accent wash.
 - **Front pill:** accent fill, accent ink, 11.5px 500, with the ring-and-core symbol. It appears next to a front member's name in the readout and in the selected-star row.
 
-### Teaser (signature)
-The wipe (below) at up to about 1008px, set over the coloured ambient, with the edit caption and scene chips under it.
-- **Edit caption:** the source string in foreground, a 22px faint arrow, then the target. The caption follows the line: while the line is short of the text's x-position in the frame, the target waits faint (45% opacity, 5px blur, 0.18em low). Once the line passes, the source dims to faint and the target resolves into the accent. Opacity, filter and colour change over 480ms and transform over 560ms, on `cubic-bezier(0.16, 1, 0.3, 1)`, staggered 40ms per glyph. The pair is also announced as visually hidden text.
+### Glyph stage (signature)
+The wipe (below) in the 7/12 column over the coloured ambient, with the display word, scene chips and caption in the 5/12 column.
+- **Display word:** two stacked spans (source in foreground, target in the accent), each split into per-glyph spans. When the line passes the string's x-position in the frame, source glyphs fade, blur 12px and rise 0.14em, and target glyphs arrive from below. Opacity and filter change over 520ms and transform over 620ms, on `cubic-bezier(0.16, 1, 0.3, 1)`, staggered 38ms per glyph. The pair is also announced as visually hidden text.
 - **Sweep:** auto-sweeps from 3% to 97% and back: hold 1100ms, move 2600ms (cubic in-out), hold 1800ms, move 2600ms.
 - **Rotation:** after two full sweeps the teaser moves to the next scene. Time off screen does not count. Picking a chip by hand stops the rotation but keeps the sweep. Dragging the line stops both for good. Reduced motion parks the line at 50% and does not rotate.
 

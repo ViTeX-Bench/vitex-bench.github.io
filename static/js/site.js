@@ -203,12 +203,19 @@
   function splitWord(w) {
     return Array.prototype.map.call(w, function (c, i) { return '<span class="ch" style="--i:' + i + '">' + (c === ' ' ? '&nbsp;' : esc(c)) + '</span>'; }).join('');
   }
+  function fitWord() {
+    var word = $('hero-word'), box = word.parentNode, maxPx = window.innerWidth < 600 ? 104 : window.innerWidth < 1000 ? 136 : Math.min(184, window.innerWidth * 0.12);
+    word.style.fontSize = '100px';
+    var w = Math.max($('hero-src').offsetWidth, $('hero-tgt').offsetWidth) || 1;
+    word.style.fontSize = Math.min(maxPx, Math.floor(100 * (box.clientWidth - 4) / w)) + 'px';
+  }
   var ADVANCE = 2; // full sweeps per scene before the teaser moves on
   function setHeroScene(i, auto) {
     hero.i = i; var s = SCENES[i];
     markScenes($('hero-scenes'), i);
     $('hero-src').innerHTML = splitWord(s.src); $('hero-tgt').innerHTML = splitWord(s.tgt);
     $('hero-say').textContent = s.src + ' to ' + s.tgt;
+    fitWord();
     hero.state = null; heroWord(heroWipe ? heroWipe.p : 0.03);
     hero.poster = loadImage('static/images/posters/hero_' + s.id + '.jpg');
     hero.poster.onload = function () { if (heroWipe) heroWipe.draw(); drawAmbient(); };
@@ -261,6 +268,8 @@
   watch($('hero-wipe'), function (v) { if (v) playHero(); else hero.video.pause(); });
   hero.video.addEventListener('loadeddata', function () { heroWipe.draw(); drawAmbient(); });
   setHeroScene(0, true);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitWord);
+  window.addEventListener('resize', fitWord);
 
   // =====================================================================
   // Comparator
