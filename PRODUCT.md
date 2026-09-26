@@ -41,8 +41,15 @@ ViTeX-Bench is OCR-anchored: it measures whether the edited region reads as the 
 
 - Names exactly: **ViTeX-Bench**, **ViTeX-Dataset**, **ViTeX-Edit-14B**.
 - Authors: Xinghao Chen¹, Xiangbo Gao¹, Jiongze Yu¹, Yuheng Wu², Zhengzhong Tu¹. ¹ Texas A&M University, ² KAIST. Contact: Xinghao Chen (xhc42@outlook.com), Zhengzhong Tu.
-- The work is credited to the **TACO Group** (`https://taco-group.github.io/`) at **Texas A&M University**, as typeset text with links, no logos (confirmed 2026-09-26). KAIST stays in the author affiliations.
+- The work is credited to the **TACO Group** (`https://taco-group.github.io/`) at **Texas A&M University**, as typeset text with links, no logos (confirmed 2026-09-26). KAIST stays in the author affiliations but not in the footer credit.
 - The user asked for the homepage to stay close to or consistent with the leaderboard's look (see that repo's DESIGN.md): elegant and minimal, clearly legible type, light/dark toggle, comfortable on phone and desktop.
+- Revisions the user asked for on 2026-09-26, after the first redesign:
+  - The page must not be purely black and white; use colour sparingly to accent and emphasise.
+  - The first viewport leads with the paper title, authors and venue, then the teaser video. The teaser advances to the next scene on its own after a while.
+  - NeurIPS 2026 should stand out.
+  - Paper figures are shown in colour.
+  - No single release link is visually privileged over the others.
+  - The comparison section is not called "Methods", because in a paper that word means the authors' own method.
 - Voice: scholarly and precise; states what is measured and what is not; never overclaims.
 - Existing assets: `static/images/vitex_icon.png`, `favicon.ico`, `favicon-256.png`.
 

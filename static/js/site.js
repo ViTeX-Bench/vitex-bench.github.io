@@ -17,7 +17,7 @@
   function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
   var ARROW = '<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13.5 6.5 19 12l-5.5 5.5"/></svg>';
   var SYM = {
-    front: '<svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.5" class="sym-ring"/><circle cx="8" cy="8" r="3.4" class="sym-fill"/></svg>',
+    front: '<svg class="sym--front" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.5" class="sym-ring"/><circle cx="8" cy="8" r="3.4" class="sym-fill"/></svg>',
     editor: '<svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="2.8" class="sym-fill"/></svg>',
     unranked: '<svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="4.2" class="sym-ring"/></svg>'
   };
@@ -203,25 +203,27 @@
   function splitWord(w) {
     return Array.prototype.map.call(w, function (c, i) { return '<span class="ch" style="--i:' + i + '">' + (c === ' ' ? '&nbsp;' : esc(c)) + '</span>'; }).join('');
   }
-  function fitWord() {
-    var word = $('hero-word'), box = word.parentNode, maxPx = window.innerWidth < 600 ? 104 : window.innerWidth < 1000 ? 136 : Math.min(184, window.innerWidth * 0.12);
-    word.style.fontSize = '100px';
-    var w = Math.max($('hero-src').offsetWidth, $('hero-tgt').offsetWidth) || 1;
-    word.style.fontSize = Math.min(maxPx, Math.floor(100 * (box.clientWidth - 4) / w)) + 'px';
-  }
-  function setHeroScene(i) {
+  var ADVANCE = 2; // full sweeps per scene before the teaser moves on
+  function setHeroScene(i, auto) {
     hero.i = i; var s = SCENES[i];
     markScenes($('hero-scenes'), i);
     $('hero-src').innerHTML = splitWord(s.src); $('hero-tgt').innerHTML = splitWord(s.tgt);
-    $('hero-pair-src').textContent = s.src; $('hero-pair-tgt').textContent = s.tgt;
-    fitWord();
+    $('hero-say').textContent = s.src + ' to ' + s.tgt;
     hero.state = null; heroWord(heroWipe ? heroWipe.p : 0.03);
     hero.poster = loadImage('static/images/posters/hero_' + s.id + '.jpg');
     hero.poster.onload = function () { if (heroWipe) heroWipe.draw(); drawAmbient(); };
     hero.video.src = 'static/videos/hero/' + s.id + '.mp4';
     hero.video.load();
     playHero();
-    if (heroWipe && heroWipe.sweep && !heroWipe.touched) heroWipe.sweepT0 = performance.now();
+    if (heroWipe && heroWipe.sweep && !heroWipe.touched) { heroWipe.sweepT0 = performance.now(); heroWipe.set(0.03, false); }
+    // choosing a scene by hand pauses the rotation; the sweep keeps going
+    if (!auto && heroWipe) hero.manual = true;
+    setProgress(0);
+  }
+  function setProgress(f) {
+    var b = $('hero-scenes').querySelector('[aria-checked="true"]');
+    $('hero-scenes').querySelectorAll('button').forEach(function (x) { if (x !== b) x.style.removeProperty('--prog'); });
+    if (b) b.style.setProperty('--prog', f.toFixed(3));
   }
   function playHero() {
     var pr = hero.video.play(); if (pr && pr.catch) pr.catch(function () {});
@@ -246,13 +248,19 @@
     p: reduced() ? 0.5 : 0.03, sweep: true, label: 'edit', getMedia: heroMedia,
     onMove: function (p) { heroWord(p); }
   });
-  heroWipe.after = function () { if ((ambientTick++ % 8) === 0) drawAmbient(); };
-  renderScenes($('hero-scenes'), 0, setHeroScene);
+  heroWipe.after = function (now) {
+    if ((ambientTick++ % 8) === 0) drawAmbient();
+    // time spent off screen does not count towards the rotation
+    if (hero.last && now - hero.last > 250) heroWipe.sweepT0 += now - hero.last;
+    hero.last = now;
+    if (!heroWipe.sweep || heroWipe.touched || hero.manual) { setProgress(0); return; }
+    var f = (now - heroWipe.sweepT0) / (CYCLE * ADVANCE);
+    if (f >= 1) setHeroScene((hero.i + 1) % SCENES.length, true); else setProgress(f);
+  };
+  renderScenes($('hero-scenes'), 0, function (i) { setHeroScene(i, false); });
   watch($('hero-wipe'), function (v) { if (v) playHero(); else hero.video.pause(); });
   hero.video.addEventListener('loadeddata', function () { heroWipe.draw(); drawAmbient(); });
-  setHeroScene(0);
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitWord);
-  window.addEventListener('resize', fitWord);
+  setHeroScene(0, true);
 
   // =====================================================================
   // Comparator
@@ -282,7 +290,7 @@
   }
   loadCmpScene();
   cmp.video.addEventListener('loadeddata', function () { $('cmp-status').hidden = true; cmpWipe.draw(); drawGrid(); });
-  watch($('methods'), function (v) {
+  watch($('compare'), function (v) {
     if (v && !cmp.wanted) { cmp.wanted = true; loadCmpScene(); }
     if (cmp.wanted) { if (v) { var pr = cmp.video.play(); if (pr && pr.catch) pr.catch(function () {}); } else cmp.video.pause(); }
   }, '400px 0px');
@@ -496,7 +504,7 @@
       if (!m) return [240, 240, 240];
       var n = parseInt(m[1], 16); return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
     }
-    colors = { fg: rgb('--fg'), fg3: rgb('--fg-3'), bg: rgb('--bg'), glow: parseFloat(cs.getPropertyValue('--glow')) || 0 };
+    colors = { fg: rgb('--fg'), fg3: rgb('--fg-3'), bg: rgb('--bg'), acc: rgb('--accent'), glow: parseFloat(cs.getPropertyValue('--glow')) || 0 };
   }
   function rgba(c, a) { return 'rgba(' + c[0] + ',' + c[1] + ',' + c[2] + ',' + a + ')'; }
   function makeScale(k, pts) {
@@ -657,11 +665,11 @@
         .sort(function (a, b) { return a.z - b.z; })
         .forEach(function (t) {
           ctx.beginPath(); ctx.moveTo(t.q[0].x, t.q[0].y); ctx.lineTo(t.q[1].x, t.q[1].y); ctx.lineTo(t.q[2].x, t.q[2].y); ctx.closePath();
-          ctx.fillStyle = rgba(fg, (colors.glow ? 0.07 : 0.05) * meshA); ctx.fill();
-          ctx.strokeStyle = rgba(fg, (colors.glow ? 0.42 : 0.5) * meshA); ctx.lineWidth = 1; ctx.stroke();
+          ctx.fillStyle = rgba(colors.acc, (colors.glow ? 0.12 : 0.1) * meshA); ctx.fill();
+          ctx.strokeStyle = rgba(colors.acc, (colors.glow ? 0.6 : 0.7) * meshA); ctx.lineWidth = 1; ctx.stroke();
         });
     } else if (meshA > 0 && mesh.pts.length === 2) {
-      line(P, mesh.pts[0], mesh.pts[1], rgba(fg, 0.42 * meshA), 1);
+      line(P, mesh.pts[0], mesh.pts[1], rgba(colors.acc, 0.6 * meshA), 1);
     }
 
     var I = P([1, 1, 1]), spike = small ? 22 : 30;
@@ -700,11 +708,11 @@
       } else if (r.pareto) {
         if (colors.glow) {
           var g = ctx.createRadialGradient(q.x, q.y, 0, q.x, q.y, 20 * k);
-          g.addColorStop(0, rgba(fg, 0.34 * a)); g.addColorStop(1, rgba(fg, 0));
+          g.addColorStop(0, rgba(colors.acc, 0.45 * a)); g.addColorStop(1, rgba(colors.acc, 0));
           ctx.fillStyle = g; ctx.beginPath(); ctx.arc(q.x, q.y, 20 * k, 0, 6.2832); ctx.fill();
         }
-        ctx.beginPath(); ctx.arc(q.x, q.y, 4.4 * k, 0, 6.2832); ctx.fillStyle = rgba(fg, a); ctx.fill();
-        ctx.beginPath(); ctx.arc(q.x, q.y, 8.5 * k, 0, 6.2832); ctx.strokeStyle = rgba(fg, 0.45 * a); ctx.lineWidth = 1; ctx.stroke();
+        ctx.beginPath(); ctx.arc(q.x, q.y, 4.4 * k, 0, 6.2832); ctx.fillStyle = rgba(colors.acc, Math.min(1, a + 0.15)); ctx.fill();
+        ctx.beginPath(); ctx.arc(q.x, q.y, 8.5 * k, 0, 6.2832); ctx.strokeStyle = rgba(colors.acc, 0.6 * a); ctx.lineWidth = 1; ctx.stroke();
       } else {
         ctx.beginPath(); ctx.arc(q.x, q.y, 2.8 * k * (is3d ? 0.7 + 0.3 * a : 1), 0, 6.2832); ctx.fillStyle = rgba(fg, 0.62 * a); ctx.fill();
       }
@@ -813,7 +821,7 @@
   $('sky-pick').addEventListener('click', function (e) {
     var b = e.target.closest('[data-watch]'); if (!b) return;
     setMode('compare'); pickMethod(methodByName(b.getAttribute('data-watch')));
-    $('methods').scrollIntoView({ behavior: reduced() ? 'auto' : 'smooth', block: 'start' });
+    $('compare').scrollIntoView({ behavior: reduced() ? 'auto' : 'smooth', block: 'start' });
   });
   function initSky() {
     canvas.addEventListener('pointerdown', function (e) { drag = { x: e.clientX, y: e.clientY, yaw: cam.yaw, pitch: cam.pitch, moved: false, id: e.pointerId }; });
