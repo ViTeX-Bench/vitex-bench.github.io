@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <meta name="title" content="ViTeX-Bench: Benchmarking High Fidelity Video Scene Text Editing">
-  <meta name="description" content="A 387-clip paired dataset, a 13-metric three-axis evaluation protocol, and an open reference model (ViTeX-Edit-14B) for video scene text editing. Leaderboard sorted by TextScore = geomean(SeqAcc, CharAcc, TTS).">
-  <meta name="keywords" content="video scene text editing, video editing, scene text, benchmark, NeurIPS 2026, dataset, leaderboard, TextScore, ViTeX-Bench, ViTeX-Edit-14B">
+  <meta name="description" content="A 387-clip paired dataset, a 13-metric three-axis evaluation protocol, and an open reference model (ViTeX-Edit-14B) for video scene text editing. Results are reported on one primary metric per axis with a Pareto comparison.">
+  <meta name="keywords" content="video scene text editing, video editing, scene text, benchmark, NeurIPS 2026, dataset, leaderboard, ViTeX-Bench, ViTeX-Edit-14B">
   <meta name="author" content="Xinghao Chen, Xiangbo Gao, Jiongze Yu, Yuheng Wu, Zhengzhong Tu">
   <meta name="robots" content="index, follow">
   <meta name="language" content="English">
@@ -14,14 +14,14 @@
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="ViTeX-Bench">
   <meta property="og:title" content="ViTeX-Bench: Benchmarking High Fidelity Video Scene Text Editing">
-  <meta property="og:description" content="A 387-clip paired dataset, a 13-metric three-axis evaluation protocol, and an open reference model (ViTeX-Edit-14B) for video scene text editing. Leaderboard sorted by TextScore = geomean(SeqAcc, CharAcc, TTS).">
+  <meta property="og:description" content="A 387-clip paired dataset, a 13-metric three-axis evaluation protocol, and an open reference model (ViTeX-Edit-14B) for video scene text editing. Results are reported on one primary metric per axis with a Pareto comparison.">
   <meta property="og:url" content="https://vitex-bench.github.io/">
   <meta property="og:image" content="https://vitex-bench.github.io/static/images/vitex_icon.png">
   <meta property="og:image:alt" content="ViTeX-Bench">
 
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="ViTeX-Bench: Benchmarking High Fidelity Video Scene Text Editing">
-  <meta name="twitter:description" content="A 387-clip paired dataset, a 13-metric three-axis evaluation protocol, and an open reference model (ViTeX-Edit-14B) for video scene text editing. Leaderboard sorted by TextScore = geomean(SeqAcc, CharAcc, TTS).">
+  <meta name="twitter:description" content="A 387-clip paired dataset, a 13-metric three-axis evaluation protocol, and an open reference model (ViTeX-Edit-14B) for video scene text editing. Results are reported on one primary metric per axis with a Pareto comparison.">
   <meta name="twitter:image" content="https://vitex-bench.github.io/static/images/vitex_icon.png">
 
   <meta name="citation_title" content="ViTeX-Bench: Benchmarking High Fidelity Video Scene Text Editing">
@@ -302,6 +302,8 @@
       background: #ffd1d8; color: #7d122c; margin-left: 0.4rem;
     }
 
+    .vt-lb thead th.primary { background: #dde8f5; color: var(--vt-navy); }
+    .vt-lb tr.ref td { color: #a3acb9; font-style: italic; }
     section { scroll-margin-top: 2rem; }
   </style>
 </head>
@@ -360,7 +362,7 @@
                   </a>
                 </span>
                 <span class="link-block">
-                  <a href="https://huggingface.co/spaces/ViTeX-Bench/ViTeX-Bench-Leaderboard" target="_blank"
+                  <a href="https://vitex-bench.github.io/ViTeX-Bench-Leaderboard/" target="_blank"
                      class="external-link button is-normal is-rounded is-dark">
                     <span class="icon">🏆</span>
                     <span>Leaderboard</span>
@@ -426,13 +428,13 @@
 <section class="hero teaser vt-tight">
   <div class="container is-max-desktop">
     <div class="vt-figure">
-      <img src="static/images/teaser.png" alt="ViTeX-Bench teaser: source-target task and three-axis evaluation" loading="lazy"/>
+      <img src="static/images/teaser.jpg" alt="ViTeX-Bench overview: paired training data, evaluation input, baseline failures, and three-axis evaluation" loading="lazy"/>
       <div class="vt-figcap">
-        <b>The video scene text editing task and ViTeX-Bench protocol.</b>
-        Given a source video <i>V</i>, a text-region mask <i>M</i>, and a source–target string pair
-        (<i>s</i><sub>src</sub>, <i>s</i><sub>tgt</sub>), the task is to edit <i>only</i> the masked
-        scene text. Representative outputs from four method families exhibit distinct failure modes,
-        and ViTeX-Bench scores each edit along three axes: text correctness, visual quality, and edit locality.
+        <b>Overview of ViTeX-Bench.</b> Paired training examples from ViTeX-Dataset (top) illustrate the
+        paired data across diverse text-motion conditions. Each benchmark task provides a source video <i>V</i>,
+        a text-region mask <i>M</i>, and a source–target string pair (<i>s</i><sub>src</sub>, <i>s</i><sub>tgt</sub>).
+        Representative baseline outputs exhibit distinct failure modes, and ViTeX-Bench scores each edit along
+        three axes — text correctness, visual quality, and edit locality — with 13 metrics in total.
       </div>
     </div>
   </div>
@@ -448,31 +450,22 @@
         <h2 class="title is-3">Abstract</h2>
         <div class="content has-text-justified">
           <p>
-            Video scene text editing aims to replace text appearing on scene surfaces in a video,
-            such as storefront signs, whiteboards, and product labels, while preserving the surrounding
-            content, motion, and camera dynamics. Although scene text editing has been extensively
-            studied for still images, its video counterpart remains underdeveloped. Existing resources
-            do not provide paired edits over real-world videos, current protocols rarely measure whether
-            the edited region reads as the target string over time, and there is no large-scale
-            open-source benchmark for systematic comparison.
-            To close these gaps, we introduce <b>ViTeX-Bench</b>, a comprehensive benchmark suite for
-            high-fidelity and temporally consistent video scene text editing.
-            Specifically, we first built <b>ViTeX-Dataset</b>, containing 387 real-world 720p videos
-            with precise text-region masks and editing instructions; the 230-clip training split provides
-            the first such resource with paired editing results built through a semi-automatic pipeline,
-            with the rest forming the evaluation set for standardized benchmarking.
-            In ViTeX-Bench, we propose a three-axis evaluation protocol — text correctness, visual
-            quality, and edit locality — totalling 13 metrics that combine character-level OCR signals
-            with motion and preservation metrics.
-            Our benchmarking experiments indicate that all eight leading video editing models, both
-            public and commercial, fail in distinct ways: they either flicker or drift over time, or
-            simply fail to produce the requested editing effects.
-            To further validate the efficacy of our proposed dataset, we trained <b>ViTeX-Edit-14B</b>
-            on the paired training split with a motion-aligned glyph-video conditioning stream.
-            We show that, trained on only 230 high-quality paired videos, ViTeX-Edit-14B achieves the
-            strongest CharAcc among video-native editors (0.688, +11.1% over VideoPainter) and leads
-            three ranked temporal metrics, reducing the previous best by 2.1% (Flicker<sub>f</sub>),
-            6.6% (Flicker<sub>c</sub>), and 1.9% (Warp<sub>c</sub>), respectively.
+            Video scene text editing requires accurate character replacement while preserving the surrounding
+            scene and its motion. Existing resources offer limited paired real-video data, and general
+            video-editing metrics do not directly measure whether the requested text remains correct over time.
+            We introduce <b>ViTeX-Bench</b>, a benchmark suite comprising <b>ViTeX-Dataset</b> and a three-axis
+            evaluation protocol. The dataset contains 387 real-world 720p videos with text-region masks and
+            editing instructions: 230 provide reviewed, pipeline-generated paired edits for training, and 157
+            form a frozen evaluation split. The protocol evaluates text correctness, visual and temporal quality,
+            and edit locality through 13 metrics, with one primary metric per axis and a Pareto comparison of
+            their trade-offs. OCR calibration, human evaluation, and annotation-sensitivity analyses support the
+            interpretation of these scores. Across eight baselines from four editing families, accurate text,
+            temporal stability, and scene preservation remain difficult to achieve together. We also release
+            <b>ViTeX-Edit-14B</b>, an open-source reference editor fine-tuned on the paired training split with
+            motion-aligned glyph-video conditioning. It achieves CharAcc 0.688, the highest mean among the
+            evaluated video-native editors, and the lowest comparable text-crop Warp among raw editor outputs.
+            ViTeX-Bench provides a reproducible foundation for studying these trade-offs in localized,
+            predominantly Latin-script video scene text.
           </p>
         </div>
       </div>
@@ -494,29 +487,29 @@
         <div class="vt-icon">📊</div>
         <h4>ViTeX-Dataset</h4>
         <p>
-          The first paired real-video resource for video scene text editing, releasing both
-          a training split with paired edited references and an evaluation split. It closes
-          the paired-data gap left open by image-only datasets and by STRIVE, which only have
-          synthetic paired data and unpaired real-world data.
+          387 real-world source videos with per-frame text-region masks and source–target string
+          instructions. A human-in-the-loop pipeline produces reviewed paired edits for the 230 training
+          videos; the remaining 157 form a frozen evaluation split, documented with coverage statistics
+          and annotation details.
         </p>
       </div>
       <div class="vt-card">
         <div class="vt-icon">🎯</div>
         <h4>ViTeX-Bench</h4>
         <p>
-          A task-specific evaluation protocol that scores character-level correctness,
-          temporal visual quality, and edit locality on three complementary axes, released
-          with a cross-family reference grid covering all four practical strategies.
+          13 complementary metrics across text correctness, visual and temporal quality, and edit locality,
+          with one primary metric per axis and a Pareto comparison of their trade-offs. OCR calibration, human
+          evaluation, and annotation-sensitivity analyses assess the reliability of the measurements.
         </p>
       </div>
       <div class="vt-card">
         <div class="vt-icon">🤖</div>
         <h4>ViTeX-Edit-14B</h4>
         <p>
-          An open-source reference editor that augments Wan2.1-VACE-14B with a glyph-video
-          conditioning pathway for target-character identity and source-aligned motion.
-          We fine-tune it on the ViTeX-Dataset training split and release the trained weights
-          as a reproducible baseline for the public leaderboard.
+          An open-source reference editor that adapts a pretrained Wan2.1-VACE-14B backbone with a
+          motion-aligned glyph-video stream, supplying target-character structure along the source text
+          trajectory. It demonstrates the utility of the training split and provides a starting point
+          for future work on the benchmark.
         </p>
       </div>
     </div>
@@ -563,7 +556,7 @@
   <div class="container is-max-desktop">
     <h2 class="title is-3 has-text-centered">Evaluation protocol</h2>
     <p class="subtitle has-text-centered" style="color:#697386;">
-      Three orthogonal axes, thirteen complementary metrics, the vector is the unit of report.
+      Three axes, thirteen complementary metrics, one primary metric per axis.
     </p>
 
     <svg class="vt-triangle" viewBox="0 0 800 580" xmlns="http://www.w3.org/2000/svg"
@@ -603,16 +596,22 @@
 
     <div class="content" style="margin-top: 1.5rem;">
       <p style="color: var(--vt-slate); line-height: 1.7;">
-        <b style="color:var(--vt-navy);">Each method is reported as a thirteen-metric vector</b> along three
-        orthogonal axes. No cross-axis aggregate is published, because no axis substitutes for another:
-        a method with the wrong characters is not redeemed by visual quality, and a method that re-renders
-        the entire scene is not redeemed by text accuracy. Two methods with similar overall numbers can
-        differ on which axis they fail.
-        <b style="color:var(--vt-navy);">For ranking purposes only</b>, the public leaderboard sorts on
-        <b>TextScore</b> = ∛(<code>SeqAcc</code> · <code>CharAcc</code> · <code>TTS</code>) — the geometric
-        mean of the three text-correctness primitives. SeqAcc = 0 collapses TextScore to zero, the intended
-        semantics for methods that never produce the requested target string. The remaining ten primitives
-        appear next to TextScore on every leaderboard row, so the full vector is always visible.
+        <b style="color:var(--vt-navy);">Each method is reported with the full thirteen-metric vector.</b>
+        One metric per axis is designated as primary: <code>SeqAcc</code> (↑) for text correctness,
+        <code>Warp<sub>c</sub></code> (↓) for temporal quality in the text region, and
+        <code>DreamSim<sub>loc</sub></code> (↓) for edit locality. Trade-offs are compared through the
+        <b>Pareto set</b> on these three primaries: a method is dominated when another is at least as good on
+        all three and strictly better on one. No weighted aggregate is defined, because its weights would
+        impose an application-specific exchange rate between character errors, temporal artifacts, and
+        background changes. Pareto membership alone does not imply a successful edit — Wan2.1-VACE-14B is
+        non-dominated at SeqAcc = 0 — so the remaining ten metrics stay visible as diagnostics.
+      </p>
+      <p style="color: var(--vt-slate); line-height: 1.7;">
+        <b style="color:var(--vt-navy);">Calibration and robustness.</b> Method-blinded human transcription
+        agrees with the OCR-based method ranking at Spearman ρ = 0.95. Three non-author raters scored 70
+        outputs; their ratings correlate with SeqAcc, Warp<sub>c</sub>, and DreamSim<sub>loc</sub> at +0.71,
+        −0.40, and −0.53. Bootstrap resampling of the evaluation split gives mean Kendall τ = 0.936 against
+        the full SeqAcc ranking. Protocols and limitations are detailed in the paper appendix.
       </p>
     </div>
   </div>
@@ -620,56 +619,57 @@
 <!-- End benchmark protocol -->
 
 
-<!-- Leaderboard table: full thirteen-metric vector + TextScore sort key -->
+<!-- Leaderboard table: rendered from the ViTeX-Bench-Leaderboard repo (GitHub) -->
 <section class="section hero is-light">
   <div class="container is-max-desktop">
     <h2 class="title is-3 has-text-centered">Public leaderboard</h2>
     <p class="subtitle has-text-centered" style="color:#697386;">
-      Ranked by <b>TextScore</b>, the geometric mean of the three text-correctness primitives.
-      Click any column header to re-sort by that metric.
+      Full 13-metric vector with the three primary metrics highlighted and the Pareto set marked.
+      Click any column header to re-sort.
     </p>
-
     <div class="vt-lb-wrap vt-lb-wide" style="margin-top: 1.5rem; overflow-x: auto;">
       <table class="vt-lb vt-lb-wide" id="leaderboard-table">
         <thead>
           <tr>
-            <th></th>
-            <th class="left">Method</th>
-            <th class="left">Fam</th>
-            <th class="left">Src</th>
-            <th>TextScore ↑</th>
-            <th>SeqAcc ↑</th>
-            <th>CharAcc ↑</th>
-            <th>TTS ↑</th>
-            <th>Flk_f ↓</th>
-            <th>Flk_c ↓</th>
-            <th>Wp_f ↓</th>
-            <th>Wp_c ↓</th>
-            <th>MUSIQ_f ↑</th>
-            <th>MUSIQ_c ↑</th>
-            <th>PSNR ↑</th>
-            <th>SSIM ↑</th>
-            <th>LPIPS ↓</th>
-            <th>DSim ↓</th>
+            <th class="left sortable" data-k="method">Method</th>
+            <th class="left sortable" data-k="family">Fam</th>
+            <th class="sortable" data-k="pareto">Pareto</th>
+            <th class="sortable primary" data-k="SeqAcc" data-dir="up">SeqAcc ↑</th>
+            <th class="sortable" data-k="CharAcc" data-dir="up">CharAcc ↑</th>
+            <th class="sortable" data-k="TTS" data-dir="up">TTS ↑</th>
+            <th class="sortable" data-k="Flicker_full" data-dir="down">Flk_f ↓</th>
+            <th class="sortable" data-k="Flicker_crop" data-dir="down">Flk_c ↓</th>
+            <th class="sortable" data-k="Warp_full" data-dir="down">Wp_f ↓</th>
+            <th class="sortable primary" data-k="Warp_crop" data-dir="down">Wp_c ↓</th>
+            <th class="sortable" data-k="MUSIQ_full" data-dir="up">MUSIQ_f ↑</th>
+            <th class="sortable" data-k="MUSIQ_crop" data-dir="up">MUSIQ_c ↑</th>
+            <th class="sortable" data-k="PSNR_loc" data-dir="up">PSNR ↑</th>
+            <th class="sortable" data-k="SSIM_loc" data-dir="up">SSIM ↑</th>
+            <th class="sortable" data-k="LPIPS_loc" data-dir="down">LPIPS ↓</th>
+            <th class="sortable primary" data-k="DreamSim_loc" data-dir="down">DSim ↓</th>
           </tr>
         </thead>
         <tbody>
-          <tr><td class="vt-rank">1</td><td class="left method">TextCtrl</td><td class="left"><span class="vt-fam A">A</span></td><td class="left"><span class="vt-fam Admin">Admin</span></td><td class="score">0.5624</td><td>0.475</td><td>0.733</td><td>0.511</td><td>3.80</td><td>4.29</td><td>1.59</td><td>2.09</td><td>70.32</td><td>42.77</td><td>41.14</td><td>0.994</td><td>0.008</td><td>0.004</td></tr>
-          <tr><td class="vt-rank">2</td><td class="left method"><b>ViTeX-Edit-14B (Composite)</b></td><td class="left"><span class="vt-fam O">ours</span></td><td class="left"><span class="vt-fam Admin">Admin</span></td><td class="score">0.5410</td><td>0.345</td><td>0.689</td><td>0.666</td><td>3.73</td><td>3.83</td><td>1.51</td><td>1.56</td><td>70.27</td><td>44.94</td><td>42.95</td><td>0.992</td><td>0.006</td><td>0.002</td></tr>
-          <tr><td class="vt-rank">3</td><td class="left method"><b>ViTeX-Edit-14B</b></td><td class="left"><span class="vt-fam O">ours</span></td><td class="left"><span class="vt-fam Admin">Admin</span></td><td class="score">0.5338</td><td>0.341</td><td>0.688</td><td>0.648</td><td>3.27</td><td>3.42</td><td>1.55</td><td>1.53</td><td>69.64</td><td>43.53</td><td>29.08</td><td>0.951</td><td>0.060</td><td>0.024</td></tr>
-          <tr><td class="vt-rank">4</td><td class="left method">VideoPainter<sup>†</sup></td><td class="left"><span class="vt-fam C">C</span></td><td class="left"><span class="vt-fam Admin">Admin</span></td><td class="score">0.5151</td><td>0.365</td><td>0.619</td><td>0.606</td><td>2.38<sup>†</sup></td><td>2.62<sup>†</sup></td><td>2.93<sup>†</sup></td><td>3.35<sup>†</sup></td><td>67.16</td><td>40.59</td><td>28.56</td><td>0.915</td><td>0.104</td><td>0.024</td></tr>
-          <tr><td class="vt-rank">5</td><td class="left method">FLUX-Text</td><td class="left"><span class="vt-fam A">A</span></td><td class="left"><span class="vt-fam Admin">Admin</span></td><td class="score">0.5023</td><td>0.528</td><td>0.737</td><td>0.326</td><td>5.11</td><td>14.81</td><td>3.03</td><td>13.01</td><td>70.26</td><td>43.85</td><td>31.49</td><td>0.975</td><td>0.029</td><td>0.012</td></tr>
-          <tr><td class="vt-rank">6</td><td class="left method">RS-STE</td><td class="left"><span class="vt-fam A">A</span></td><td class="left"><span class="vt-fam Admin">Admin</span></td><td class="score">0.4908</td><td>0.354</td><td>0.626</td><td>0.534</td><td>3.73</td><td>3.66</td><td>1.61</td><td>1.81</td><td>69.57</td><td>34.26</td><td>37.00</td><td>0.983</td><td>0.024</td><td>0.007</td></tr>
-          <tr><td class="vt-rank">7</td><td class="left method">AnyText2</td><td class="left"><span class="vt-fam A">A</span></td><td class="left"><span class="vt-fam Admin">Admin</span></td><td class="score">0.4074</td><td>0.280</td><td>0.633</td><td>0.382</td><td>3.34</td><td>4.95</td><td>2.04</td><td>3.95</td><td>66.68</td><td>41.65</td><td>25.56</td><td>0.905</td><td>0.092</td><td>0.043</td></tr>
-          <tr><td class="vt-rank">8</td><td class="left method">TextCtrl + AnyV2V</td><td class="left"><span class="vt-fam B">B</span></td><td class="left"><span class="vt-fam Admin">Admin</span></td><td class="score">0.1649</td><td>0.057</td><td>0.308</td><td>0.257</td><td>4.98</td><td>4.98</td><td>4.11</td><td>3.97</td><td>69.41</td><td>33.85</td><td>21.08</td><td>0.785</td><td>0.225</td><td>0.073</td></tr>
-          <tr><td class="vt-rank">—</td><td class="left method" style="color:#697386;font-style:italic;">Identity (sanity)</td><td class="left"><span class="vt-fam O">—</span></td><td class="left"><span class="vt-fam Admin">Admin</span></td><td class="score num0">0.0000</td><td class="num0">0.000</td><td>0.317</td><td>0.760</td><td>3.72</td><td>3.68</td><td>1.46</td><td>1.27</td><td>70.33</td><td>45.12</td><td>100.00</td><td>1.000</td><td class="num0">0.000</td><td class="num0">0.000</td></tr>
-          <tr><td class="vt-rank">—</td><td class="left method">Wan2.1-VACE-14B</td><td class="left"><span class="vt-fam C">C</span></td><td class="left"><span class="vt-fam Admin">Admin</span></td><td class="score num0">0.0000</td><td class="num0">0.000</td><td>0.298</td><td>0.690</td><td>3.78</td><td>3.84</td><td>1.69</td><td>1.56</td><td>70.54</td><td>45.26</td><td>35.21</td><td>0.976</td><td>0.022</td><td>0.007</td></tr>
-          <tr><td class="vt-rank">—</td><td class="left method">Kling Video 3.0 Omni</td><td class="left"><span class="vt-fam D">D</span></td><td class="left"><span class="vt-fam Admin">Admin</span></td><td class="score num0">0.0000</td><td class="num0">0.000</td><td>0.208</td><td>0.641</td><td>4.25</td><td>4.08</td><td>3.12</td><td>2.90</td><td>72.23</td><td>47.75</td><td>21.18</td><td>0.843</td><td>0.176</td><td>0.061</td></tr>
+          <tr><td class="left"><a href="https://github.com/AMAP-ML/FluxText">FLUX-Text</a></td><td class="left">A</td><td>✓</td><td>0.528</td><td>0.737</td><td>0.326</td><td>5.11</td><td>14.81</td><td>3.03</td><td>13.01</td><td>70.26</td><td>43.85</td><td>31.49</td><td>0.975</td><td>0.029</td><td>0.012</td></tr>
+          <tr><td class="left"><a href="https://github.com/weichaozeng/TextCtrl">TextCtrl</a></td><td class="left">A</td><td>✓</td><td>0.475</td><td>0.734</td><td>0.511</td><td>3.80</td><td>4.29</td><td>1.59</td><td>2.09</td><td>70.32</td><td>42.77</td><td>41.14</td><td>0.994</td><td>0.008</td><td>0.004</td></tr>
+          <tr><td class="left"><a href="https://github.com/TencentARC/VideoPainter">VideoPainter †</a></td><td class="left">C</td><td>—</td><td>0.364</td><td>0.619</td><td>0.606</td><td>2.38†</td><td>2.62†</td><td>2.93†</td><td>3.35†</td><td>67.16</td><td>40.59</td><td>28.56</td><td>0.915</td><td>0.104</td><td>0.024</td></tr>
+          <tr><td class="left"><a href="https://github.com/honglei-zhao/RS-STE">RS-STE</a></td><td class="left">A</td><td>✓</td><td>0.354</td><td>0.626</td><td>0.534</td><td>3.73</td><td>3.66</td><td>1.61</td><td>1.81</td><td>69.57</td><td>34.26</td><td>37.00</td><td>0.983</td><td>0.024</td><td>0.007</td></tr>
+          <tr><td class="left"><a href="https://huggingface.co/ViTeX-Bench/ViTeX-Edit-14B">ViTeX-Edit-14B</a></td><td class="left">Reference</td><td>✓</td><td>0.341</td><td>0.688</td><td>0.648</td><td>3.27</td><td>3.42</td><td>1.55</td><td>1.53</td><td>69.64</td><td>43.53</td><td>29.08</td><td>0.951</td><td>0.060</td><td>0.024</td></tr>
+          <tr><td class="left"><a href="https://github.com/tyxsspa/AnyText2">AnyText2</a></td><td class="left">A</td><td></td><td>0.280</td><td>0.633</td><td>0.382</td><td>3.34</td><td>4.95</td><td>2.04</td><td>3.95</td><td>66.68</td><td>41.65</td><td>25.56</td><td>0.905</td><td>0.091</td><td>0.043</td></tr>
+          <tr><td class="left">TextCtrl + AnyV2V</td><td class="left">B</td><td></td><td>0.057</td><td>0.308</td><td>0.257</td><td>4.98</td><td>4.98</td><td>4.11</td><td>3.97</td><td>69.41</td><td>33.85</td><td>21.08</td><td>0.785</td><td>0.225</td><td>0.073</td></tr>
+          <tr><td class="left"><a href="https://huggingface.co/Wan-AI/Wan2.1-VACE-14B">Wan2.1-VACE-14B</a></td><td class="left">C</td><td>✓</td><td>0.000</td><td>0.298</td><td>0.689</td><td>3.78</td><td>3.84</td><td>1.69</td><td>1.56</td><td>70.54</td><td>45.26</td><td>35.21</td><td>0.976</td><td>0.022</td><td>0.007</td></tr>
+          <tr><td class="left">Kling Video 3.0 Omni</td><td class="left">D</td><td></td><td>0.000</td><td>0.208</td><td>0.641</td><td>4.25</td><td>4.08</td><td>3.12</td><td>2.90</td><td>72.23</td><td>47.75</td><td>21.18</td><td>0.843</td><td>0.176</td><td>0.061</td></tr>
+          <tr class="ref"><td class="left"><a href="https://huggingface.co/ViTeX-Bench/ViTeX-Edit-14B">ViTeX-Edit-14B (Composite)</a></td><td class="left">Reference</td><td>—</td><td>0.345</td><td>0.689</td><td>0.666</td><td>3.73</td><td>3.83</td><td>1.51</td><td>1.56</td><td>70.27</td><td>44.94</td><td>42.95</td><td>0.993</td><td>0.006</td><td>0.002</td></tr>
+          <tr class="ref"><td class="left">Source video</td><td class="left">reference</td><td>—</td><td>0.000</td><td>0.317</td><td>0.760</td><td>3.72</td><td>3.68</td><td>1.46</td><td>1.27</td><td>70.33</td><td>45.12</td><td>∞</td><td>1.000</td><td>0.000</td><td>0.000</td></tr>
         </tbody>
       </table>
     </div>
+    <p style="color:#697386; font-size:0.85rem; margin-top:0.75rem;">
+      † VideoPainter's Flicker/Warp values come from interpolated frames and are excluded from temporal
+      comparisons. The Composite row (post-processing) and the Source video reference are shown but not ranked.
+    </p>
     <div style="text-align: center; margin-top: 1.5rem;">
-      <a class="vt-cta" href="https://huggingface.co/spaces/ViTeX-Bench/ViTeX-Bench-Leaderboard" target="_blank">
+      <a class="vt-cta" href="https://vitex-bench.github.io/ViTeX-Bench-Leaderboard/" target="_blank">
         🏆 View leaderboard &amp; submit
       </a>
     </div>
@@ -773,8 +773,7 @@
         scene-text editor, but the same frame-independence that yields character precision removes any
         temporal coupling. FLUX-Text registers near-correct characters on individual frames yet cycles
         through different glyph shapes between frames, so high SeqAcc / CharAcc co-occur with low TTS and
-        an extreme Flicker<sub>c</sub> spike — a structural property of per-frame editing rather than a
-        tunable defect.
+        an extreme Flicker<sub>c</sub> spike, consistent with editing each frame independently.
       </p>
     </div>
 
@@ -802,9 +801,9 @@
       </div>
       <p>
         Kling produces a high-quality clip — both MUSIQ axes lead the table — but the rendered glyphs spell
-        <code>ZOO</code> rather than the requested target <code>COC</code>. A benchmark that aggregated visual
-        quality without conditioning on correctness would put Kling at the top of the leaderboard; the
-        three-axis structure of ViTeX-Bench makes this divergence explicit.
+        <code>ZOO</code> rather than the requested target <code>COC</code>. Visual polish and successful text
+        replacement are distinct properties; reporting correctness alongside visual quality makes this
+        divergence explicit.
       </p>
     </div>
 
@@ -863,237 +862,17 @@
 </section>
 
 
+<script src="https://vitex-bench.github.io/ViTeX-Bench-Leaderboard/leaderboard.js"></script>
 <script>
-/* ----- Live sync of leaderboard table from HF Space ----------------------
- * Fetches submissions.jsonl from the ViTeX-Bench-Leaderboard Space, filters to
- * approved entries, sorts by TextScore descending (ties by CharAcc then TTS),
- * and replaces the <tbody> of #leaderboard-table. Falls back silently if the
- * fetch fails so the pre-rendered baselines stay visible.
- * -------------------------------------------------------------------------*/
-(function () {
-  const LEADERBOARD_URL =
-    'https://huggingface.co/spaces/ViTeX-Bench/ViTeX-Bench-Leaderboard/resolve/main/submissions.jsonl';
-
-  function familyClass(fam) {
-    const s = (fam || '').toString();
-    if (/^A/i.test(s)) return 'A';
-    if (/^B/i.test(s)) return 'B';
-    if (/^C/i.test(s)) return 'C';
-    if (/^D/i.test(s)) return 'D';
-    return 'O';
-  }
-  function familyShort(fam, method) {
-    const s = (fam || '').trim();
-    if (/identity/i.test(method || '')) return '—';
-    if (!s || s === '—') return 'ours';
-    if (/^ref/i.test(s) || /vitex-(edit-)?14b/i.test(method || '')) return 'ours';
-    const c = s.charAt(0);
-    if ('ABCD'.indexOf(c) >= 0) return c;
-    return 'ours';
-  }
-  function fmt(v, d, dimZero) {
-    if (v === null || v === undefined || isNaN(v)) return '—';
-    const f = Number(v);
-    const s = f.toFixed(d);
-    if (dimZero && f === 0) return '<span class="num0">' + s + '</span>';
-    return s;
-  }
-  function isOurs(method, family) {
-    return /vitex-(edit-)?14b/i.test(method || '') ||
-           /^ref|reference/i.test(family || '');
-  }
-  function isSanity(method) {
-    return /identity/i.test(method || '');
-  }
-  function methodCell(e) {
-    const dagger = (e.method || '').toLowerCase().includes('videopainter') ? '<sup>†</sup>' : '';
-    const name = (e.method || '') + dagger;
-    if (isSanity(e.method)) {
-      return '<span style="color:#697386;font-style:italic;">' + name + '</span>';
-    }
-    return isOurs(e.method, e.family) ? '<b>' + name + '</b>' : name;
-  }
-  function rankCell(e, rankActive) {
-    if (isSanity(e.method)) return '<td class="vt-rank">—</td>';
-    const ts = e.TextScore;
-    if (ts !== null && ts !== undefined && Number(ts) === 0) {
-      return '<td class="vt-rank">—</td>';
-    }
-    return '<td class="vt-rank">' + rankActive + '</td>';
-  }
-  function noteOnVideoPainter(e) {
-    return /videopainter/i.test(e.method || '');
-  }
-
-  function buildRows(entries) {
-    let activeRank = 0;
-    return entries.map(function (e) {
-      const ts = e.TextScore;
-      const tsZero = ts !== null && ts !== undefined && Number(ts) === 0;
-      const sanity = isSanity(e.method);
-      if (!sanity && !tsZero) activeRank += 1;
-      const rank = rankCell(e, activeRank);
-      const dagger = noteOnVideoPainter(e);
-      const dimSc = tsZero || sanity ? ' num0' : '';
-      const dim = (tsZero || sanity);
-      const submitter = ((e.submitter || 'user') + '').toLowerCase();
-      const srcCls = submitter === 'admin' ? 'Admin' : 'User';
-      const srcLabel = submitter === 'admin' ? 'Admin' : 'User';
-      return '<tr>' +
-        rank +
-        '<td class="left method">' + methodCell(e) + '</td>' +
-        '<td class="left"><span class="vt-fam ' + familyClass(e.family) + '">' + familyShort(e.family, e.method) + '</span></td>' +
-        '<td class="left"><span class="vt-fam ' + srcCls + '">' + srcLabel + '</span></td>' +
-        '<td class="score' + dimSc + '">' + fmt(ts, 4, dim) + '</td>' +
-        '<td>' + fmt(e.SeqAcc, 3, true) + '</td>' +
-        '<td>' + fmt(e.CharAcc, 3) + '</td>' +
-        '<td>' + fmt(e.TTS, 3) + '</td>' +
-        '<td>' + fmt(e.Flicker_full, 2) + (dagger ? '<sup>†</sup>' : '') + '</td>' +
-        '<td>' + fmt(e.Flicker_crop, 2) + (dagger ? '<sup>†</sup>' : '') + '</td>' +
-        '<td>' + fmt(e.Warp_full, 2) + (dagger ? '<sup>†</sup>' : '') + '</td>' +
-        '<td>' + fmt(e.Warp_crop, 2) + (dagger ? '<sup>†</sup>' : '') + '</td>' +
-        '<td>' + fmt(e.MUSIQ_full, 2) + '</td>' +
-        '<td>' + fmt(e.MUSIQ_crop, 2) + '</td>' +
-        '<td>' + fmt(e.PSNR_loc, 2) + '</td>' +
-        '<td>' + fmt(e.SSIM_loc, 3) + '</td>' +
-        '<td>' + fmt(e.LPIPS_loc, 3, true) + '</td>' +
-        '<td>' + fmt(e.DreamSim_loc, 4, true) + '</td>' +
-      '</tr>';
-    }).join('');
-  }
-
-  fetch(LEADERBOARD_URL, { cache: 'no-cache' })
-    .then(function (r) {
-      if (!r.ok) throw new Error('HTTP ' + r.status);
-      return r.text();
+/* Live leaderboard from the ViTeX-Bench-Leaderboard GitHub repo; the static
+ * rows above stay visible if the fetch fails. */
+if (window.ViTeXLeaderboard) {
+  ViTeXLeaderboard.load('https://vitex-bench.github.io/ViTeX-Bench-Leaderboard/data/submissions.jsonl')
+    .then(function (rows) {
+      ViTeXLeaderboard.render(document.getElementById('leaderboard-table'), rows);
     })
-    .then(function (text) {
-      const entries = text.split('\n')
-        .filter(function (l) { return l.trim().length > 0; })
-        .map(function (l) { try { return JSON.parse(l); } catch (e) { return null; } })
-        .filter(function (e) { return e && e.status === 'approved' &&
-                                     typeof e.TextScore === 'number'; });
-      if (entries.length === 0) return;
-      /* Sort: TextScore desc, then CharAcc desc (tiebreak), then TTS desc.
-         Identity (sanity) bumped to the bottom of the TextScore=0 group. */
-      entries.sort(function (a, b) {
-        const sa = a.TextScore, sb = b.TextScore;
-        if (sb !== sa) return sb - sa;
-        const sanA = /identity/i.test(a.method || '') ? 1 : 0;
-        const sanB = /identity/i.test(b.method || '') ? 1 : 0;
-        if (sanA !== sanB) return sanA - sanB;
-        if ((b.CharAcc || 0) !== (a.CharAcc || 0)) return (b.CharAcc || 0) - (a.CharAcc || 0);
-        return (b.TTS || 0) - (a.TTS || 0);
-      });
-
-      const tbody = document.querySelector('#leaderboard-table tbody');
-      if (tbody) tbody.innerHTML = buildRows(entries);
-      if (typeof window.__vitexRefreshShading === 'function') {
-        window.__vitexRefreshShading();
-      }
-    })
-    .catch(function (err) {
-      /* Static rows already render the paper baselines; silently ignore. */
-      console.warn('[ViTeX] live leaderboard sync failed, falling back to static data:', err);
-    });
-})();
-
-/* ----- Leaderboard: click-to-sort + above/below-mean shading ----------- *
- * applyMeanShading() tints each numeric cell light green or light pink
- * depending on whether it beats the column mean (in the natural higher /
- * lower-better direction implied by the ↑ / ↓ arrow on the header). The
- * sort handler re-sorts on header click and re-applies ranks afterward.
- * Both run after live-sync replaces tbody innerHTML.
- * ----------------------------------------------------------------------*/
-(function () {
-  const table = document.querySelector('#leaderboard-table');
-  if (!table) return;
-  const tbody = table.querySelector('tbody');
-  const headers = Array.from(table.querySelectorAll('thead th'));
-
-  function cellNumber(cell) {
-    if (!cell) return null;
-    const txt = (cell.textContent || '').replace(/[†\s]/g, '');
-    if (txt === '' || txt === '—') return null;
-    const n = Number(txt);
-    return isNaN(n) ? null : n;
-  }
-  function cellText(cell) {
-    return (cell && cell.textContent || '').replace(/\s+/g, ' ').trim();
-  }
-  function dirFor(th) {
-    const t = th.textContent || '';
-    if (t.indexOf('↑') >= 0) return 'up';
-    if (t.indexOf('↓') >= 0) return 'down';
-    return null;
-  }
-
-  function applyMeanShading() {
-    const rows = Array.from(tbody.querySelectorAll('tr'));
-    rows.forEach(r => Array.from(r.cells).forEach(c => {
-      c.classList.remove('cell-good', 'cell-bad');
-    }));
-    headers.forEach((th, col) => {
-      const dir = dirFor(th);
-      if (!dir) return;
-      const values = [];
-      rows.forEach(r => {
-        const cell = r.children[col];
-        if (!cell || cell.classList.contains('score')) return;
-        const n = cellNumber(cell);
-        if (n !== null) values.push(n);
-      });
-      if (values.length < 2) return;
-      const mean = values.reduce((a, b) => a + b, 0) / values.length;
-      rows.forEach(r => {
-        const cell = r.children[col];
-        if (!cell || cell.classList.contains('score')) return;
-        const n = cellNumber(cell);
-        if (n === null) return;
-        const better = (dir === 'up') ? n > mean : n < mean;
-        cell.classList.add(better ? 'cell-good' : 'cell-bad');
-      });
-    });
-  }
-
-  function sortBy(idx, dir) {
-    const rows = Array.from(tbody.querySelectorAll('tr'));
-    rows.sort((ra, rb) => {
-      const va = cellNumber(ra.children[idx]);
-      const vb = cellNumber(rb.children[idx]);
-      if (va !== null && vb !== null) return (va - vb) * dir;
-      if (va !== null) return -1;
-      if (vb !== null) return  1;
-      return cellText(ra.children[idx]).localeCompare(cellText(rb.children[idx])) * dir;
-    });
-    rows.forEach((row, k) => {
-      if (row.children[0] && row.children[0].classList.contains('vt-rank')) {
-        row.children[0].textContent = String(k + 1);
-      }
-      tbody.appendChild(row);
-    });
-    headers.forEach(h => h.classList.remove('sorted-active'));
-    headers[idx].classList.add('sorted-active');
-  }
-
-  let lastIdx = -1, lastDir = 0;
-  headers.forEach((th, i) => {
-    if (i === 0) return;
-    th.classList.add('sortable');
-    th.addEventListener('click', () => {
-      const txt = th.textContent || '';
-      const dir = (i === lastIdx) ? -lastDir : (txt.indexOf('↓') >= 0 ? +1 : -1);
-      lastIdx = i; lastDir = dir;
-      sortBy(i, dir);
-    });
-  });
-
-  // Expose a hook so the live-sync block can refresh shading after it
-  // replaces tbody.innerHTML with the latest leaderboard data.
-  window.__vitexRefreshShading = applyMeanShading;
-
-  applyMeanShading();
-})();
+    .catch(function (err) { console.warn('[ViTeX] leaderboard fetch failed:', err); });
+}
 </script>
 
 
