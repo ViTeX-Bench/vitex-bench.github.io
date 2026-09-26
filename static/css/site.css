@@ -196,6 +196,25 @@ html { scrollbar-color: var(--line-2) transparent; }
 .glyph__foot .scenes button::after { content: ""; position: absolute; left: 0; bottom: 0; height: 2px; width: calc(var(--prog, 0) * 100%); background: var(--accent); }
 .glyph__cap { margin: 18px 0 0; font-size: 13.5px; color: var(--fg-2); max-width: 44ch; }
 
+/* Desktop: the title block and the glyph stage share exactly one screen.
+   The stage takes whatever height is left; the wipe is sized from that
+   height (container units) so the clip is never cut off at the fold. */
+@media (min-width: 1101px) and (min-height: 560px) {
+  .fold { display: flex; flex-direction: column; height: clamp(560px, calc(100svh - 60px), 960px); }
+  .intro { flex: none; padding-top: clamp(24px, 4.5vh, 72px); }
+  .intro h1 { font-size: clamp(2.1rem, min(4.3vw, 6.2vh), 4rem); margin-bottom: clamp(14px, 2.4vh, 26px); max-width: 24ch; }
+  .venue { margin-top: clamp(12px, 2vh, 22px); }
+  .links { margin-top: clamp(14px, 2.6vh, 30px); }
+  .glyph { flex: 1 1 auto; min-height: 0; margin-top: clamp(12px, 2.5vh, 48px); }
+  .glyph__inner {
+    height: 100%; container-type: size; padding-top: clamp(14px, 2.5vh, 40px); padding-bottom: clamp(14px, 2.5vh, 36px);
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+  .glyph .wipe--hero { width: min(100cqh * 16 / 9, 64cqw); align-self: center; }
+  .glyph__foot { padding-top: clamp(10px, 1.8vh, 22px); }
+  .glyph__cap { margin-top: clamp(8px, 1.6vh, 18px); }
+}
+
 /* ---------- Wipe (shared by hero and comparator) ---------- */
 .wipe {
   --p: 0.5;

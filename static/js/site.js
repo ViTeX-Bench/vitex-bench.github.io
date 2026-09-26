@@ -205,6 +205,12 @@
   }
   function fitWord() {
     var word = $('hero-word'), box = word.parentNode, maxPx = window.innerWidth < 600 ? 104 : window.innerWidth < 1000 ? 136 : Math.min(184, window.innerWidth * 0.12);
+    // in the one-screen layout the word also has to fit the height left beside the clip
+    if (window.matchMedia('(min-width: 1101px) and (min-height: 560px)').matches) {
+      var inner = $('hero-wipe').parentNode, cs = getComputedStyle(inner), foot = inner.querySelector('.glyph__foot');
+      var avail = inner.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom) - (foot ? foot.offsetHeight : 0) - 8;
+      if (avail > 40) maxPx = Math.min(maxPx, avail);
+    }
     word.style.fontSize = '100px';
     var w = Math.max($('hero-src').offsetWidth, $('hero-tgt').offsetWidth) || 1;
     word.style.fontSize = Math.min(maxPx, Math.floor(100 * (box.clientWidth - 4) / w)) + 'px';
