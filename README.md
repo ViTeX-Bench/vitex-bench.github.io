@@ -1,80 +1,24 @@
-# Academic Project Page Template
+# ViTeX-Bench project page
 
-> **Update (September 2025)**: This template has been modernized with better design, SEO, and mobile support. For the original version, see the [original-version branch](https://github.com/eliahuhorwitz/Academic-project-page-template/tree/original-version).
+Source of https://vitex-bench.github.io/, the project page for **ViTeX-Bench: Benchmarking High-Fidelity Video Scene Text Editing** (NeurIPS 2026, Track on Evaluations and Datasets). A TACO Group project at Texas A&M University.
 
-A clean, responsive template for academic project pages.
+The site is static, with no build step: `index.html`, `static/css/site.css` and `static/js/site.js`. Fonts (Atkinson Hyperlegible Next and Mono) are self-hosted in `static/fonts/`. It shares its look with the [leaderboard](https://vitex-bench.github.io/ViTeX-Bench-Leaderboard/) and reads the leaderboard's `data/submissions.jsonl` at runtime for the 3-D Pareto space and the method scores. The paper's numbers are embedded as a fallback.
 
+Preview locally with `python3 -m http.server` and open http://localhost:8000/.
 
-Example project pages built using this template are:
-- https://horwitz.ai/probex
-- https://vision.huji.ac.il/probegen
-- https://horwitz.ai/mother
-- https://horwitz.ai/spectral_detuning
-- https://vision.huji.ac.il/ladeda
-- https://vision.huji.ac.il/dsire
-- https://horwitz.ai/podd
-- https://dreamix-video-editing.github.io
-- https://horwitz.ai/conffusion
-- https://horwitz.ai/3d_ads/
-- https://vision.huji.ac.il/ssrl_ad
-- https://vision.huji.ac.il/deepsim
+## Media
 
+- `static/videos/showcase_v2/<clip>.mp4`: 4×3 composite grids (source and every method) rendered by `scripts/render_showcase_grid.py`. The page crops individual methods from these on a canvas, so one decode drives the comparator and the grid view.
+- `static/videos/hero/<clip>.mp4`: the source cell stacked over the ViTeX-Edit-14B cell (430×484), cut from the composites for the first viewport:
 
+  ```bash
+  ffmpeg -i static/videos/showcase_v2/<clip>.mp4 \
+    -filter_complex "[0:v]crop=430:242:25:28[s];[0:v]crop=430:242:505:28[e];[s][e]vstack" \
+    -an -c:v libx264 -crf 20 -preset slow -pix_fmt yuv420p -movflags +faststart static/videos/hero/<clip>.mp4
+  ```
 
-## Start using the template
-To start using the template click on `Use this Template`.
+- `static/videos/failures/`: source/output pairs for the four diagnosed failures (paper Fig. 4).
+- `static/images/posters/`: first frames of the above, shown before the videos load.
+- `static/images/social.jpg`: the link preview, a capture of the first viewport.
 
-The template uses html for controlling the content and css for controlling the style. 
-To edit the websites contents edit the `index.html` file. It contains different HTML "building blocks", use whichever ones you need and comment out the rest.  
-
-**IMPORTANT!** Make sure to replace the `favicon.ico` under `static/images/` with one of your own, otherwise your favicon is going to be a dreambooth image of me.
-
-## What's New
-
-- Modern, clean design with better mobile support
-- Improved SEO with proper meta tags and structured data
-- Performance improvements (lazy loading, optimized assets)
-- More Works dropdown
-- Copy button for BibTeX citations
-- Better accessibility
-
-## Components
-
-- Teaser video
-- Image carousel
-- YouTube video embedding
-- Video carousel
-- PDF poster viewer
-- BibTeX citation
-
-## Customization
-
-The HTML file has TODO comments showing what to replace:
-
-- Paper title, authors, institution, conference
-- Links (arXiv, GitHub, etc.)
-- Abstract and descriptions  
-- Videos, images, and PDFs
-- Related works in the dropdown
-- Meta tags for SEO and social sharing
-
-### Meta Tags
-The template includes meta tags for better search engine visibility and social media sharing. These appear in the `<head>` section and help with:
-- Google Scholar indexing
-- Social media previews (Twitter, Facebook, LinkedIn)
-- Search engine optimization
-
-Create a 1200x630px social preview image at `static/images/social_preview.png`.
-
-## Tips
-
-- Compress images with [TinyPNG](https://tinypng.com)
-- Use YouTube for large videos (>10MB)  
-- Replace the favicon in `static/images/`
-- Works with GitHub Pages
-
-## Acknowledgments
-Parts of this project page were adopted from the [Nerfies](https://nerfies.github.io/) page.
-
-## Website License
-<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+To add a scene, render its composite, cut the hero clip and posters as above, and add an entry to `SCENES` in `static/js/site.js` (`x` is the horizontal position of the text in the frame, from 0 to 1, where the big word flips).

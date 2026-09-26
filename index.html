@@ -1,899 +1,382 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <meta name="title" content="ViTeX-Bench: Benchmarking High Fidelity Video Scene Text Editing">
-  <meta name="description" content="A 387-clip paired dataset, a 13-metric three-axis evaluation protocol, and an open reference model (ViTeX-Edit-14B) for video scene text editing. Results are reported on one primary metric per axis with a Pareto comparison.">
-  <meta name="keywords" content="video scene text editing, video editing, scene text, benchmark, NeurIPS 2026, dataset, leaderboard, ViTeX-Bench, ViTeX-Edit-14B">
-  <meta name="author" content="Xinghao Chen, Xiangbo Gao, Jiongze Yu, Yuheng Wu, Zhengzhong Tu">
-  <meta name="robots" content="index, follow">
-  <meta name="language" content="English">
-
-  <meta property="og:type" content="article">
-  <meta property="og:site_name" content="ViTeX-Bench">
-  <meta property="og:title" content="ViTeX-Bench: Benchmarking High Fidelity Video Scene Text Editing">
-  <meta property="og:description" content="A 387-clip paired dataset, a 13-metric three-axis evaluation protocol, and an open reference model (ViTeX-Edit-14B) for video scene text editing. Results are reported on one primary metric per axis with a Pareto comparison.">
-  <meta property="og:url" content="https://vitex-bench.github.io/">
-  <meta property="og:image" content="https://vitex-bench.github.io/static/images/vitex_icon.png">
-  <meta property="og:image:alt" content="ViTeX-Bench">
-
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="ViTeX-Bench: Benchmarking High Fidelity Video Scene Text Editing">
-  <meta name="twitter:description" content="A 387-clip paired dataset, a 13-metric three-axis evaluation protocol, and an open reference model (ViTeX-Edit-14B) for video scene text editing. Results are reported on one primary metric per axis with a Pareto comparison.">
-  <meta name="twitter:image" content="https://vitex-bench.github.io/static/images/vitex_icon.png">
-
-  <meta name="citation_title" content="ViTeX-Bench: Benchmarking High Fidelity Video Scene Text Editing">
-  <meta name="citation_author" content="Xinghao Chen">
-  <meta name="citation_author" content="Xiangbo Gao">
-  <meta name="citation_author" content="Jiongze Yu">
-  <meta name="citation_author" content="Yuheng Wu">
-  <meta name="citation_author" content="Zhengzhong Tu">
-  <meta name="citation_publication_date" content="2026">
-  <meta name="citation_conference_title" content="NeurIPS 2026 Track on Evaluations and Datasets">
-
-  <meta name="theme-color" content="#0a2540">
-  <meta name="msapplication-TileColor" content="#0a2540">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://ajax.googleapis.com">
-  <link rel="preconnect" href="https://cdn.jsdelivr.net">
-
-  <title>ViTeX-Bench: Benchmarking High Fidelity Video Scene Text Editing</title>
-
-  <link rel="icon" type="image/x-icon" href="static/images/favicon.ico?v=2">
-  <link rel="icon" type="image/png" sizes="256x256" href="static/images/favicon-256.png?v=2">
-  <link rel="apple-touch-icon" href="static/images/favicon-256.png?v=2">
-
-  <link rel="stylesheet" href="static/css/bulma.min.css">
-  <link rel="stylesheet" href="static/css/index.css">
-
-  <link rel="preload" href="static/css/bulma-carousel.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <link rel="preload" href="static/css/bulma-slider.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <link rel="preload" href="static/css/fontawesome.all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <link rel="preload" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-
-  <noscript>
-    <link rel="stylesheet" href="static/css/bulma-carousel.min.css">
-    <link rel="stylesheet" href="static/css/bulma-slider.min.css">
-    <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
-  </noscript>
-
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-  <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script defer src="static/js/fontawesome.all.min.js"></script>
-  <script defer src="static/js/bulma-carousel.min.js"></script>
-  <script defer src="static/js/bulma-slider.min.js"></script>
-  <script defer src="static/js/index.js"></script>
-
-  <style>
-    /* ---------- Page-local design tokens ---------- */
-    :root {
-      --vt-navy: #0a2540;
-      --vt-slate: #425466;
-      --vt-mute: #697386;
-      --vt-pale: #f6f9fc;
-      --vt-line: #e3e8ee;
-      --vt-ring: rgba(10, 37, 64, 0.04);
-    }
-
-    .vt-tight { padding-top: 2.5rem; padding-bottom: 2.5rem; }
-
-    /* ---------- Showcase carousel (composite 4x3 video per scene) ---------- */
-    /* Section width tracks the viewport so the composite renders large on
-       desktop and shrinks proportionally on smaller screens; each carousel
-       slide is wrapped in a white card with padding so the video does not
-       run edge-to-edge with the page background. */
-    .vt-showcase-section { width: 92vw; margin: 0 auto; }
-    .vt-showcase-frame {
-      background: #fff;
-      border: 1px solid var(--vt-line);
-      border-radius: 16px;
-      padding: 1rem 1rem 0.75rem;
-      box-shadow: 0 2px 6px var(--vt-ring);
-    }
-    .vt-showcase-frame video {
-      width: 100%; height: auto; border-radius: 10px; background: #000;
-      display: block; max-width: 100%;
-    }
-    /* Force the bulma-carousel slide to fill the section width so the
-       composite renders at the full available size; the carousel just
-       advances one full-width slide at a time. */
-    #showcase-carousel .item { width: 100% !important; }
-
-    /* ---------- Contribution cards ---------- */
-    .vt-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem; }
-    .vt-card {
-      border: 1px solid var(--vt-line); border-radius: 14px; padding: 1.5rem;
-      background: #fff; box-shadow: 0 1px 2px var(--vt-ring);
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-    .vt-card:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(10,37,64,0.08); }
-    .vt-card .vt-icon { font-size: 1.6rem; color: var(--vt-navy); margin-bottom: 0.6rem; }
-    .vt-card h4 { color: var(--vt-navy); font-weight: 700; font-size: 1.15rem; margin-bottom: 0.4rem; }
-    .vt-card p { color: var(--vt-slate); font-size: 0.95rem; line-height: 1.55; }
-
-    /* ---------- Stat tiles ---------- */
-    .vt-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 0.75rem; }
-    .vt-stat {
-      background: var(--vt-pale); border: 1px solid var(--vt-line); border-radius: 10px;
-      padding: 1rem 0.75rem; text-align: center;
-    }
-    .vt-stat .vt-num {
-      font-size: 1.6rem; font-weight: 700; color: var(--vt-navy); line-height: 1.1;
-      font-variant-numeric: tabular-nums;
-    }
-    .vt-stat .vt-lbl {
-      font-size: 0.78rem; color: var(--vt-mute);
-      text-transform: uppercase; letter-spacing: 0.04em; margin-top: 0.25rem;
-    }
-
-    /* ---------- Figure embeds (arch / pipeline) ---------- */
-    .vt-figure {
-      background: #fff; border: 1px solid var(--vt-line); border-radius: 14px;
-      padding: 1.25rem; box-shadow: 0 1px 3px var(--vt-ring);
-    }
-    .vt-figure img { width: 100%; height: auto; display: block; }
-    .vt-figure .vt-figcap {
-      color: var(--vt-mute); font-size: 0.88rem; line-height: 1.55;
-      padding: 0.85rem 0.4rem 0.1rem;
-    }
-    .vt-figure .vt-figcap b { color: var(--vt-navy); }
-
-    /* ---------- Triangle protocol diagram ---------- */
-    .vt-triangle {
-      width: 100%; max-width: 760px; height: auto;
-      margin: 0 auto; display: block;
-    }
-    .vt-triangle text { font-family: Inter, sans-serif; }
-    .vt-triangle .corner-circle { fill: #fff; stroke: var(--vt-navy); stroke-width: 1.6; }
-    .vt-triangle .axis-name {
-      fill: var(--vt-navy); font-weight: 700; font-size: 14px;
-      text-anchor: middle;
-    }
-    .vt-triangle .metric { fill: var(--vt-slate); font-size: 11.5px; text-anchor: middle; }
-    .vt-triangle .triangle-edge {
-      fill: none; stroke: var(--vt-navy); stroke-width: 1.5;
-      stroke-dasharray: 4 4; opacity: 0.45;
-    }
-    .vt-triangle .feed-line { stroke: var(--vt-navy); stroke-width: 1; opacity: 0.35; }
-    .vt-triangle .center-circle { fill: var(--vt-navy); stroke: var(--vt-navy); }
-    .vt-triangle .center-text { fill: #fff; font-weight: 700; text-anchor: middle; }
-    .vt-triangle .center-sub { fill: #a0b3cf; font-size: 10.5px; text-anchor: middle; }
-
-    /* ---------- Score formula (deep navy) ---------- */
-    .vt-formula {
-      background: var(--vt-navy); color: var(--vt-pale); border-radius: 14px;
-      padding: 1.5rem; margin-top: 1.25rem;
-      font-family: ui-monospace, "SF Mono", Menlo, Monaco, Consolas, monospace;
-      overflow-x: auto;
-    }
-    .vt-formula .vt-eq { font-size: 1.05rem; line-height: 1.7; white-space: nowrap; }
-    .vt-formula .vt-eq small { color: #a0b3cf; }
-    .vt-formula .vt-note {
-      color: #a0b3cf; font-size: 0.82rem; margin-top: 0.6rem;
-      font-family: Inter, sans-serif;
-    }
-
-    /* ---------- Leaderboard table ---------- */
-    .vt-lb-wrap {
-      border: 1px solid var(--vt-line); border-radius: 12px; overflow: hidden;
-      box-shadow: 0 1px 2px var(--vt-ring); background: #fff;
-    }
-    .vt-lb {
-      width: 100%; border-collapse: separate; border-spacing: 0;
-      font-size: 0.88rem; font-variant-numeric: tabular-nums;
-    }
-    .vt-lb thead th {
-      background: var(--vt-pale); color: var(--vt-slate);
-      font-weight: 600; font-size: 0.74rem; letter-spacing: 0.04em;
-      text-transform: uppercase; padding: 12px 12px;
-      border-bottom: 1px solid var(--vt-line); text-align: left;
-      white-space: nowrap;
-    }
-    .vt-lb td {
-      padding: 9px 12px; border-bottom: 1px solid #f1f4f8;
-      text-align: right; color: var(--vt-slate); white-space: nowrap;
-    }
-    .vt-lb td.left { text-align: left; }
-    .vt-lb tbody tr:last-child td { border-bottom: none; }
-    .vt-lb tbody tr:hover td { background: #fafbfc; }
-    .vt-lb td.method { color: var(--vt-navy); font-weight: 600; }
-    .vt-lb td.score { background: var(--vt-navy); color: #fff; font-weight: 700; }
-    .vt-lb tbody tr:hover td.score { background: #1e3a5f; }
-    .vt-lb td.axis { background: var(--vt-pale); color: var(--vt-navy); font-weight: 600; }
-    .vt-lb tbody tr:hover td.axis { background: #eef2f8; }
-    .vt-lb .vt-rank { color: #a3acb9; font-weight: 500; width: 38px; text-align: center; }
-    .vt-lb .vt-fam {
-      display: inline-block; padding: 2px 7px;
-      font-size: 0.72rem; font-weight: 500; border-radius: 999px;
-    }
-    .vt-fam.A { background: #cff5d1; color: #0a3514; }
-    .vt-fam.B { background: #fff5cc; color: #7e3503; }
-    .vt-fam.C { background: #ffd1d8; color: #7d122c; }
-    .vt-fam.D { background: #dadcff; color: #322a87; }
-    .vt-fam.O { background: #e3e8ee; color: var(--vt-navy); }
-    .vt-fam.Admin { background: var(--vt-navy); color: var(--vt-pale); }
-    .vt-fam.User  { background: #635bff; color: #fff; }
-
-    /* Wide 13-metric breakdown table */
-    .vt-lb-wide { font-size: 0.78rem; }
-    .vt-lb-wide thead th { padding: 10px 7px; font-size: 0.66rem; }
-    .vt-lb-wide td { padding: 6px 7px; }
-    .vt-lb-wide td.score, .vt-lb-wide td.axis { font-size: 0.84rem; }
-    .vt-lb-wide td.metric { color: var(--vt-slate); }
-    .vt-lb-wide .num0 { color: #c1c9d2; }
-    .vt-lb-wide td.method { font-size: 0.84rem; max-width: 180px;
-                            overflow: hidden; text-overflow: ellipsis; }
-
-    /* Click-to-sort affordance on every header except the # column */
-    .vt-lb thead th.sortable { cursor: pointer; user-select: none; }
-    .vt-lb thead th.sortable:hover { background: #eef2f8; color: #0a2540; }
-    .vt-lb thead th.sorted-active {
-      background: #eef2f8; color: #0a2540;
-      box-shadow: inset 0 -2px 0 #0a2540;
-    }
-    .vt-lb thead th.score.sorted-active { box-shadow: inset 0 -2px 0 #f6f9fc; }
-
-    /* Cell shading: above column mean (for the natural direction) gets a
-       light green tint; below mean gets a light pink tint. Applied by JS. */
-    .vt-lb td.cell-good { background: #ebf6ee !important; }
-    .vt-lb td.cell-bad  { background: #fbedef !important; }
-    .vt-lb tbody tr:hover td.cell-good { background: #ddeee2 !important; }
-    .vt-lb tbody tr:hover td.cell-bad  { background: #f4dde1 !important; }
-
-    a.vt-cta, a.vt-cta:visited, a.vt-cta:link {
-      display: inline-flex; align-items: center; gap: 0.5rem;
-      background: var(--vt-navy); color: #ffffff !important;
-      padding: 0.7rem 1.3rem;
-      border-radius: 999px; font-weight: 600; text-decoration: none;
-      transition: background 0.15s;
-    }
-    a.vt-cta:hover { background: #1e3a5f; color: #ffffff !important; }
-
-    /* ---------- Failure-mode panels ---------- */
-    .vt-fail {
-      border: 1px solid var(--vt-line); border-radius: 14px; padding: 1.25rem;
-      background: #fff; box-shadow: 0 1px 2px var(--vt-ring); margin-bottom: 1.25rem;
-    }
-    .vt-fail-grid {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
-      margin-top: 0.85rem;
-    }
-    @media (max-width: 720px) { .vt-fail-grid { grid-template-columns: 1fr; } }
-    .vt-fail-grid figure { margin: 0; }
-    .vt-fail-grid figcaption {
-      color: var(--vt-mute); font-size: 0.78rem;
-      text-transform: uppercase; letter-spacing: 0.04em;
-      padding: 0.35rem 0.2rem 0;
-    }
-    .vt-fail-grid video, .vt-fail-grid .vt-fail-placeholder {
-      width: 100%; aspect-ratio: 16/9; border-radius: 10px;
-      background: #f1f4f8;
-      display: flex; align-items: center; justify-content: center;
-      color: #a3acb9; font-size: 0.85rem;
-    }
-    .vt-fail-head {
-      display: flex; align-items: baseline; gap: 0.7rem; flex-wrap: wrap;
-    }
-    .vt-fail-tag {
-      width: 26px; height: 26px; border-radius: 7px;
-      display: inline-flex; align-items: center; justify-content: center;
-      background: var(--vt-navy); color: #fff;
-      font-weight: 700; font-size: 0.85rem;
-    }
-    .vt-fail h5 { color: var(--vt-navy); font-weight: 700; font-size: 1.05rem; margin: 0; }
-    .vt-fail .vt-fail-target {
-      font-family: ui-monospace, monospace; font-size: 0.85rem; color: var(--vt-slate);
-    }
-    .vt-fail p {
-      color: var(--vt-slate); font-size: 0.92rem; line-height: 1.6;
-      margin-top: 0.85rem;
-    }
-    .vt-fail-method {
-      display: inline-block; padding: 2px 8px;
-      font-size: 0.72rem; font-weight: 500; border-radius: 999px;
-      background: #ffd1d8; color: #7d122c; margin-left: 0.4rem;
-    }
-
-    .vt-lb thead th.primary { background: #dde8f5; color: var(--vt-navy); }
-    .vt-lb tr.ref td { color: #a3acb9; font-style: italic; }
-    section { scroll-margin-top: 2rem; }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ViTeX-Bench: Benchmarking High-Fidelity Video Scene Text Editing</title>
+<meta name="description" content="ViTeX-Bench (NeurIPS 2026, Evaluations and Datasets Track): a paired real-video dataset, a 13-metric three-axis evaluation protocol with a Pareto comparison, and the open ViTeX-Edit-14B reference editor for video scene text editing.">
+<meta name="author" content="Xinghao Chen, Xiangbo Gao, Jiongze Yu, Yuheng Wu, Zhengzhong Tu">
+<meta name="keywords" content="video scene text editing, benchmark, dataset, NeurIPS 2026, Pareto front, ViTeX-Bench, ViTeX-Edit-14B, TACO Group, Texas A&M University">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="ViTeX-Bench">
+<meta property="og:title" content="ViTeX-Bench: Benchmarking High-Fidelity Video Scene Text Editing">
+<meta property="og:description" content="Paired real-video data, a three-axis protocol with a Pareto comparison instead of one score, and an open 14B reference editor. NeurIPS 2026, Evaluations and Datasets Track.">
+<meta property="og:url" content="https://vitex-bench.github.io/">
+<meta property="og:image" content="https://vitex-bench.github.io/static/images/social.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="citation_title" content="ViTeX-Bench: Benchmarking High-Fidelity Video Scene Text Editing">
+<meta name="citation_author" content="Chen, Xinghao">
+<meta name="citation_author" content="Gao, Xiangbo">
+<meta name="citation_author" content="Yu, Jiongze">
+<meta name="citation_author" content="Wu, Yuheng">
+<meta name="citation_author" content="Tu, Zhengzhong">
+<meta name="citation_publication_date" content="2026">
+<meta name="citation_conference_title" content="Advances in Neural Information Processing Systems (NeurIPS), Track on Evaluations and Datasets">
+<meta name="theme-color" content="#E8E8E8" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#050505" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/x-icon" href="static/images/favicon.ico?v=2">
+<link rel="icon" type="image/png" sizes="256x256" href="static/images/favicon-256.png?v=2">
+<link rel="apple-touch-icon" href="static/images/favicon-256.png?v=2">
+<script>
+  (function () {
+    var t = null;
+    try { t = localStorage.getItem('vtx-theme'); } catch (e) {}
+    if (t !== 'light' && t !== 'dark') t = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', t);
+  })();
+</script>
+<link rel="preload" href="static/fonts/atkinson-hyperlegible-next-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="static/css/site.css?v=3">
 </head>
 <body>
+<a class="skip" href="#main">Skip to content</a>
 
+<header class="top">
+  <div class="top__inner">
+    <a class="brand" href="#top" aria-label="ViTeX-Bench, back to top">ViTeX-Bench</a>
+    <nav class="nav" aria-label="Sections">
+      <a href="#methods">Methods</a>
+      <a href="#failures">Failures</a>
+      <a href="#protocol">Protocol</a>
+      <a href="#release">Release</a>
+      <a href="#cite">Cite</a>
+    </nav>
+    <a class="top__lb" href="https://vitex-bench.github.io/ViTeX-Bench-Leaderboard/">Leaderboard<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 16 16 8M9.5 8H16v6.5"/></svg></a>
+    <button class="icon-btn" id="theme-toggle" type="button" aria-label="Switch theme">
+      <svg class="icon icon--sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8"/></svg>
+      <svg class="icon icon--moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19.5 14.6A8 8 0 0 1 9.4 4.5a8 8 0 1 0 10.1 10.1Z"/></svg>
+    </button>
+  </div>
+</header>
 
-  <button class="scroll-to-top" onclick="scrollToTop()" title="Scroll to top" aria-label="Scroll to top">
-    <i class="fas fa-chevron-up"></i>
-  </button>
+<main id="main">
+  <!-- First viewport: a word changing on a real clip -->
+  <section class="glyph" id="top" aria-label="A real edit by ViTeX-Edit-14B">
+    <canvas class="glyph__ambient" id="hero-ambient" aria-hidden="true"></canvas>
+    <div class="glyph__inner">
+      <div class="wipe wipe--hero" id="hero-wipe">
+        <canvas class="wipe__canvas" id="hero-canvas" role="img" aria-label="Video frame split by a vertical line: the edit by ViTeX-Edit-14B on the left, the source on the right."></canvas>
+        <span class="wipe__tag wipe__tag--l">ViTeX-Edit-14B</span>
+        <span class="wipe__tag wipe__tag--r">Source + mask</span>
+        <div class="wipe__line" aria-hidden="true"></div>
+        <button class="wipe__handle" type="button" role="slider" aria-label="Split position between edit and source" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" aria-valuetext="50% edit">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.5 7.5 5 12l4.5 4.5M14.5 7.5 19 12l-4.5 4.5"/></svg>
+        </button>
+      </div>
 
-  <main id="main-content">
-  <section class="hero">
-    <div class="hero-body">
-      <div class="container is-max-desktop">
-        <div class="columns is-centered">
-          <div class="column has-text-centered">
-            <h1 class="title is-1 publication-title">ViTeX-Bench: Benchmarking High Fidelity Video Scene Text Editing</h1>
-            <div class="is-size-5 publication-authors">
-              <span class="author-block">Xinghao Chen<sup>1</sup>,</span>
-              <span class="author-block">Xiangbo Gao<sup>1</sup>,</span>
-              <span class="author-block">Jiongze Yu<sup>1</sup>,</span>
-              <span class="author-block">Yuheng Wu<sup>2</sup>,</span>
-              <span class="author-block">Zhengzhong Tu<sup>1</sup></span>
-            </div>
+      <div class="glyph__word">
+        <p class="word" id="hero-word" aria-hidden="true"><span class="word__src" id="hero-src">First</span><span class="word__tgt" id="hero-tgt">Last</span></p>
+        <p class="glyph__pair visually-hidden" aria-live="polite"><span>source</span> <b id="hero-pair-src">First</b> <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13.5 6.5 19 12l-5.5 5.5"/></svg> <span>target</span> <b id="hero-pair-tgt">Last</b></p>
+      </div>
 
-            <div class="is-size-5 publication-authors">
-              <span class="author-block"><sup>1</sup>Texas A&amp;M University</span>
-              <span class="author-block"><sup>2</sup>KAIST</span>
-            </div>
+      <div class="glyph__foot">
+        <div class="scenes" id="hero-scenes" role="radiogroup" aria-label="Scene"></div>
+        <p class="glyph__cap">Raw ViTeX-Edit-14B output on clips from the frozen evaluation split. Drag the line to compare with the source.</p>
+      </div>
+    </div>
+    <video id="hero-video" class="offscreen-video" muted loop playsinline preload="auto" aria-hidden="true" tabindex="-1"></video>
+  </section>
 
-            <div class="is-size-5 publication-authors">
-              <span class="author-block">NeurIPS 2026 Track on Evaluations and Datasets</span>
-            </div>
-
-            <div class="column has-text-centered">
-              <div class="publication-links">
-                <span class="link-block">
-                  <a href="https://huggingface.co/datasets/ViTeX-Bench/ViTeX-Dataset" target="_blank"
-                     class="external-link button is-normal is-rounded is-dark">
-                    <span class="icon">📊</span>
-                    <span>Dataset</span>
-                  </a>
-                </span>
-                <span class="link-block">
-                  <a href="https://github.com/ViTeX-Bench/ViTeX-Bench" target="_blank"
-                     class="external-link button is-normal is-rounded is-dark">
-                    <span class="icon">🧪</span>
-                    <span>Benchmark code</span>
-                  </a>
-                </span>
-                <span class="link-block">
-                  <a href="https://huggingface.co/ViTeX-Bench/ViTeX-Edit-14B" target="_blank"
-                     class="external-link button is-normal is-rounded is-dark">
-                    <span class="icon">🤖</span>
-                    <span>Model &amp; Inference code</span>
-                  </a>
-                </span>
-                <span class="link-block">
-                  <a href="https://vitex-bench.github.io/ViTeX-Bench-Leaderboard/" target="_blank"
-                     class="external-link button is-normal is-rounded is-dark">
-                    <span class="icon">🏆</span>
-                    <span>Leaderboard</span>
-                  </a>
-                </span>
-              </div>
-            </div>
-          </div>
+  <!-- Title block -->
+  <section class="intro" aria-labelledby="title">
+    <div class="wrap intro__grid">
+      <div class="intro__main">
+        <h1 id="title"><b>ViTeX-Bench:</b> Benchmarking High-Fidelity Video Scene Text Editing</h1>
+        <ul class="authors" aria-label="Authors">
+          <li>Xinghao Chen<sup>1</sup></li>
+          <li>Xiangbo Gao<sup>1</sup></li>
+          <li>Jiongze Yu<sup>1</sup></li>
+          <li>Yuheng Wu<sup>2</sup></li>
+          <li>Zhengzhong Tu<sup>1</sup></li>
+        </ul>
+        <p class="affil"><sup>1</sup>&nbsp;<a href="https://www.tamu.edu/">Texas A&amp;M University</a> <span class="affil__sep" aria-hidden="true"></span> <sup>2</sup>&nbsp;KAIST</p>
+        <p class="venue"><span class="pill pill--lg">NeurIPS 2026</span> Accepted to the Track on Evaluations and Datasets</p>
+        <div class="links">
+          <a class="btn" href="https://huggingface.co/datasets/ViTeX-Bench/ViTeX-Dataset">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="6" rx="7" ry="2.8"/><path d="M5 6v12c0 1.5 3.1 2.8 7 2.8s7-1.3 7-2.8V6M5 12c0 1.5 3.1 2.8 7 2.8s7-1.3 7-2.8"/></svg>Dataset</a>
+          <a class="btn btn--ghost" href="https://github.com/ViTeX-Bench/ViTeX-Bench">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m8.5 7.5-5 4.5 5 4.5M15.5 7.5l5 4.5-5 4.5"/></svg>Evaluation code</a>
+          <a class="btn btn--ghost" href="https://huggingface.co/ViTeX-Bench/ViTeX-Edit-14B">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5.5" width="17" height="13" rx="2"/><path d="M7 5.5v13M17 5.5v13M3.5 9h3.5M3.5 15h3.5M17 9h3.5M17 15h3.5"/></svg>ViTeX-Edit-14B</a>
+          <a class="btn btn--ghost" href="https://vitex-bench.github.io/ViTeX-Bench-Leaderboard/">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="2.2"/><circle cx="12" cy="12" r="6"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3"/></svg>Leaderboard</a>
         </div>
+      </div>
+      <aside class="credit" aria-label="Lab">
+        <p class="credit__lab"><a href="https://taco-group.github.io/">TACO Group</a></p>
+        <p class="credit__uni"><a href="https://www.tamu.edu/">Texas A&amp;M University</a></p>
+        <p class="credit__note">Contact: <a href="mailto:xhc42@outlook.com">Xinghao Chen</a>, Zhengzhong Tu</p>
+      </aside>
+    </div>
+  </section>
+
+  <!-- Abstract -->
+  <section class="section section--tight" aria-labelledby="abstract-title">
+    <div class="wrap abstract">
+      <h2 id="abstract-title" class="h-side">Abstract</h2>
+      <div class="abstract__body">
+        <p class="lede">Video scene text editing requires accurate character replacement while preserving the surrounding scene and its motion.</p>
+        <p>Existing resources offer limited paired real-video data, and general video-editing metrics do not directly measure whether the requested text remains correct over time. We introduce <strong>ViTeX-Bench</strong>, a benchmark suite comprising <strong>ViTeX-Dataset</strong> and a three-axis evaluation protocol. The dataset contains 387 real-world 720p videos with text-region masks and editing instructions: 230 provide reviewed, pipeline-generated paired edits for training, and 157 form a frozen evaluation split. The protocol evaluates text correctness, visual and temporal quality, and edit locality through 13 metrics, with one primary metric per axis and a Pareto comparison of their trade-offs. OCR calibration, human evaluation, and annotation-sensitivity analyses support the interpretation of these scores.</p>
+        <p>Across eight baselines from four editing families, accurate text, temporal stability, and scene preservation remain difficult to achieve together. We also release <strong>ViTeX-Edit-14B</strong>, an open-source reference editor fine-tuned on the paired training split with motion-aligned glyph-video conditioning. It achieves CharAcc 0.688, the highest mean among the evaluated video-native editors, and the lowest comparable text-crop Warp among raw editor outputs. ViTeX-Bench provides a reproducible foundation for studying these trade-offs in localized, predominantly Latin-script video scene text.</p>
       </div>
     </div>
   </section>
 
+  <!-- Every method on one scene -->
+  <section class="section" id="methods" aria-labelledby="methods-title">
+    <div class="wrap">
+      <div class="section__head">
+        <h2 id="methods-title">Every method, one scene</h2>
+        <p>Eight baselines from four families and the reference editor, run on the same evaluation clips. Pick a method and drag the line, or see all of them at once.</p>
+      </div>
 
-<!-- Showcase carousel: composite 4x3 video per scene, all eleven methods baked in -->
-<section class="hero teaser vt-tight">
-  <div class="vt-showcase-section">
-    <h2 class="title is-3 has-text-centered">Source video vs. our two variants and every baseline, scene by scene</h2>
-
-    <div id="showcase-carousel" class="carousel results-carousel" style="margin-top: 1.5rem;">
-      <div class="item">
-        <div class="vt-showcase-frame">
-          <video controls muted loop playsinline preload="metadata">
-            <source src="static/videos/showcase_v2/0004547_00000.mp4" type="video/mp4">
-          </video>
+      <div class="cmp__bar">
+        <div class="scenes scenes--inline" id="cmp-scenes" role="radiogroup" aria-label="Scene"></div>
+        <div class="tabs" role="radiogroup" aria-label="View">
+          <button type="button" role="radio" data-mode="compare" aria-checked="true">Compare</button>
+          <button type="button" role="radio" data-mode="grid" aria-checked="false">All methods</button>
         </div>
       </div>
-      <div class="item">
-        <div class="vt-showcase-frame">
-          <video controls muted loop playsinline preload="metadata">
-            <source src="static/videos/showcase_v2/0006286_00000.mp4" type="video/mp4">
-          </video>
+
+      <div class="cmp" id="cmp" data-mode="compare">
+        <div class="cmp__methods" id="cmp-methods" role="radiogroup" aria-label="Method"></div>
+        <div class="cmp__view">
+          <div class="wipe wipe--cmp" id="cmp-wipe">
+            <canvas class="wipe__canvas" id="cmp-canvas" role="img" aria-label="Selected method's output on the left of the line, source on the right."></canvas>
+            <span class="wipe__tag wipe__tag--l" id="cmp-tag">ViTeX-Edit-14B</span>
+            <span class="wipe__tag wipe__tag--r">Source + mask</span>
+            <div class="wipe__line" aria-hidden="true"></div>
+            <button class="wipe__handle" type="button" role="slider" aria-label="Split position between method output and source" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" aria-valuetext="50% output">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.5 7.5 5 12l4.5 4.5M14.5 7.5 19 12l-4.5 4.5"/></svg>
+            </button>
+            <p class="wipe__status" id="cmp-status" hidden>Loading scene…</p>
+          </div>
+          <div class="grid" id="cmp-grid" hidden>
+            <canvas class="grid__canvas" id="grid-canvas" role="img" aria-label="Ten method outputs and the source for this scene, playing in sync."></canvas>
+            <div class="grid__cells" id="grid-cells"></div>
+          </div>
+          <div class="readout" id="cmp-readout" aria-live="polite"></div>
         </div>
       </div>
-      <div class="item">
-        <div class="vt-showcase-frame">
-          <video controls muted loop playsinline preload="metadata">
-            <source src="static/videos/showcase_v2/0005186_00000.mp4" type="video/mp4">
-          </video>
+      <video id="cmp-video" class="offscreen-video" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video>
+    </div>
+  </section>
+
+  <!-- Failures -->
+  <section class="section" id="failures" aria-labelledby="failures-title">
+    <div class="wrap">
+      <div class="section__head">
+        <h2 id="failures-title">What a single score would miss</h2>
+        <p>Four diagnosed baseline failures, one per editing family. Each looks acceptable on one axis and is caught by another, which is why ViTeX-Bench reports all three.</p>
+      </div>
+      <ol class="fails">
+        <li class="fail">
+          <div class="fail__text">
+            <h3>Stable <span class="neq">≠</span> edited</h3>
+            <p class="fail__meta">Wan2.1-VACE-14B <span aria-hidden="true">·</span> C, mask-conditioned inpainting</p>
+            <p class="fail__task"><code>NEW</code> <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13.5 6.5 19 12l-5.5 5.5"/></svg> <code>OLD</code></p>
+            <p>The masked region comes back essentially unchanged and still reads NEW. Frames agree with each other and the scene is preserved, so stability and fidelity alone would score it well.</p>
+            <ul class="sig" aria-label="Metric signature"><li>TTS high</li><li class="sig__catch">SeqAcc = 0</li></ul>
+          </div>
+          <div class="fail__media">
+            <figure><video muted loop playsinline preload="none" poster="static/images/posters/fail_094.jpg" data-src="static/videos/failures/094_source.mp4"></video><figcaption>Source, mask highlighted</figcaption></figure>
+            <figure><video muted loop playsinline preload="none" poster="static/images/posters/fail_094_vace.jpg" data-src="static/videos/failures/094_vace.mp4"></video><figcaption>Output: text unchanged</figcaption></figure>
+          </div>
+        </li>
+        <li class="fail">
+          <div class="fail__text">
+            <h3>Correct per frame <span class="neq">≠</span> stable</h3>
+            <p class="fail__meta">FLUX-Text <span aria-hidden="true">·</span> A, per-frame image editing</p>
+            <p class="fail__task"><code>AWESOME</code> <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13.5 6.5 19 12l-5.5 5.5"/></svg> <code>WELCOME</code></p>
+            <p>Each frame is edited on its own by a strong image editor, so single frames read nearly right, but the glyphs change shape from one frame to the next.</p>
+            <ul class="sig" aria-label="Metric signature"><li>CharAcc high</li><li class="sig__catch">TTS low</li><li class="sig__catch">Warp<sub>c</sub> 13.01</li></ul>
+          </div>
+          <div class="fail__media">
+            <figure><video muted loop playsinline preload="none" poster="static/images/posters/fail_169.jpg" data-src="static/videos/failures/169_source.mp4"></video><figcaption>Source, mask highlighted</figcaption></figure>
+            <figure><video muted loop playsinline preload="none" poster="static/images/posters/fail_169_fluxtext.jpg" data-src="static/videos/failures/169_fluxtext.mp4?v=3"></video><figcaption>Output: glyphs flicker and drift</figcaption></figure>
+          </div>
+        </li>
+        <li class="fail">
+          <div class="fail__text">
+            <h3>Looks good <span class="neq">≠</span> correct</h3>
+            <p class="fail__meta">Kling Video 3.0 Omni <span aria-hidden="true">·</span> D, instruction-guided editing</p>
+            <p class="fail__task"><code>SOC</code> <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13.5 6.5 19 12l-5.5 5.5"/></svg> <code>COC</code>, rendered as <code>ZOO</code></p>
+            <p>A polished, plausible clip that leads both MUSIQ columns, yet it spells the wrong string. Visual quality and a successful replacement are different properties.</p>
+            <ul class="sig" aria-label="Metric signature"><li>MUSIQ highest</li><li class="sig__catch">SeqAcc = 0</li></ul>
+          </div>
+          <div class="fail__media">
+            <figure><video muted loop playsinline preload="none" poster="static/images/posters/fail_0000229_00000.jpg" data-src="static/videos/failures/0000229_00000_source.mp4"></video><figcaption>Source, mask highlighted</figcaption></figure>
+            <figure><video muted loop playsinline preload="none" poster="static/images/posters/fail_0000229_00000_kling.jpg" data-src="static/videos/failures/0000229_00000_kling.mp4"></video><figcaption>Output: reads ZOO, not COC</figcaption></figure>
+          </div>
+        </li>
+        <li class="fail">
+          <div class="fail__text">
+            <h3>First frame right&nbsp;<span class="neq">≠</span> local over time</h3>
+            <p class="fail__meta">TextCtrl + AnyV2V <span aria-hidden="true">·</span> B, first-frame edit + propagation</p>
+            <p class="fail__task"><code>NDP</code> <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13.5 6.5 19 12l-5.5 5.5"/></svg> <code>PSP</code></p>
+            <p>The first-frame edit is right, but as propagation drifts the text fades and the unmasked scene drifts with it. Correctness and locality collapse together.</p>
+            <ul class="sig" aria-label="Metric signature"><li class="sig__catch">SeqAcc 0.057</li><li class="sig__catch">PSNR<sub>loc</sub> 21.08</li></ul>
+          </div>
+          <div class="fail__media">
+            <figure><video muted loop playsinline preload="none" poster="static/images/posters/fail_185.jpg" data-src="static/videos/failures/185_source.mp4"></video><figcaption>Source, mask highlighted</figcaption></figure>
+            <figure><video muted loop playsinline preload="none" poster="static/images/posters/fail_185_textctrl_anyv2v.jpg" data-src="static/videos/failures/185_textctrl_anyv2v.mp4"></video><figcaption>Output: text and scene drift</figcaption></figure>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- Protocol + Pareto space -->
+  <section class="section" id="protocol" aria-labelledby="protocol-title">
+    <div class="wrap">
+      <div class="section__head">
+        <h2 id="protocol-title">Three axes, no single score</h2>
+        <p>Every output is scored with 13 metrics on three axes and reported as the full vector. One primary metric per axis defines the comparison, and methods are compared by Pareto dominance rather than by a weighted sum, whose weights would set an arbitrary exchange rate between wrong characters, flicker and a damaged background.</p>
+      </div>
+      <div class="axes" id="axes"></div>
+    </div>
+
+    <div class="space" id="space">
+      <div class="wrap space__head">
+        <div>
+          <h3>The Pareto front, in three dimensions</h3>
+          <p>Each star is a method on the three primary metrics, from the live leaderboard. The front is the set no other raw editor beats on all three; the brightest star is the ideal corner.</p>
+        </div>
+        <div class="views" role="group" aria-label="View">
+          <button type="button" data-view="3d" aria-pressed="true">3D</button>
+          <button type="button" data-view="ct" aria-pressed="false">Correctness × Temporal</button>
+          <button type="button" data-view="cl" aria-pressed="false">Correctness × Locality</button>
+          <button type="button" data-view="tl" aria-pressed="false">Temporal × Locality</button>
         </div>
       </div>
-      <div class="item">
-        <div class="vt-showcase-frame">
-          <video controls muted loop playsinline preload="metadata">
-            <source src="static/videos/showcase_v2/0001942_00000.mp4" type="video/mp4">
-          </video>
-        </div>
+      <div class="space__stage">
+        <canvas id="sky" role="img" aria-label="Three-dimensional chart of methods on SeqAcc, Warp_c and DreamSim_loc. The Pareto front members are listed beside it."></canvas>
+        <p class="space__status" id="sky-status">Loading…</p>
       </div>
-      <div class="item">
-        <div class="vt-showcase-frame">
-          <video controls muted loop playsinline preload="metadata">
-            <source src="static/videos/showcase_v2/0000229_00000.mp4" type="video/mp4">
-          </video>
-        </div>
+      <div class="wrap space__foot">
+        <ul class="legend" aria-label="Legend">
+          <li><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.5" class="lg-ring"/><circle cx="8" cy="8" r="3.4" class="lg-fill"/></svg>Pareto front</li>
+          <li><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="2.6" class="lg-dim"/></svg>Other editor</li>
+          <li><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="4" class="lg-ring"/></svg>Reference</li>
+          <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1v14M1 8h14" class="lg-ring"/><circle cx="8" cy="8" r="2.6" class="lg-fill"/></svg>Ideal</li>
+        </ul>
+        <p class="space__note" id="sky-note">Drag to rotate. Select a star for its scores.</p>
       </div>
-    </div>
-  </div>
-</section>
-<!-- End showcase -->
-
-
-<!-- Teaser figure (paper Fig. 1) -->
-<section class="hero teaser vt-tight">
-  <div class="container is-max-desktop">
-    <div class="vt-figure">
-      <img src="static/images/teaser.jpg" alt="ViTeX-Bench overview: paired training data, evaluation input, baseline failures, and three-axis evaluation" loading="lazy"/>
-      <div class="vt-figcap">
-        <b>Overview of ViTeX-Bench.</b> Paired training examples from ViTeX-Dataset (top) illustrate the
-        paired data across diverse text-motion conditions. Each benchmark task provides a source video <i>V</i>,
-        a text-region mask <i>M</i>, and a source–target string pair (<i>s</i><sub>src</sub>, <i>s</i><sub>tgt</sub>).
-        Representative baseline outputs exhibit distinct failure modes, and ViTeX-Bench scores each edit along
-        three axes — text correctness, visual quality, and edit locality — with 13 metrics in total.
+      <div class="wrap">
+        <div class="pick" id="sky-pick" aria-live="polite"></div>
       </div>
     </div>
-  </div>
-</section>
-<!-- End teaser -->
 
-
-<!-- Abstract -->
-<section class="section hero is-light">
-  <div class="container is-max-desktop">
-    <div class="columns is-centered has-text-centered">
-      <div class="column is-four-fifths">
-        <h2 class="title is-3">Abstract</h2>
-        <div class="content has-text-justified">
-          <p>
-            Video scene text editing requires accurate character replacement while preserving the surrounding
-            scene and its motion. Existing resources offer limited paired real-video data, and general
-            video-editing metrics do not directly measure whether the requested text remains correct over time.
-            We introduce <b>ViTeX-Bench</b>, a benchmark suite comprising <b>ViTeX-Dataset</b> and a three-axis
-            evaluation protocol. The dataset contains 387 real-world 720p videos with text-region masks and
-            editing instructions: 230 provide reviewed, pipeline-generated paired edits for training, and 157
-            form a frozen evaluation split. The protocol evaluates text correctness, visual and temporal quality,
-            and edit locality through 13 metrics, with one primary metric per axis and a Pareto comparison of
-            their trade-offs. OCR calibration, human evaluation, and annotation-sensitivity analyses support the
-            interpretation of these scores. Across eight baselines from four editing families, accurate text,
-            temporal stability, and scene preservation remain difficult to achieve together. We also release
-            <b>ViTeX-Edit-14B</b>, an open-source reference editor fine-tuned on the paired training split with
-            motion-aligned glyph-video conditioning. It achieves CharAcc 0.688, the highest mean among the
-            evaluated video-native editors, and the lowest comparable text-crop Warp among raw editor outputs.
-            ViTeX-Bench provides a reproducible foundation for studying these trade-offs in localized,
-            predominantly Latin-script video scene text.
-          </p>
-        </div>
+    <div class="wrap">
+      <div class="notes">
+        <p><strong>On the front is not the same as good.</strong> <span id="front-names">FLUX-Text, TextCtrl, RS-STE, ViTeX-Edit-14B and Wan2.1-VACE-14B</span> form the Pareto front. Wan2.1-VACE-14B is on it with SeqAcc 0: it returns the masked region almost unchanged, which keeps its temporal and locality scores strong. The other ten metrics stay visible for exactly this reason.</p>
+        <p><strong>What is not ranked.</strong> Composite post-processing and the Source video are shown for reference only. VideoPainter's Flicker and Warp come from interpolated frames, so it is left out of temporal comparisons and of the front.</p>
       </div>
-    </div>
-  </div>
-</section>
-<!-- End abstract -->
-
-
-<!-- Three-part release: contribution cards (verbatim from the paper intro) -->
-<section class="section vt-tight">
-  <div class="container is-max-desktop">
-    <h2 class="title is-3 has-text-centered">A coordinated three-part release</h2>
-    <p class="subtitle has-text-centered" style="color:#697386;">
-      Our contributions, paraphrased from the paper introduction.
-    </p>
-    <div class="vt-cards" style="margin-top: 2rem;">
-      <div class="vt-card">
-        <div class="vt-icon">📊</div>
-        <h4>ViTeX-Dataset</h4>
-        <p>
-          387 real-world source videos with per-frame text-region masks and source–target string
-          instructions. A human-in-the-loop pipeline produces reviewed paired edits for the 230 training
-          videos; the remaining 157 form a frozen evaluation split, documented with coverage statistics
-          and annotation details.
-        </p>
+      <div class="calib">
+        <h3>Do the numbers mean what they say?</h3>
+        <ul>
+          <li><span class="calib__v">ρ = 0.95</span><span>Spearman agreement between method-blinded human transcription and the OCR-based method ranking.</span></li>
+          <li><span class="calib__v">+0.71 · −0.40 · −0.53</span><span>Correlation of three non-author raters' scores (70 outputs) with SeqAcc, Warp<sub>c</sub> and DreamSim<sub>loc</sub>.</span></li>
+          <li><span class="calib__v">τ = 0.936</span><span>Mean Kendall agreement of bootstrap-resampled SeqAcc rankings with the full split.</span></li>
+        </ul>
       </div>
-      <div class="vt-card">
-        <div class="vt-icon">🎯</div>
-        <h4>ViTeX-Bench</h4>
-        <p>
-          13 complementary metrics across text correctness, visual and temporal quality, and edit locality,
-          with one primary metric per axis and a Pareto comparison of their trade-offs. OCR calibration, human
-          evaluation, and annotation-sensitivity analyses assess the reliability of the measurements.
-        </p>
+      <a class="btn btn--ghost" href="https://vitex-bench.github.io/ViTeX-Bench-Leaderboard/">Open the full leaderboard<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 16 16 8M9.5 8H16v6.5"/></svg></a>
+    </div>
+  </section>
+
+  <!-- Release -->
+  <section class="section" id="release" aria-labelledby="release-title">
+    <div class="wrap">
+      <div class="section__head">
+        <h2 id="release-title">What is released</h2>
+        <p>Data, a frozen protocol, and a reference model, released together so that results are reproducible and comparable.</p>
       </div>
-      <div class="vt-card">
-        <div class="vt-icon">🤖</div>
-        <h4>ViTeX-Edit-14B</h4>
-        <p>
-          An open-source reference editor that adapts a pretrained Wan2.1-VACE-14B backbone with a
-          motion-aligned glyph-video stream, supplying target-character structure along the source text
-          trajectory. It demonstrates the utility of the training split and provides a starting point
-          for future work on the benchmark.
-        </p>
+      <div class="rel">
+        <article class="rel__item">
+          <h3>ViTeX-Dataset</h3>
+          <p>Real-world videos from Panda-70M and InternVid with per-frame text-region masks and source–target strings. A human-in-the-loop pipeline produced reviewed paired edits for training; the evaluation split is frozen and withholds its edits.</p>
+          <dl>
+            <div><dt>Videos</dt><dd>387</dd></div>
+            <div><dt>Paired training</dt><dd>230</dd></div>
+            <div><dt>Frozen evaluation</dt><dd>157</dd></div>
+            <div><dt>Frames</dt><dd>1280×720 · 120 · 24 fps</dd></div>
+            <div><dt>Eval scripts</dt><dd>Latin 150 · non-Latin 7</dd></div>
+          </dl>
+          <a class="rel__link" href="https://huggingface.co/datasets/ViTeX-Bench/ViTeX-Dataset">Hugging Face dataset<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 16 16 8M9.5 8H16v6.5"/></svg></a>
+        </article>
+        <article class="rel__item">
+          <h3>ViTeX-Bench</h3>
+          <p>The evaluation protocol: OCR-anchored text correctness with PP-OCRv5, full-frame and text-crop temporal quality, and locality measured outside the mask. It writes the <code>eval.json</code> the leaderboard accepts.</p>
+          <dl>
+            <div><dt>Metrics</dt><dd>13</dd></div>
+            <div><dt>Axes</dt><dd>3</dd></div>
+            <div><dt>Primaries</dt><dd>SeqAcc · Warp<sub>c</sub> · DreamSim<sub>loc</sub></dd></div>
+            <div><dt>Comparison</dt><dd>Pareto front</dd></div>
+          </dl>
+          <a class="rel__link" href="https://github.com/ViTeX-Bench/ViTeX-Bench">Evaluation code on GitHub<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 16 16 8M9.5 8H16v6.5"/></svg></a>
+        </article>
+        <article class="rel__item">
+          <h3>ViTeX-Edit-14B</h3>
+          <p>An open reference editor. It extends Wan2.1-VACE-14B with a glyph video: the target string rendered in a matching typeface and warped along the tracked source text, read by every VACE block through an added cross-attention layer.</p>
+          <dl>
+            <div><dt>Backbone</dt><dd>Wan2.1-VACE-14B</dd></div>
+            <div><dt>Fine-tuning</dt><dd>576 GPU-h · 8×H100</dd></div>
+            <div><dt>Inference</dt><dd>one 50-step pass</dd></div>
+            <div><dt>CharAcc</dt><dd>0.688</dd></div>
+          </dl>
+          <a class="rel__link" href="https://huggingface.co/ViTeX-Bench/ViTeX-Edit-14B">Model and inference code<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 16 16 8M9.5 8H16v6.5"/></svg></a>
+        </article>
       </div>
-    </div>
-  </div>
-</section>
-<!-- End three-part release -->
 
-
-<!-- Dataset construction pipeline (Figure 2) -->
-<section class="section hero is-light">
-  <div class="container is-max-desktop">
-    <h2 class="title is-3 has-text-centered">ViTeX-Dataset construction</h2>
-    <p class="subtitle has-text-centered" style="color:#697386;">
-      A semi-automatic pipeline turns a curated 387-clip pool into paired training tuples.
-    </p>
-
-    <div class="vt-stats" style="margin-top: 1.5rem;">
-      <div class="vt-stat"><div class="vt-num">387</div><div class="vt-lbl">Total clips</div></div>
-      <div class="vt-stat"><div class="vt-num">230</div><div class="vt-lbl">Training</div></div>
-      <div class="vt-stat"><div class="vt-num">157</div><div class="vt-lbl">Frozen test</div></div>
-      <div class="vt-stat"><div class="vt-num">4</div><div class="vt-lbl">Scripts</div></div>
-      <div class="vt-stat"><div class="vt-num">120</div><div class="vt-lbl">Frames per clip</div></div>
-      <div class="vt-stat"><div class="vt-num">720p</div><div class="vt-lbl">at 24 fps</div></div>
-    </div>
-
-    <div class="vt-figure" style="margin-top: 1.5rem;">
-      <img src="static/images/pipeline.png" alt="ViTeX-Dataset construction pipeline" loading="lazy"/>
-      <div class="vt-figcap">
-        <b>Construction pipeline.</b> Four assets are produced for every retained clip — the text-region mask
-        (SAM&nbsp;3 keypoint segmentation), the source–target string pair (Qwen3-VL-32B-Instruct), the clean
-        background video (removal-1.3B, a Wan2.1-VACE-1.3B fine-tune), and the first-frame target-text patch
-        (Nano Banana Pro). They are composed into the paired edited video <i>Ṽ</i> via Strategy A
-        (alpha composition, static-text clips only) or Strategy B (a fine-tuned PISCO-based inserter,
-        all clips). Static clips run both strategies and the annotator keeps whichever output is judged higher.
-      </div>
-    </div>
-  </div>
-</section>
-<!-- End dataset construction -->
-
-
-<!-- Benchmark protocol with triangle SVG -->
-<section class="section vt-tight">
-  <div class="container is-max-desktop">
-    <h2 class="title is-3 has-text-centered">Evaluation protocol</h2>
-    <p class="subtitle has-text-centered" style="color:#697386;">
-      Three axes, thirteen complementary metrics, one primary metric per axis.
-    </p>
-
-    <svg class="vt-triangle" viewBox="0 0 800 580" xmlns="http://www.w3.org/2000/svg"
-         preserveAspectRatio="xMidYMid meet" style="margin-top: 1.5rem;">
-      <!-- Triangle edges (corner-to-corner, dashed). Inset from the viewBox so
-           the corner circles never get clipped at narrow widths. -->
-      <line class="triangle-edge" x1="400" y1="105" x2="135" y2="465" />
-      <line class="triangle-edge" x1="400" y1="105" x2="665" y2="465" />
-      <line class="triangle-edge" x1="135" y1="465" x2="665" y2="465" />
-
-      <!-- Feed lines from corners to center -->
-      <line class="feed-line" x1="400" y1="170" x2="400" y2="295" />
-      <line class="feed-line" x1="195" y1="450" x2="335" y2="365" />
-      <line class="feed-line" x1="605" y1="450" x2="465" y2="365" />
-
-      <!-- Top corner: Visual quality -->
-      <circle class="corner-circle" cx="400" cy="105" r="95" />
-      <text class="axis-name" x="400" y="93" font-size="15">Visual quality</text>
-      <text class="metric"    x="400" y="118">Flicker / Warp / MUSIQ</text>
-
-      <!-- Bottom-left corner: Text correctness -->
-      <circle class="corner-circle" cx="135" cy="465" r="95" />
-      <text class="axis-name" x="135" y="453" font-size="15">Text correctness</text>
-      <text class="metric"    x="135" y="478">SeqAcc · CharAcc · TTS</text>
-
-      <!-- Bottom-right corner: Edit locality -->
-      <circle class="corner-circle" cx="665" cy="465" r="95" />
-      <text class="axis-name" x="665" y="453" font-size="15">Edit locality</text>
-      <text class="metric"    x="665" y="478">PSNR · SSIM · LPIPS · DreamSim</text>
-
-      <!-- Center: ViTeX-Bench -->
-      <circle class="center-circle" cx="400" cy="330" r="70" />
-      <text class="center-text" x="400" y="327" font-size="16">ViTeX-Bench</text>
-      <text class="center-sub"  x="400" y="349">three axes ·</text>
-      <text class="center-sub"  x="400" y="363">13 metrics</text>
-    </svg>
-
-    <div class="content" style="margin-top: 1.5rem;">
-      <p style="color: var(--vt-slate); line-height: 1.7;">
-        <b style="color:var(--vt-navy);">Each method is reported with the full thirteen-metric vector.</b>
-        One metric per axis is designated as primary: <code>SeqAcc</code> (↑) for text correctness,
-        <code>Warp<sub>c</sub></code> (↓) for temporal quality in the text region, and
-        <code>DreamSim<sub>loc</sub></code> (↓) for edit locality. Trade-offs are compared through the
-        <b>Pareto set</b> on these three primaries: a method is dominated when another is at least as good on
-        all three and strictly better on one. No weighted aggregate is defined, because its weights would
-        impose an application-specific exchange rate between character errors, temporal artifacts, and
-        background changes. Pareto membership alone does not imply a successful edit — Wan2.1-VACE-14B is
-        non-dominated at SeqAcc = 0 — so the remaining ten metrics stay visible as diagnostics.
-      </p>
-      <p style="color: var(--vt-slate); line-height: 1.7;">
-        <b style="color:var(--vt-navy);">Calibration and robustness.</b> Method-blinded human transcription
-        agrees with the OCR-based method ranking at Spearman ρ = 0.95. Three non-author raters scored 70
-        outputs; their ratings correlate with SeqAcc, Warp<sub>c</sub>, and DreamSim<sub>loc</sub> at +0.71,
-        −0.40, and −0.53. Bootstrap resampling of the evaluation split gives mean Kendall τ = 0.936 against
-        the full SeqAcc ranking. Protocols and limitations are detailed in the paper appendix.
-      </p>
-    </div>
-  </div>
-</section>
-<!-- End benchmark protocol -->
-
-
-<!-- Leaderboard table: rendered from the ViTeX-Bench-Leaderboard repo (GitHub) -->
-<section class="section hero is-light">
-  <div class="container is-max-desktop">
-    <h2 class="title is-3 has-text-centered">Public leaderboard</h2>
-    <p class="subtitle has-text-centered" style="color:#697386;">
-      Full 13-metric vector with the three primary metrics highlighted and the Pareto set marked.
-      Click any column header to re-sort.
-    </p>
-    <div class="vt-lb-wrap vt-lb-wide" style="margin-top: 1.5rem; overflow-x: auto;">
-      <table class="vt-lb vt-lb-wide" id="leaderboard-table">
-        <thead>
-          <tr>
-            <th class="left sortable" data-k="method">Method</th>
-            <th class="left sortable" data-k="family">Fam</th>
-            <th class="sortable" data-k="pareto">Pareto</th>
-            <th class="sortable primary" data-k="SeqAcc" data-dir="up">SeqAcc ↑</th>
-            <th class="sortable" data-k="CharAcc" data-dir="up">CharAcc ↑</th>
-            <th class="sortable" data-k="TTS" data-dir="up">TTS ↑</th>
-            <th class="sortable" data-k="Flicker_full" data-dir="down">Flk_f ↓</th>
-            <th class="sortable" data-k="Flicker_crop" data-dir="down">Flk_c ↓</th>
-            <th class="sortable" data-k="Warp_full" data-dir="down">Wp_f ↓</th>
-            <th class="sortable primary" data-k="Warp_crop" data-dir="down">Wp_c ↓</th>
-            <th class="sortable" data-k="MUSIQ_full" data-dir="up">MUSIQ_f ↑</th>
-            <th class="sortable" data-k="MUSIQ_crop" data-dir="up">MUSIQ_c ↑</th>
-            <th class="sortable" data-k="PSNR_loc" data-dir="up">PSNR ↑</th>
-            <th class="sortable" data-k="SSIM_loc" data-dir="up">SSIM ↑</th>
-            <th class="sortable" data-k="LPIPS_loc" data-dir="down">LPIPS ↓</th>
-            <th class="sortable primary" data-k="DreamSim_loc" data-dir="down">DSim ↓</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td class="left"><a href="https://github.com/AMAP-ML/FluxText">FLUX-Text</a></td><td class="left">A</td><td>✓</td><td>0.528</td><td>0.737</td><td>0.326</td><td>5.11</td><td>14.81</td><td>3.03</td><td>13.01</td><td>70.26</td><td>43.85</td><td>31.49</td><td>0.975</td><td>0.029</td><td>0.012</td></tr>
-          <tr><td class="left"><a href="https://github.com/weichaozeng/TextCtrl">TextCtrl</a></td><td class="left">A</td><td>✓</td><td>0.475</td><td>0.734</td><td>0.511</td><td>3.80</td><td>4.29</td><td>1.59</td><td>2.09</td><td>70.32</td><td>42.77</td><td>41.14</td><td>0.994</td><td>0.008</td><td>0.004</td></tr>
-          <tr><td class="left"><a href="https://github.com/TencentARC/VideoPainter">VideoPainter †</a></td><td class="left">C</td><td>—</td><td>0.364</td><td>0.619</td><td>0.606</td><td>2.38†</td><td>2.62†</td><td>2.93†</td><td>3.35†</td><td>67.16</td><td>40.59</td><td>28.56</td><td>0.915</td><td>0.104</td><td>0.024</td></tr>
-          <tr><td class="left"><a href="https://github.com/honglei-zhao/RS-STE">RS-STE</a></td><td class="left">A</td><td>✓</td><td>0.354</td><td>0.626</td><td>0.534</td><td>3.73</td><td>3.66</td><td>1.61</td><td>1.81</td><td>69.57</td><td>34.26</td><td>37.00</td><td>0.983</td><td>0.024</td><td>0.007</td></tr>
-          <tr><td class="left"><a href="https://huggingface.co/ViTeX-Bench/ViTeX-Edit-14B">ViTeX-Edit-14B</a></td><td class="left">Reference</td><td>✓</td><td>0.341</td><td>0.688</td><td>0.648</td><td>3.27</td><td>3.42</td><td>1.55</td><td>1.53</td><td>69.64</td><td>43.53</td><td>29.08</td><td>0.951</td><td>0.060</td><td>0.024</td></tr>
-          <tr><td class="left"><a href="https://github.com/tyxsspa/AnyText2">AnyText2</a></td><td class="left">A</td><td></td><td>0.280</td><td>0.633</td><td>0.382</td><td>3.34</td><td>4.95</td><td>2.04</td><td>3.95</td><td>66.68</td><td>41.65</td><td>25.56</td><td>0.905</td><td>0.091</td><td>0.043</td></tr>
-          <tr><td class="left">TextCtrl + AnyV2V</td><td class="left">B</td><td></td><td>0.057</td><td>0.308</td><td>0.257</td><td>4.98</td><td>4.98</td><td>4.11</td><td>3.97</td><td>69.41</td><td>33.85</td><td>21.08</td><td>0.785</td><td>0.225</td><td>0.073</td></tr>
-          <tr><td class="left"><a href="https://huggingface.co/Wan-AI/Wan2.1-VACE-14B">Wan2.1-VACE-14B</a></td><td class="left">C</td><td>✓</td><td>0.000</td><td>0.298</td><td>0.689</td><td>3.78</td><td>3.84</td><td>1.69</td><td>1.56</td><td>70.54</td><td>45.26</td><td>35.21</td><td>0.976</td><td>0.022</td><td>0.007</td></tr>
-          <tr><td class="left">Kling Video 3.0 Omni</td><td class="left">D</td><td></td><td>0.000</td><td>0.208</td><td>0.641</td><td>4.25</td><td>4.08</td><td>3.12</td><td>2.90</td><td>72.23</td><td>47.75</td><td>21.18</td><td>0.843</td><td>0.176</td><td>0.061</td></tr>
-          <tr class="ref"><td class="left"><a href="https://huggingface.co/ViTeX-Bench/ViTeX-Edit-14B">ViTeX-Edit-14B (Composite)</a></td><td class="left">Reference</td><td>—</td><td>0.345</td><td>0.689</td><td>0.666</td><td>3.73</td><td>3.83</td><td>1.51</td><td>1.56</td><td>70.27</td><td>44.94</td><td>42.95</td><td>0.993</td><td>0.006</td><td>0.002</td></tr>
-          <tr class="ref"><td class="left">Source video</td><td class="left">reference</td><td>—</td><td>0.000</td><td>0.317</td><td>0.760</td><td>3.72</td><td>3.68</td><td>1.46</td><td>1.27</td><td>70.33</td><td>45.12</td><td>∞</td><td>1.000</td><td>0.000</td><td>0.000</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p style="color:#697386; font-size:0.85rem; margin-top:0.75rem;">
-      † VideoPainter's Flicker/Warp values come from interpolated frames and are excluded from temporal
-      comparisons. The Composite row (post-processing) and the Source video reference are shown but not ranked.
-    </p>
-    <div style="text-align: center; margin-top: 1.5rem;">
-      <a class="vt-cta" href="https://vitex-bench.github.io/ViTeX-Bench-Leaderboard/" target="_blank">
-        🏆 View leaderboard &amp; submit
-      </a>
-    </div>
-  </div>
-</section>
-<!-- End leaderboard -->
-
-
-<!-- ViTeX-Edit-14B reference model architecture (Figure 3) -->
-<section class="section hero is-light">
-  <div class="container is-max-desktop">
-    <h2 class="title is-3 has-text-centered">ViTeX-Edit-14B: open reference model</h2>
-    <p class="subtitle has-text-centered" style="color:#697386;">
-      Wan2.1-VACE-14B extended with a glyph-video conditioning pathway, fine-tuned on the 230-clip training split.
-    </p>
-
-    <div class="vt-figure" style="margin: 1.5rem auto 0; max-width: 760px;">
-      <img src="static/images/arch.png" alt="ViTeX-14B architecture" loading="lazy"/>
-      <div class="vt-figcap">
-        <b>Architecture.</b> Three streams enter the model: <b>(i)</b> the target text <i>s</i><sub>tgt</sub>
-        via the frozen uMT5-XXL text encoder; <b>(ii)</b> the source video <i>V</i> and binary mask <i>M</i>
-        via the standard VACE Video Condition Unit; and <b>(iii)</b> a glyph video built from <i>s</i><sub>tgt</sub>
-        rendered in the source font and warped along the source-text trajectory tracked by CoTracker3,
-        encoded by a frozen Wan VAE and compressed by a learnable GlyphEncoder into glyph tokens
-        <i>E</i><sub>G</sub>. Every VACE block queries <i>E</i><sub>G</sub> through an added zero-initialized
-        ConditionCrossAttention layer, so training learns to route glyph information across the eight
-        injection depths.
-      </div>
-    </div>
-  </div>
-</section>
-<!-- End architecture -->
-
-
-<!-- Why three axes, jointly: four diagnosed failures, one per method family.
-     Order matches the qualitative figure in the paper: A=Wan2.1-VACE-14B,
-     B=FLUX-Text, C=Kling Video 3.0 Omni, D=TextCtrl + AnyV2V. -->
-<section class="section vt-tight">
-  <div class="container is-max-desktop">
-    <h2 class="title is-3 has-text-centered">Why three axes, jointly</h2>
-    <p class="subtitle has-text-centered" style="color:#697386;">
-      Four diagnosed baseline failures, one per method family. Each is invisible from a single visual
-      impression or a single metric column, and each is recovered by a specific axis or pair of axes.
-    </p>
-
-    <!-- (A) TTS alone is not an editing-quality indicator -->
-    <div class="vt-fail" style="margin-top: 1.5rem;">
-      <div class="vt-fail-head">
-        <span class="vt-fail-tag">A</span>
-        <h5>TTS alone is not an editing-quality indicator</h5>
-        <span class="vt-fail-method">Wan2.1-VACE-14B (zero-shot)</span>
-        <span class="vt-fail-target">target&nbsp;<code>NEW</code>&nbsp;→&nbsp;<code>OLD</code></span>
-      </div>
-      <div class="vt-fail-grid">
-        <figure>
-          <video autoplay controls muted loop playsinline preload="metadata">
-            <source src="static/videos/failures/094_source.mp4" type="video/mp4">
-          </video>
-          <figcaption>Source clip with text-region mask overlay</figcaption>
+      <div class="figs">
+        <figure class="fig fig--wide">
+          <a class="fig__plate" href="static/images/pipeline.png"><img src="static/images/pipeline.png" alt="ViTeX-Dataset construction pipeline: SAM 3 text masks, Qwen3-VL source–target strings with annotator audit, Removal-1.3B clean background, Nano Banana Pro first-frame patch, composed by alpha composition (Strategy A) or a fine-tuned PISCO inserter (Strategy B)." loading="lazy" width="2000" height="647"></a>
+          <figcaption><strong>Dataset construction.</strong> Four assets per clip: a dilated SAM&nbsp;3 text mask, a Qwen3-VL string pair audited by an annotator, a clean background from Removal-1.3B, and a first-frame target patch. Static clips can use alpha composition (Strategy A); every clip can use a fine-tuned PISCO inserter (Strategy B). The final split has 56 Strategy-A and 174 Strategy-B videos. <a href="static/images/pipeline.png">Full-size figure</a>, in colour.</figcaption>
         </figure>
-        <figure>
-          <video autoplay controls muted loop playsinline preload="metadata">
-            <source src="static/videos/failures/094_vace.mp4" type="video/mp4">
-          </video>
-          <figcaption>Wan2.1-VACE-14B output — text is unchanged</figcaption>
+        <figure class="fig">
+          <a class="fig__plate" href="static/images/arch.png"><img src="static/images/arch.png" alt="ViTeX-Edit-14B architecture: target text via uMT5-XXL, source video and mask via the VACE condition unit, and a glyph video encoded by the Wan VAE and a glyph encoder into tokens that every VACE block reads through condition cross-attention." loading="lazy" width="1260" height="1087"></a>
+          <figcaption><strong>ViTeX-Edit-14B.</strong> Three streams condition the backbone: the target string through the frozen uMT5-XXL encoder, the source video and mask through the VACE condition unit, and the glyph video, pooled by a glyph encoder into 64 tokens. Only the VACE branch, the glyph encoder and the new cross-attention layers are trained. <a href="static/images/arch.png">Full-size figure</a>, in colour.</figcaption>
         </figure>
       </div>
-      <p>
-        The instruction is to change <code>NEW</code> to <code>OLD</code>, but Wan2.1-VACE leaves the masked
-        region essentially unchanged from the source — the rendered text still reads <code>NEW</code>.
-        TTS is high (consecutive frames decode to the same string) and the source-faithful PSNR is also high,
-        so a benchmark that relied on temporal stability or pixel-level fidelity alone would score this
-        favorably. <code>SeqAcc = 0</code> on this clip surfaces the failure: the model never produced the
-        requested target.
-      </p>
     </div>
+  </section>
 
-    <!-- (B) Per-frame editors cannot win correctness and temporal stability simultaneously -->
-    <div class="vt-fail">
-      <div class="vt-fail-head">
-        <span class="vt-fail-tag">B</span>
-        <h5>Per-frame editors cannot win correctness and temporal stability simultaneously</h5>
-        <span class="vt-fail-method">FLUX-Text</span>
-      </div>
-      <div class="vt-fail-grid">
-        <figure>
-          <video autoplay controls muted loop playsinline preload="metadata">
-            <source src="static/videos/failures/169_source.mp4" type="video/mp4">
-          </video>
-          <figcaption>Source clip with text-region mask overlay</figcaption>
-        </figure>
-        <figure>
-          <video autoplay controls muted loop playsinline preload="metadata">
-            <source src="static/videos/failures/169_fluxtext.mp4?v=3" type="video/mp4">
-          </video>
-          <figcaption>FLUX-Text output — characters flicker and drift between frames</figcaption>
-        </figure>
-      </div>
-      <p>
-        Family-A methods take the SeqAcc and CharAcc lead because each frame is edited by a strong static
-        scene-text editor, but the same frame-independence that yields character precision removes any
-        temporal coupling. FLUX-Text registers near-correct characters on individual frames yet cycles
-        through different glyph shapes between frames, so high SeqAcc / CharAcc co-occur with low TTS and
-        an extreme Flicker<sub>c</sub> spike, consistent with editing each frame independently.
-      </p>
-    </div>
-
-    <!-- (C) High visual quality is not correctness -->
-    <div class="vt-fail">
-      <div class="vt-fail-head">
-        <span class="vt-fail-tag">C</span>
-        <h5>High visual quality is not correctness</h5>
-        <span class="vt-fail-method">Kling Video 3.0 Omni</span>
-        <span class="vt-fail-target">target&nbsp;<code>SOC</code>&nbsp;→&nbsp;<code>COC</code>, edited as&nbsp;<code>ZOO</code></span>
-      </div>
-      <div class="vt-fail-grid">
-        <figure>
-          <video autoplay controls muted loop playsinline preload="metadata">
-            <source src="static/videos/failures/0000229_00000_source.mp4" type="video/mp4">
-          </video>
-          <figcaption>Source clip with text-region mask overlay</figcaption>
-        </figure>
-        <figure>
-          <video autoplay controls muted loop playsinline preload="metadata">
-            <source src="static/videos/failures/0000229_00000_kling.mp4" type="video/mp4">
-          </video>
-          <figcaption>Kling output — visually plausible but reads <code>ZOO</code> instead of <code>COC</code></figcaption>
-        </figure>
-      </div>
-      <p>
-        Kling produces a high-quality clip — both MUSIQ axes lead the table — but the rendered glyphs spell
-        <code>ZOO</code> rather than the requested target <code>COC</code>. Visual polish and successful text
-        replacement are distinct properties; reporting correctness alongside visual quality makes this
-        divergence explicit.
-      </p>
-    </div>
-
-    <!-- (D) First-frame propagation collapses correctness and locality together -->
-    <div class="vt-fail">
-      <div class="vt-fail-head">
-        <span class="vt-fail-tag">D</span>
-        <h5>First-frame propagation collapses correctness <i>and</i> locality together</h5>
-        <span class="vt-fail-method">TextCtrl + AnyV2V</span>
-      </div>
-      <div class="vt-fail-grid">
-        <figure>
-          <video autoplay controls muted loop playsinline preload="metadata">
-            <source src="static/videos/failures/185_source.mp4" type="video/mp4">
-          </video>
-          <figcaption>Source clip with text-region mask overlay</figcaption>
-        </figure>
-        <figure>
-          <video autoplay controls muted loop playsinline preload="metadata">
-            <source src="static/videos/failures/185_textctrl_anyv2v.mp4" type="video/mp4">
-          </video>
-          <figcaption>TextCtrl + AnyV2V output — flicker, drift, and off-mask scene corruption</figcaption>
-        </figure>
-      </div>
-      <p>
-        TextCtrl on its own reaches strong SeqAcc with near-perfect locality. Pairing it with AnyV2V to lift
-        that per-frame edit into a video drops SeqAcc by an order of magnitude and produces the worst PSNR /
-        SSIM / LPIPS in the table simultaneously: as the propagation drifts away from the first-frame edit,
-        the unmasked scene drifts with it and the rendered text loses temporal stability. Reporting either
-        correctness or locality in isolation would mask half of the regression.
-      </p>
-    </div>
-  </div>
-</section>
-<!-- End failure modes -->
-
-
-<!-- BibTeX -->
-<section class="section" id="BibTeX">
-  <div class="container is-max-desktop content">
-    <div class="bibtex-header">
-      <h2 class="title">BibTeX</h2>
-      <button class="copy-bibtex-btn" onclick="copyBibTeX()" title="Copy BibTeX to clipboard">
-        <i class="fas fa-copy"></i>
-        <span class="copy-text">Copy</span>
-      </button>
-    </div>
-    <pre id="bibtex-code"><code>@inproceedings{chen2026vitexbench,
-  title     = {ViTeX-Bench: Benchmarking High Fidelity Video Scene Text Editing},
-  author    = {Chen, Xinghao and Gao, Xiangbo and Yu, Jiongze and Wu, Yuheng and Tu, Zhengzhong},
-  booktitle = {Advances in Neural Information Processing Systems (NeurIPS), Track on Evaluations and Datasets},
-  year      = {2026},
-  url       = {https://vitex-bench.github.io/}
-}</code></pre>
-  </div>
-</section>
-
-
-<script src="https://vitex-bench.github.io/ViTeX-Bench-Leaderboard/leaderboard.js"></script>
-<script>
-/* Live leaderboard from the ViTeX-Bench-Leaderboard GitHub repo; the static
- * rows above stay visible if the fetch fails. */
-if (window.ViTeXLeaderboard) {
-  ViTeXLeaderboard.load('https://vitex-bench.github.io/ViTeX-Bench-Leaderboard/data/submissions.jsonl')
-    .then(function (rows) {
-      ViTeXLeaderboard.render(document.getElementById('leaderboard-table'), rows);
-    })
-    .catch(function (err) { console.warn('[ViTeX] leaderboard fetch failed:', err); });
-}
-</script>
-
-
-<footer class="footer">
-  <div class="container">
-    <div class="columns is-centered">
-      <div class="column is-8">
-        <div class="content">
-          <p>
-            This page was built using the
-            <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a>
-            adapted from the <a href="https://nerfies.github.io" target="_blank">Nerfies</a> project page.
-            This website is licensed under a
-            <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
-          </p>
-        </div>
+  <!-- Cite -->
+  <section class="section" id="cite" aria-labelledby="cite-title">
+    <div class="wrap cite">
+      <h2 id="cite-title" class="h-side">Cite</h2>
+      <div class="cite__body">
+<pre id="bib"><code><span class="bl">@inproceedings{chen2026vitexbench,</span><span class="bl">  title     = {ViTeX-Bench: Benchmarking High Fidelity Video Scene Text Editing},</span><span class="bl">  author    = {Chen, Xinghao and Gao, Xiangbo and Yu, Jiongze and Wu, Yuheng and Tu, Zhengzhong},</span><span class="bl">  booktitle = {Advances in Neural Information Processing Systems (NeurIPS), Track on Evaluations and Datasets},</span><span class="bl">  year      = {2026},</span><span class="bl">  url       = <span class="nw">{https://vitex-bench.github.io/}</span></span><span class="bl">}</span></code></pre>
+        <button class="btn btn--ghost btn--sm" type="button" id="copy-bib">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2"/><path d="M15.5 8.5v-2a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg><span>Copy BibTeX</span></button>
       </div>
     </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap foot__grid">
+    <p class="foot__credit">ViTeX-Bench is a project of the <a href="https://taco-group.github.io/">TACO Group</a> at <a href="https://www.tamu.edu/">Texas A&amp;M University</a>, with KAIST.</p>
+    <ul class="foot__links">
+      <li><a href="https://huggingface.co/datasets/ViTeX-Bench/ViTeX-Dataset">Dataset</a></li>
+      <li><a href="https://github.com/ViTeX-Bench/ViTeX-Bench">Evaluation code</a></li>
+      <li><a href="https://huggingface.co/ViTeX-Bench/ViTeX-Edit-14B">ViTeX-Edit-14B</a></li>
+      <li><a href="https://vitex-bench.github.io/ViTeX-Bench-Leaderboard/">Leaderboard</a></li>
+      <li><a href="https://github.com/ViTeX-Bench">GitHub</a></li>
+    </ul>
   </div>
 </footer>
 
-  </main>
-  </body>
-  </html>
+<script src="static/js/site.js?v=3"></script>
+</body>
+</html>
