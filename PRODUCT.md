@@ -40,7 +40,7 @@ ViTeX-Bench is OCR-anchored: it measures whether the edited region reads as the 
 ## Brand Commitments
 
 - Names exactly: **ViTeX-Bench**, **ViTeX-Dataset**, **ViTeX-Edit-14B**.
-- Authors: Xinghao Chen¹, Xiangbo Gao¹, Jiongze Yu¹, Yuheng Wu², Zhengzhong Tu¹. ¹ Texas A&M University, ² KAIST. Contact: Xinghao Chen (xhc42@outlook.com), Zhengzhong Tu.
+- Authors: Xinghao Chen¹, Xiangbo Gao¹, Jiongze Yu¹, Yuheng Wu², Zhengzhong Tu¹. ¹ Texas A&M University, ² KAIST. Contact: Xinghao Chen (cxh4242@gmail.com), Zhengzhong Tu.
 - The work is credited to the **TACO Group** (`https://taco-group.github.io/`) at **Texas A&M University**, as typeset text with links, no logos (confirmed 2026-09-26). KAIST stays in the author affiliations but not in the footer credit.
 - The user asked for the homepage to stay close to or consistent with the leaderboard's look (see that repo's DESIGN.md): elegant and minimal, clearly legible type, light/dark toggle, comfortable on phone and desktop.
 - Revisions the user asked for on 2026-09-26, after the first redesign:
