@@ -205,12 +205,6 @@
   }
   function fitWord() {
     var word = $('hero-word'), box = word.parentNode, maxPx = window.innerWidth < 600 ? 104 : window.innerWidth < 1000 ? 136 : Math.min(184, window.innerWidth * 0.12);
-    // in the one-screen layout the word also has to fit the height left beside the clip
-    if (window.matchMedia('(min-width: 1101px) and (min-height: 560px)').matches) {
-      var inner = $('hero-wipe').parentNode, cs = getComputedStyle(inner), foot = inner.querySelector('.glyph__foot');
-      var avail = inner.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom) - (foot ? foot.offsetHeight : 0) - 8;
-      if (avail > 40) maxPx = Math.min(maxPx, avail);
-    }
     word.style.fontSize = '100px';
     var w = Math.max($('hero-src').offsetWidth, $('hero-tgt').offsetWidth) || 1;
     word.style.fontSize = Math.min(maxPx, Math.floor(100 * (box.clientWidth - 4) / w)) + 'px';
@@ -276,6 +270,25 @@
   setHeroScene(0, true);
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitWord);
   window.addEventListener('resize', fitWord);
+
+  // =====================================================================
+  // Overview video: poster + play button; plays with sound on request
+  // =====================================================================
+  (function () {
+    var frame = $('promo'), v = $('promo-video'), btn = $('promo-play');
+    if (!frame || !v) return;
+    function start() {
+      frame.classList.add('is-playing');
+      v.controls = true;
+      var pr = v.play(); if (pr && pr.catch) pr.catch(function () { frame.classList.remove('is-playing'); });
+    }
+    btn.addEventListener('click', start);
+    v.addEventListener('play', function () { frame.classList.add('is-playing'); hero.video.pause(); });
+    v.addEventListener('ended', function () {
+      frame.classList.remove('is-playing'); v.controls = false;
+      $('promo-verb').textContent = 'Watch again';
+    });
+  })();
 
   // =====================================================================
   // Comparator

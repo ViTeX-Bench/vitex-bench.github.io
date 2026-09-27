@@ -143,8 +143,8 @@ html { scrollbar-color: var(--line-2) transparent; }
 
 /* ---------- First viewport: the paper ---------- */
 .intro { padding-top: clamp(44px, 7vh, 96px); }
-.intro__grid { display: grid; grid-template-columns: minmax(0, 1fr) 280px; gap: 48px; align-items: end; }
-.intro h1 { font-weight: 300; font-size: clamp(2.3rem, 4.9vw, 4rem); line-height: 1.04; letter-spacing: -0.024em; margin: 0 0 26px; max-width: 22ch; }
+.intro__grid { display: grid; grid-template-columns: minmax(0, 1fr) 280px; column-gap: 48px; align-items: end; }
+.intro h1 { grid-column: 1 / -1; font-weight: 300; font-size: clamp(2.2rem, 4.4vw, 3.6rem); line-height: 1.05; letter-spacing: -0.024em; margin: 0 0 22px; max-width: 34ch; }
 .intro h1 b { font-weight: 500; }
 .authors { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px 22px; font-size: 18px; }
 .authors a { text-decoration: underline; text-decoration-color: var(--line-2); text-underline-offset: 0.22em; transition: color 200ms, text-decoration-color 200ms; }
@@ -168,7 +168,7 @@ html { scrollbar-color: var(--line-2) transparent; }
 .credit__note a { text-decoration: underline; text-decoration-color: var(--line-2); }
 
 /* ---------- The glyph stage: a word changing on a real clip ---------- */
-.glyph { position: relative; overflow: hidden; isolation: isolate; margin-top: clamp(40px, 6vh, 72px); }
+.glyph { position: relative; overflow: hidden; isolation: isolate; }
 .glyph__ambient {
   position: absolute; inset: -8%; width: 116%; height: 116%; z-index: -1;
   filter: var(--ambient-filter); opacity: var(--ambient);
@@ -198,24 +198,53 @@ html { scrollbar-color: var(--line-2) transparent; }
 .glyph__foot .scenes button::after { content: ""; position: absolute; left: 0; bottom: 0; height: 2px; width: calc(var(--prog, 0) * 100%); background: var(--accent); }
 .glyph__cap { margin: 18px 0 0; font-size: 13.5px; color: var(--fg-2); max-width: 44ch; }
 
-/* Desktop: the title block and the glyph stage share exactly one screen.
-   The stage takes whatever height is left; the wipe is sized from that
-   height (container units) so the clip is never cut off at the fold. */
-@media (min-width: 1101px) and (min-height: 560px) {
-  .fold { display: flex; flex-direction: column; height: clamp(560px, calc(100svh - 60px), 960px); }
-  .intro { flex: none; padding-top: clamp(24px, 4.5vh, 72px); }
-  .intro h1 { font-size: clamp(2.1rem, min(4.3vw, 6.2vh), 4rem); margin-bottom: clamp(14px, 2.4vh, 26px); max-width: 24ch; }
-  .venue { margin-top: clamp(12px, 2vh, 22px); }
-  .links { margin-top: clamp(14px, 2.6vh, 30px); }
-  .glyph { flex: 1 1 auto; min-height: 0; margin-top: clamp(12px, 2.5vh, 48px); }
-  .glyph__inner {
-    height: 100%; container-type: size; padding-top: clamp(14px, 2.5vh, 40px); padding-bottom: clamp(14px, 2.5vh, 36px);
-    grid-template-columns: minmax(0, 1fr) auto;
-  }
-  .glyph .wipe--hero { width: min(100cqh * 16 / 9, 64cqw); align-self: center; }
-  .glyph__foot { padding-top: clamp(10px, 1.8vh, 22px); }
-  .glyph__cap { margin-top: clamp(8px, 1.6vh, 18px); }
+/* ---------- The one-minute overview ---------- */
+.promo { position: relative; isolation: isolate; padding: clamp(28px, 4vh, 48px) 0 0; }
+.promo::before {
+  content: ""; position: absolute; left: 0; right: 0; top: 8%; bottom: -14%; z-index: -1;
+  background: url("../images/posters/promo.jpg") center / cover no-repeat;
+  filter: blur(70px) saturate(1.2); opacity: calc(var(--ambient) * 0.8);
+  -webkit-mask-image: radial-gradient(ellipse 60% 55% at 50% 50%, #000 30%, transparent 100%); mask-image: radial-gradient(ellipse 60% 55% at 50% 50%, #000 30%, transparent 100%);
 }
+.promo__inner { display: flex; justify-content: center; }
+.promo__frame { position: relative; margin: 0; width: 100%; aspect-ratio: 16 / 9; border-radius: 14px; overflow: hidden; background: #000; box-shadow: 0 0 0 1px var(--line-2); }
+.promo__frame video { display: block; width: 100%; height: 100%; object-fit: contain; background: #000; }
+.promo__play {
+  position: absolute; inset: 0; display: flex; align-items: flex-end; justify-content: flex-start; gap: 14px;
+  padding: clamp(16px, 2.6vw, 28px); background: linear-gradient(to top, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0) 45%); border: 0; cursor: pointer; color: #fff; text-align: left;
+  transition: opacity 300ms var(--ease);
+}
+.promo__disc {
+  width: clamp(52px, 5.4vw, 72px); flex: none; aspect-ratio: 1; border-radius: 50%; display: grid; place-items: center;
+  background: var(--accent); color: var(--accent-ink); box-shadow: 0 0 0 10px color-mix(in srgb, var(--accent) 22%, transparent);
+  transition: transform 300ms var(--ease), box-shadow 300ms var(--ease);
+}
+:root[data-theme="light"] .promo__disc { background: #A99DF6; color: #0E0A24; box-shadow: 0 0 0 10px rgba(169, 157, 246, 0.25); }
+.promo__disc svg { width: 42%; height: 42%; fill: currentColor; margin-left: 6%; }
+.promo__play:hover .promo__disc { transform: scale(1.06); box-shadow: 0 0 0 14px color-mix(in srgb, var(--accent) 26%, transparent); }
+.promo__play:focus-visible { outline: none; }
+.promo__play:focus-visible .promo__disc { outline: 2px solid #fff; outline-offset: 6px; }
+.promo__label { display: flex; flex-direction: column; gap: 6px; padding-bottom: 4px; font: 500 clamp(15px, 1.4vw, 18px)/1.1 var(--sans); text-shadow: 0 1px 12px rgba(0, 0, 0, 0.5); }
+.promo__time { font: 400 13px/1 var(--mono); color: rgba(255, 255, 255, 0.78); }
+.promo__frame.is-playing .promo__play { opacity: 0; pointer-events: none; }
+
+/* The task section: the glyph stage under its own heading. */
+.task .section__head { margin-bottom: 8px; }
+
+/* Desktop: the title block and the overview video share exactly one screen.
+   The video takes whatever height is left and is sized from it (container
+   units), so it is never cut off at the fold. */
+@media (min-width: 1101px) and (min-height: 560px) {
+  .fold { display: flex; flex-direction: column; height: clamp(560px, calc(100svh - 60px), 1000px); }
+  .intro { flex: none; padding-top: clamp(20px, 3.6vh, 56px); }
+  .intro h1 { font-size: clamp(2rem, min(3.7vw, 5.2vh), 3.4rem); margin-bottom: clamp(12px, 2vh, 22px); }
+  .venue { margin-top: clamp(10px, 1.6vh, 20px); }
+  .links { margin-top: clamp(12px, 2vh, 24px); }
+  .promo { flex: 1 1 auto; min-height: 0; padding-top: clamp(16px, 2.6vh, 36px); padding-bottom: clamp(16px, 2.6vh, 36px); }
+  .promo__inner { height: 100%; container-type: size; }
+  .promo__frame { width: min(100cqw, 100cqh * 16 / 9); height: auto; }
+}
+
 
 /* ---------- Wipe (shared by hero and comparator) ---------- */
 .wipe {
@@ -432,8 +461,8 @@ html { scrollbar-color: var(--line-2) transparent; }
   .glyph__inner { grid-template-columns: minmax(0, 1fr); grid-template-rows: none; grid-template-areas: "wipe" "word" "foot"; row-gap: 0; }
   .glyph__word { padding-top: 26px; align-self: start; }
   .glyph__foot { padding-top: 18px; }
-  .intro__grid { grid-template-columns: minmax(0, 1fr); gap: 32px; }
-  .credit { border-left: 0; border-top: 1px solid var(--line-2); padding: 20px 0 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 16px; }
+  .intro__grid { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .credit { margin-top: 28px; border-left: 0; border-top: 1px solid var(--line-2); padding: 20px 0 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 16px; }
   .credit__note { flex-basis: 100%; margin-top: 8px !important; }
   .cmp { grid-template-columns: minmax(0, 1fr); gap: 16px; }
   .cmp__methods { flex-direction: row; gap: 6px; overflow-x: auto; scrollbar-width: none; margin: 0 calc(-1 * var(--gutter)); padding: 0 var(--gutter) 2px; }
@@ -481,6 +510,10 @@ html { scrollbar-color: var(--line-2) transparent; }
   .views { display: grid; grid-template-columns: 1fr 1fr; width: 100%; border-radius: 20px; }
   .views button { white-space: normal; line-height: 1.25; }
   .cite .bl { padding-left: 4ch; text-indent: -4ch; }
+  .promo__play { padding: 12px; gap: 10px; }
+  .promo__disc { width: 42px; box-shadow: 0 0 0 6px color-mix(in srgb, var(--accent) 22%, transparent); }
+  .promo__label { font-size: 13.5px; gap: 3px; padding-bottom: 1px; }
+  .promo__time { font-size: 11.5px; }
   .gcell span { left: 4px; top: 4px; font-size: 10px; padding: 3px 6px; max-width: calc(100% - 8px); }
   .pick__row { gap: 14px; }
 }

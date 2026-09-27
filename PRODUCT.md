@@ -40,7 +40,7 @@ ViTeX-Bench is OCR-anchored: it measures whether the edited region reads as the 
 ## Brand Commitments
 
 - Names exactly: **ViTeX-Bench**, **ViTeX-Dataset**, **ViTeX-Edit-14B**.
-- Authors: Xinghao Chen¹, Xiangbo Gao¹, Jiongze Yu¹, Yuheng Wu², Zhengzhong Tu¹. ¹ Texas A&M University, ² KAIST. Contact: Xinghao Chen (cxh4242@gmail.com), Zhengzhong Tu.
+- Authors: Xinghao Chen¹, Xiangbo Gao¹, Jiongze Yu¹, Yuheng Wu², Zhengzhong Tu¹. ¹ Texas A&M University, ² KAIST. Contact: Xinghao Chen (cxh4242@gmail.com; every contact link on the site points to his homepage, https://cxh42.github.io/), Zhengzhong Tu.
 - The work is credited to the **TACO Group** (`https://taco-group.github.io/`) at **Texas A&M University**, as typeset text with links, no logos (confirmed 2026-09-26). KAIST stays in the author affiliations but not in the footer credit.
 - The user asked for the homepage to stay close to or consistent with the leaderboard's look (see that repo's DESIGN.md): elegant and minimal, clearly legible type, light/dark toggle, comfortable on phone and desktop.
 - Revisions the user asked for on 2026-09-26, after the first redesign:
@@ -55,6 +55,7 @@ ViTeX-Bench is OCR-anchored: it measures whether the edited region reads as the 
 
 ## Evidence on Hand
 
+- Promo video: `static/videos/promo/ViTeX-Bench_promo_1080p.mp4` (the authors' 66 s overview with music, source `/home/xh/PJ/ViTeX/vitex-promo`), plus a 720p encode for phones. It is the first-viewport feature under the title (user request, 2026-09-27).
 - Figures: `static/images/teaser.jpg` (paper Fig. 1), `pipeline.png` (Fig. 2), `arch.png` (Fig. 3).
 - Videos: `static/videos/showcase_v2/*.mp4` (five 4×3 composite comparisons, source + all methods per scene); `static/videos/failures/*.mp4` (source/output pairs for the four diagnosed failures in paper Fig. 4); `banner_video.mp4`, `carousel*.mp4` (template leftovers, unused).
 - Numbers: paper Table 2 (all 13 metric means for 11 rows), calibration (Spearman ρ = 0.95 human vs. OCR ranking; rater correlations +0.71 / −0.40 / −0.53; bootstrap Kendall τ = 0.936), dataset coverage (Table 1).

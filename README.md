@@ -8,8 +8,9 @@ Preview locally with `python3 -m http.server` and open http://localhost:8000/.
 
 ## Media
 
+- `static/videos/promo/ViTeX-Bench_promo_1080p.mp4`: the 66 s overview video, copied unchanged from the promo project; `ViTeX-Bench_promo_720p.mp4` is a smaller encode served to phones (`ffmpeg -i ..._1080p.mp4 -vf scale=1280:-2 -c:v libx264 -crf 23 -preset slow -c:a copy -movflags +faststart ..._720p.mp4`). Poster: `static/images/posters/promo.jpg` (frame at 20.6 s).
 - `static/videos/showcase_v2/<clip>.mp4`: 4×3 composite grids (source and every method) rendered by `scripts/render_showcase_grid.py`. The page crops individual methods from these on a canvas, so one decode drives the comparator and the grid view.
-- `static/videos/hero/<clip>.mp4`: the source cell stacked over the ViTeX-Edit-14B cell (430×484), cut from the composites for the first viewport:
+- `static/videos/hero/<clip>.mp4`: the source cell stacked over the ViTeX-Edit-14B cell (430×484), cut from the composites for the glyph stage in the "Change the word, keep the scene" section:
 
   ```bash
   ffmpeg -i static/videos/showcase_v2/<clip>.mp4 \

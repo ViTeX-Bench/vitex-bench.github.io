@@ -273,7 +273,8 @@ The page opens on the paper, set as an editorial title block: a large left-align
 **Key Characteristics:**
 - Inherits the leaderboard's Field/Desk neutrals, type pairing, hairlines, pills and 3-D Pareto star space.
 - One lavender accent per theme, used sparingly for a fixed set of roles. Status never depends on the hue alone.
-- A title-first, left-aligned editorial first viewport with a lab credit aside, then the glyph stage: display word left, wipe right, over the clip's own blurred colour.
+- A title-first, left-aligned editorial first viewport with a lab credit aside, then the one-minute overview video as the feature of the fold.
+- The glyph stage (display word left, wipe right, over the clip's own blurred colour) opens the first section, "Change the word, keep the scene".
 - A draggable, keyboard-operable wipe over real video as the signature interaction, shared by the teaser and the comparator.
 - Chrome over video uses fixed white-on-black scrims in both themes.
 
@@ -350,7 +351,11 @@ Two lightings of one monochrome object (inherited), one lavender accent tuned to
 
 The page uses the leaderboard's 1200px column, `clamp(20px, 5vw, 56px)` gutter and sticky 60px header. Sections open with `clamp(88px, 12vw, 152px)` of top space (the abstract uses the tight step, `clamp(64px, 9vw, 112px)`), and the footer opens with `clamp(96px, 13vw, 168px)`.
 
-**First viewport.** Title-first and left-aligned. On desktops at least 1101px wide and 560px tall, the title block and the glyph stage together fill exactly one screen (`clamp(560px, 100svh − 60px, 960px)`). The stage takes the height that remains; the wipe's width is `min(100cqh × 16/9, 64cqw)` of the stage (container units), so the clip is never cut off at the fold, and the display word is also capped by the height left beside it. Narrower or shorter screens scroll normally. The title block opens `clamp(44px, 7vh, 96px)` below the header on a `1fr : 280px` grid: title, authors (18px), affiliations, the venue badge row (22px) and a wrapping row of four equal ghost buttons (30px, 10px gaps) on the left, and the lab credit on the right behind a strong-hairline left rule, bottom-aligned. The glyph stage follows `clamp(40px, 6vh, 72px)` lower: a 5/12 : 7/12 grid with the display word bottom-left, the scene chips and caption under it, and the wipe on the right spanning both rows, all over the full-bleed coloured ambient, which fades in and out with a vertical mask.
+**First viewport.** Title-first and left-aligned, then the overview video. On desktops at least 1101px wide and 560px tall, the title block and the video together fill exactly one screen (`clamp(560px, 100svh − 60px, 1000px)`). The video takes the height that remains and is sized `min(100cqw, 100cqh × 16/9)` of it (container units), centred, so it is never cut off at the fold. Narrower or shorter screens scroll normally. The title spans the full column on one or two balanced lines (`High-Fidelity` never breaks), then a `1fr : 280px` grid: authors (18px), affiliations, the venue badge row and a wrapping row of four equal ghost buttons on the left, and the lab credit on the right behind a strong-hairline left rule, bottom-aligned.
+
+**Overview video.** A 16:9 frame with a 14px radius and a strong-hairline ring on black, over a soft blur of its own poster. Before playing it shows the poster (the 387-videos wall at 20.6 s) with a bottom-left play control: an accent disc (72px desktop, 42px phone) with a halo ring, "Watch the overview" and a mono "1:06 · with sound" on a bottom scrim. Clicking plays with sound and native controls; the overlay fades out and returns as "Watch again" at the end. Phones (≤800px) load the 720p file, larger screens the 1080p original; nothing loads before the click.
+
+**Glyph stage.** Opens the first section under a standard section head. A 5/12 : 7/12 grid with the display word bottom-left, the scene chips and caption under it, and the wipe on the right spanning both rows, over the full-bleed coloured ambient.
 
 **Recurring splits.**
 - **5/7**: failure rows (text left, a two-up source/output video pair right).
