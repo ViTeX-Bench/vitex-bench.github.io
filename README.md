@@ -26,5 +26,5 @@ To add a scene, render its composite, cut the hero clip and posters as above, an
 
 ## Sharing
 
-The share panel (header icon, and "Share this page" in Cite) links to each platform's official web share endpoint; the links are plain `href`s in `index.html`, so they work without JavaScript. WeChat shows a QR code of the page URL (generated once with the `qrcode` npm package and inlined as SVG). Xiaohongshu, Zhihu and Bilibili have no web share endpoint, so their buttons copy a Chinese title and the URL. Brand icons are from [Simple Icons](https://simpleicons.org/) (CC0); LinkedIn and Email are drawn by hand. If the page URL changes, regenerate the QR code and update the share URLs.
+The share panel (header icon, and "Share this page" in Cite) links to each platform's official web share endpoint; the links are plain `href`s in `index.html`, so they work without JavaScript. WeChat shows a QR code of the page URL (generated once with the `qrcode` npm package and inlined as SVG). Xiaohongshu, Zhihu and Bilibili have no web share endpoint, so their buttons copy the English title and the URL. Brand icons are from [Simple Icons](https://simpleicons.org/) (CC0); LinkedIn and Email are drawn by hand. If the page URL changes, regenerate the QR code and update the share URLs.
 

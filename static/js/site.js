@@ -280,7 +280,7 @@
     if (!panel || !btn) return;
     var URL = 'https://vitex-bench.github.io/';
     var TITLE = 'ViTeX-Bench: Benchmarking High-Fidelity Video Scene Text Editing';
-    var ZH = 'ViTeX-Bench：高保真视频场景文字编辑基准（NeurIPS 2026 Evaluations and Datasets Track）';
+    var EN = 'ViTeX-Bench: Benchmarking High-Fidelity Video Scene Text Editing (NeurIPS 2026, Evaluations and Datasets Track)';
     var opener = null, timer = 0;
     function say(msg) { toast.textContent = msg; clearTimeout(timer); timer = setTimeout(function () { toast.textContent = ''; }, 3600); }
     function copy(text, msg) {
@@ -320,7 +320,7 @@
       if (act === 'close') close();
       else if (act === 'copy') copy(URL, 'Link copied.');
       else if (act === 'wechat') wechat();
-      else if (act === 'copy-zh') copy(ZH + ' ' + URL, '已复制标题和链接，打开' + b.getAttribute('data-app') + '粘贴即可。');
+      else if (act === 'copy-zh') copy(EN + ' ' + URL, 'Title and link copied. Paste them in ' + b.getAttribute('data-app') + '.');
       else if (act === 'native' && navigator.share) navigator.share({ title: TITLE, text: TITLE, url: URL }).catch(function () {});
     });
     if (navigator.share) panel.querySelector('[data-share="native"]').hidden = false;
