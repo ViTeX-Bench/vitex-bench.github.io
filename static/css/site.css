@@ -246,7 +246,7 @@ html { scrollbar-color: var(--line-2) transparent; }
 .promo { position: relative; isolation: isolate; padding: clamp(28px, 4vh, 48px) 0 0; }
 .promo::before {
   content: ""; position: absolute; left: 0; right: 0; top: 8%; bottom: -14%; z-index: -1;
-  background: url("../images/posters/promo.jpg?v=2") center / cover no-repeat;
+  background: url("../images/posters/promo.jpg?v=3") center / cover no-repeat;
   filter: blur(70px) saturate(1.2); opacity: calc(var(--ambient) * 0.8);
   -webkit-mask-image: radial-gradient(ellipse 60% 55% at 50% 50%, #000 30%, transparent 100%); mask-image: radial-gradient(ellipse 60% 55% at 50% 50%, #000 30%, transparent 100%);
 }
