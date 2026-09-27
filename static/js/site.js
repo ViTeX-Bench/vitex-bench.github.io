@@ -272,6 +272,61 @@
   window.addEventListener('resize', fitWord);
 
   // =====================================================================
+  // Share panel: platform links are plain hrefs in the markup; this adds
+  // open/close, copy, the WeChat QR, and the system share sheet.
+  // =====================================================================
+  (function () {
+    var panel = $('share'), btn = $('share-btn'), scrim = $('share-scrim'), toast = $('share-toast'), qr = $('share-qr');
+    if (!panel || !btn) return;
+    var URL = 'https://vitex-bench.github.io/';
+    var TITLE = 'ViTeX-Bench: Benchmarking High-Fidelity Video Scene Text Editing';
+    var ZH = 'ViTeX-Bench：高保真视频场景文字编辑基准（NeurIPS 2026 Evaluations and Datasets Track）';
+    var opener = null, timer = 0;
+    function say(msg) { toast.textContent = msg; clearTimeout(timer); timer = setTimeout(function () { toast.textContent = ''; }, 3600); }
+    function copy(text, msg) {
+      function fallback() {
+        var ta = document.createElement('textarea'); ta.value = text; ta.setAttribute('readonly', ''); ta.style.position = 'fixed'; ta.style.opacity = '0';
+        document.body.appendChild(ta); ta.select();
+        var ok = false; try { ok = document.execCommand('copy'); } catch (e) {}
+        document.body.removeChild(ta);
+        say(ok ? msg : 'Copy failed. Select the address above and copy it.');
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(function () { say(msg); }, fallback);
+      else fallback();
+    }
+    function wechat(show) {
+      var t = panel.querySelector('[data-share="wechat"]');
+      if (show == null) show = qr.hidden;
+      qr.hidden = !show; t.setAttribute('aria-expanded', show ? 'true' : 'false');
+    }
+    function open(from) {
+      opener = from || btn;
+      panel.hidden = false; scrim.hidden = false; btn.setAttribute('aria-expanded', 'true');
+      panel.querySelector('[data-share="copy"]').focus();
+    }
+    function close() {
+      if (panel.hidden) return;
+      panel.hidden = true; scrim.hidden = true; btn.setAttribute('aria-expanded', 'false');
+      wechat(false); toast.textContent = '';
+      if (opener) opener.focus();
+    }
+    btn.addEventListener('click', function () { if (panel.hidden) open(btn); else close(); });
+    document.querySelectorAll('[data-open-share]').forEach(function (b) { b.addEventListener('click', function () { open(b); }); });
+    scrim.addEventListener('click', close);
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+    panel.addEventListener('click', function (e) {
+      var b = e.target.closest('[data-share]'); if (!b) return;
+      var act = b.getAttribute('data-share');
+      if (act === 'close') close();
+      else if (act === 'copy') copy(URL, 'Link copied.');
+      else if (act === 'wechat') wechat();
+      else if (act === 'copy-zh') copy(ZH + ' ' + URL, '已复制标题和链接，打开' + b.getAttribute('data-app') + '粘贴即可。');
+      else if (act === 'native' && navigator.share) navigator.share({ title: TITLE, text: TITLE, url: URL }).catch(function () {});
+    });
+    if (navigator.share) panel.querySelector('[data-share="native"]').hidden = false;
+  })();
+
+  // =====================================================================
   // Overview video: poster + play button; plays with sound on request
   // =====================================================================
   (function () {
