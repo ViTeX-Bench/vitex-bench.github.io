@@ -26,7 +26,7 @@ ViTeX-Bench is OCR-anchored: it measures whether the edited region reads as the 
 
 - Static site on GitHub Pages at `https://vitex-bench.github.io/` (repo `ViTeX-Bench/vitex-bench.github.io`, branch `master`).
 - Sister site: the leaderboard at `https://vitex-bench.github.io/ViTeX-Bench-Leaderboard/` (repo `/home/xh/PJ/ViTeX/ViTeX-Bench-Leaderboard`). Its `data/submissions.jsonl` is the live source of leaderboard rows; the homepage may read it at runtime. The leaderboard's `leaderboard.js` API need not be preserved.
-- Release links: dataset `https://huggingface.co/datasets/ViTeX-Bench/ViTeX-Dataset`, evaluation code `https://github.com/ViTeX-Bench/ViTeX-Bench`, model `https://huggingface.co/ViTeX-Bench/ViTeX-Edit-14B`.
+- Release links: dataset `https://huggingface.co/datasets/ViTeX-Bench/ViTeX-Dataset`, code (evaluation + ViTeX-Edit-14B) `https://github.com/taco-group/ViTeX-Bench`, model weights `https://huggingface.co/ViTeX-Bench/ViTeX-Edit-14B`.
 - Paper source: `/home/xh/PJ/ViTeX/ViTeX_arxiv/build/paper.pdf` (September 26, 2026 revision).
 
 ## Capabilities and Constraints

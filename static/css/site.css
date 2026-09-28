@@ -469,6 +469,8 @@ html { scrollbar-color: var(--line-2) transparent; }
 .rel__item dt { font-size: 13.5px; color: var(--fg-3); }
 .rel__item dd { margin: 0; font: 400 13.5px/1.4 var(--mono); text-align: right; font-variant-numeric: tabular-nums; }
 .rel__link { margin-top: auto; display: inline-flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 500; text-decoration: none; padding: 6px 0; }
+.rel__links { margin-top: auto; display: flex; flex-wrap: wrap; column-gap: 22px; }
+.rel__links .rel__link { margin-top: 0; }
 .rel__link:hover { text-decoration: underline; }
 .rel__link .icon { width: 15px; height: 15px; }
 
