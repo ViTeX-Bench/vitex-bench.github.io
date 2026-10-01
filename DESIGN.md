@@ -440,7 +440,7 @@ Three equal columns under a strong top rule, divided by vertical hairlines. Each
 A light plate with a 12px radius and fluid padding, holding the full-colour raster. The caption (14px dim, 72ch) sits beside or below it with a bold lead-in and ends with a "Full-size figure" link. Wide figures span the column. The narrow plate is capped at 560px on small screens.
 
 ### Cite
-A 3/9 split. The BibTeX block is a hairline-bordered 10px pre, mono 12.5px/1.7 in dim text, wrapped rather than scrolled, with continuation lines hang-indented 18ch (4ch below 600px). A small ghost button copies it. The contact line (14px dim) sits under the button.
+A 3/9 split. The BibTeX block is a hairline-bordered 10px pre, mono 12.5px/1.7 in dim text, wrapped rather than scrolled, with continuation lines hang-indented 18ch (4ch below 600px). The url value never breaks, except below 600px, where it may break after `abs/` (a `<wbr>`) so it stays inside the block on 360px screens. A small ghost button copies it. The contact line (14px dim) sits under the button.
 
 ### Navigation
 The leaderboard's header: sticky, 60px, 82% background mix, 12px blur, bottom hairline. The wordmark is 600 at 16px. Section links are 14px dim: Comparison, Failures, Protocol, Release, Cite. A hairline-separated "Leaderboard ↗" link and a 36px circular theme toggle sit at the right. Below 860px only the Leaderboard link and the toggle remain.
