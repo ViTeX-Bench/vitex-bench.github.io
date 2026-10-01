@@ -1,6 +1,6 @@
 # ViTeX-Bench project page
 
-Source of https://vitex-bench.github.io/, the project page for **ViTeX-Bench: Benchmarking High-Fidelity Video Scene Text Editing** (NeurIPS 2026, Track on Evaluations and Datasets). A TACO Group project at Texas A&M University.
+Source of https://vitex-bench.github.io/, the project page for **ViTeX-Bench: Benchmarking High-Fidelity Video Scene Text Editing** ([arXiv:2609.40356](https://arxiv.org/abs/2609.40356); NeurIPS 2026, Track on Evaluations and Datasets). A TACO Group project at Texas A&M University.
 
 The site is static, with no build step: `index.html`, `static/css/site.css` and `static/js/site.js`. Fonts (Atkinson Hyperlegible Next and Mono) are self-hosted in `static/fonts/`. It shares its look with the [leaderboard](https://vitex-bench.github.io/ViTeX-Bench-Leaderboard/) and reads the leaderboard's `data/submissions.jsonl` at runtime for the 3-D Pareto space and the method scores. The paper's numbers are embedded as a fallback.
 

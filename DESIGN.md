@@ -268,7 +268,7 @@ This page lives in the same world as the ViTeX-Bench Leaderboard (`/home/xh/PJ/V
 
 The one deliberate departure is colour. The leaderboard stays strictly monochrome under its No Hue Rule. The project page adds a single lavender accent derived from the ViTeX logo (#9C90F0), tuned per theme. This is a homepage-level extension (approved 2026-09-26), not a change to the shared world. The accent marks a short list of things: the venue, the Pareto front, the target string of an edit, the metric that catches a failure, each axis's primary metric, and interaction affordances. Everything else stays monochrome. The clip behind the teaser now casts its own colour, blurred, and paper figures appear in full colour on a light plate.
 
-The page opens on the paper, set as an editorial title block: a large left-aligned thin title with the bold project name, authors, affiliations, the venue badge and four equal release buttons, and a lab credit (TACO Group, Texas A&M University) behind a hairline on the right. Below that is one gesture: a vertical line sweeping across a real clip with the edit on the left and the source on the right, while a display word beside it turns from the source string into the target string, in the accent, as the line crosses the text. The same wipe returns in the comparator. Everything else is quiet reading space in hairline columns. Density is low, and sections open with a lot of top space.
+The page opens on the paper, set as an editorial title block: a large left-aligned thin title with the bold project name, authors, affiliations, the venue badge and five equal release buttons led by Paper, and a lab credit (TACO Group, Texas A&M University) behind a hairline on the right. Below that is one gesture: a vertical line sweeping across a real clip with the edit on the left and the source on the right, while a display word beside it turns from the source string into the target string, in the accent, as the line crosses the text. The same wipe returns in the comparator. Everything else is quiet reading space in hairline columns. Density is low, and sections open with a lot of top space.
 
 **Key Characteristics:**
 - Inherits the leaderboard's Field/Desk neutrals, type pairing, hairlines, pills and 3-D Pareto star space.
@@ -351,7 +351,7 @@ Two lightings of one monochrome object (inherited), one lavender accent tuned to
 
 The page uses the leaderboard's 1200px column, `clamp(20px, 5vw, 56px)` gutter and sticky 60px header. Sections open with `clamp(88px, 12vw, 152px)` of top space (the abstract uses the tight step, `clamp(64px, 9vw, 112px)`), and the footer opens with `clamp(96px, 13vw, 168px)`.
 
-**First viewport.** Title-first and left-aligned, then the overview video. On desktops at least 1101px wide and 560px tall, the title block and the video together fill exactly one screen (`clamp(560px, 100svh − 60px, 1000px)`). The video takes the height that remains and is sized `min(100cqw, 100cqh × 16/9)` of it (container units), centred, so it is never cut off at the fold. Narrower or shorter screens scroll normally. The title spans the full column on one or two balanced lines (`High-Fidelity` never breaks), then a `1fr : 280px` grid: authors (18px), affiliations, the venue badge row and a wrapping row of four equal ghost buttons on the left, and the lab credit on the right behind a strong-hairline left rule, bottom-aligned.
+**First viewport.** Title-first and left-aligned, then the overview video. On desktops at least 1101px wide and 560px tall, the title block and the video together fill exactly one screen (`clamp(560px, 100svh − 60px, 1000px)`). The video takes the height that remains and is sized `min(100cqw, 100cqh × 16/9)` of it (container units), centred, so it is never cut off at the fold. Narrower or shorter screens scroll normally. The title spans the full column on one or two balanced lines (`High-Fidelity` never breaks), then a `1fr : 280px` grid: authors (18px), affiliations, the venue badge row and five equal ghost buttons (Paper, Dataset, Code, ViTeX-Edit-14B, Leaderboard) on the left, in one row where the column is at least 730px wide and otherwise as a 3 + 2 grid of equal-width pills (a container query on the column, so no button is left alone on a row), and the lab credit on the right behind a strong-hairline left rule, bottom-aligned.
 
 **Overview video.** A 16:9 frame with a 14px radius and a strong-hairline ring on black, over a soft blur of its own poster. Before playing it shows the poster (the promo's title card at 2 s) with a bottom-left play control: an accent disc (72px desktop, 42px phone) with a halo ring, "Watch the overview" and a mono "1:06 · with sound" on a bottom scrim. Clicking plays with sound and native controls; the overlay fades out and returns as "Watch again" at the end. Phones (≤800px) load the 720p file, larger screens the 1080p original; nothing loads before the click.
 
@@ -369,7 +369,7 @@ The page uses the leaderboard's 1200px column, `clamp(20px, 5vw, 56px)` gutter a
 **Breakpoints.**
 - **1000px**: the comparator's method list becomes one horizontally scrolling row of outlined pills with the group labels dropped. Failure rows stack, and the readout and pick rows go to three columns.
 - **860px**: the nav hides, keeping only the Leaderboard link. Axes, release columns, notes, calibration, abstract, cite and figures collapse to one column, with horizontal hairlines replacing vertical ones.
-- **600px**: the four release buttons form a 2-column grid. The venue stacks: the badge stays a pill and the track name sits under it in dim text, without the outer border. The glyph stage stacks at 1000px (wipe, word, chips) and the credit moves under the title with a top rule. The comparator bar stacks, and the view switch becomes a full-width 2-column grid with a 20px track. The wipe radius drops to 10px and on-video tags shrink.
+- **600px**: the five release buttons form a 2-column grid of equal pills, Paper first; the fifth (Leaderboard) sits in the first column, at the same width as the others. The venue stacks: the badge stays a pill and the track name sits under it in dim text, without the outer border. The glyph stage stacks at 1000px (wipe, word, chips) and the credit moves under the title with a top rule. The comparator bar stacks, and the view switch becomes a full-width 2-column grid with a 20px track. The wipe radius drops to 10px and on-video tags shrink.
 
 ## Elevation & Depth
 
@@ -399,7 +399,7 @@ Every control and every tag is a full pill, including the venue badge, segments,
 ### Buttons
 Outlined pills, all equal.
 - **Shape:** full pill, 46px tall; the small size is 36px at 13px (Copy BibTeX).
-- **Ghost (the only release button):** transparent, 500 at 14.5px, 22px sides, strong-hairline border, foreground text, and a leading 17px stroke icon in the accent. On hover the border turns accent. Dataset, Evaluation code, ViTeX-Edit-14B and Leaderboard all use it, and so do "Open the full leaderboard" and Copy BibTeX.
+- **Ghost (the only release button):** transparent, 500 at 14.5px, 22px sides, strong-hairline border, foreground text, and a leading 17px stroke icon in the accent. On hover the border turns accent. Paper, Dataset, Code, ViTeX-Edit-14B and Leaderboard all use it, and so do "Open the full leaderboard" and Copy BibTeX.
 - **Text link button:** "Watch its output" and release links. Foreground 500 at 13–14px with a trailing 15px stroke arrow, underlined on hover (accent underline on anchors).
 
 ### Venue badge
@@ -440,7 +440,7 @@ Three equal columns under a strong top rule, divided by vertical hairlines. Each
 A light plate with a 12px radius and fluid padding, holding the full-colour raster. The caption (14px dim, 72ch) sits beside or below it with a bold lead-in and ends with a "Full-size figure" link. Wide figures span the column. The narrow plate is capped at 560px on small screens.
 
 ### Cite
-A 3/9 split. The BibTeX block is a hairline-bordered 10px pre, mono 12.5px/1.7 in dim text, wrapped rather than scrolled, with continuation lines hang-indented 14ch (4ch below 600px). A small ghost button copies it. The contact line (14px dim) sits under the button.
+A 3/9 split. The BibTeX block is a hairline-bordered 10px pre, mono 12.5px/1.7 in dim text, wrapped rather than scrolled, with continuation lines hang-indented 18ch (4ch below 600px). A small ghost button copies it. The contact line (14px dim) sits under the button.
 
 ### Navigation
 The leaderboard's header: sticky, 60px, 82% background mix, 12px blur, bottom hairline. The wordmark is 600 at 16px. Section links are 14px dim: Comparison, Failures, Protocol, Release, Cite. A hairline-separated "Leaderboard ↗" link and a 36px circular theme toggle sit at the right. Below 860px only the Leaderboard link and the toggle remain.
@@ -466,7 +466,7 @@ The leaderboard's signature (same symbols, ideal star, Delaunay front mesh, 1100
 
 ### Don't:
 - **Don't** author a second hue, or use the accent for method families, failure severity, headings, resting links or general emphasis.
-- **Don't** give any release link a filled button. The four release links are equal ghost pills.
+- **Don't** give any release link a filled button. The five release links (Paper, Dataset, Code, ViTeX-Edit-14B, Leaderboard) are equal ghost pills.
 - **Don't** desaturate, tint or grade video or figures to match the page.
 - **Don't** give page chrome a filled panel or a cast shadow. The figure plate, which mats a raster, is the only filled surface besides the accent badge and pill.
 - **Don't** draw the Pareto front as a 2-D line or staircase, and don't show an aggregate score or an overall #1.

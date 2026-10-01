@@ -9,14 +9,14 @@ web
 ## Users
 
 - **Readers and reviewers** arriving from the NeurIPS 2026 Evaluations & Datasets paper, a talk, or a social post. They want to grasp in a minute what ViTeX-Bench is, what is released, and why its protocol is shaped the way it is.
-- **Method authors** working on video scene text editing who want the dataset, the evaluation code, the reference model, and the leaderboard, and to see where methods currently land.
+- **Method authors** working on video scene text editing who want the paper, the dataset, the evaluation code, the reference model, and the leaderboard, and to see where methods currently land.
 - **Practitioners** choosing an editor, who want to see real edited videos and the trade-offs between method families.
 
 All audiences use desktop and phone, in light and dark themes.
 
 ## Product Purpose
 
-The project homepage for **ViTeX-Bench: Benchmarking High-Fidelity Video Scene Text Editing** (NeurIPS 2026 Track on Evaluations and Datasets, accepted). It presents a coordinated three-part release: **ViTeX-Dataset** (387 real-world 720p videos: 230 paired training, 157 frozen evaluation), the **ViTeX-Bench** evaluation protocol (13 metrics on three axes), and **ViTeX-Edit-14B** (an open reference editor). Success means a visitor understands the task, the protocol, and the headline finding (accurate text, temporal stability and scene preservation remain hard to achieve together), sees convincing video evidence, and reaches the dataset, code, model, leaderboard and citation without friction.
+The project homepage for **ViTeX-Bench: Benchmarking High-Fidelity Video Scene Text Editing** (NeurIPS 2026 Track on Evaluations and Datasets, accepted). It presents a coordinated three-part release: **ViTeX-Dataset** (387 real-world 720p videos: 230 paired training, 157 frozen evaluation), the **ViTeX-Bench** evaluation protocol (13 metrics on three axes), and **ViTeX-Edit-14B** (an open reference editor). Success means a visitor understands the task, the protocol, and the headline finding (accurate text, temporal stability and scene preservation remain hard to achieve together), sees convincing video evidence, and reaches the paper, dataset, code, model, leaderboard and citation without friction.
 
 ## Positioning
 
@@ -26,13 +26,13 @@ ViTeX-Bench is OCR-anchored: it measures whether the edited region reads as the 
 
 - Static site on GitHub Pages at `https://vitex-bench.github.io/` (repo `ViTeX-Bench/vitex-bench.github.io`, branch `master`).
 - Sister site: the leaderboard at `https://vitex-bench.github.io/ViTeX-Bench-Leaderboard/` (repo `/home/xh/PJ/ViTeX/ViTeX-Bench-Leaderboard`). Its `data/submissions.jsonl` is the live source of leaderboard rows; the homepage may read it at runtime. The leaderboard's `leaderboard.js` API need not be preserved.
-- Release links: dataset `https://huggingface.co/datasets/ViTeX-Bench/ViTeX-Dataset`, code (evaluation + ViTeX-Edit-14B) `https://github.com/taco-group/ViTeX-Bench`, model weights `https://huggingface.co/ViTeX-Bench/ViTeX-Edit-14B`.
-- Paper source: `/home/xh/PJ/ViTeX/ViTeX_arxiv/build/paper.pdf` (September 26, 2026 revision).
+- Release links: paper `https://arxiv.org/abs/2609.40356`, dataset `https://huggingface.co/datasets/ViTeX-Bench/ViTeX-Dataset`, code (evaluation + ViTeX-Edit-14B) `https://github.com/taco-group/ViTeX-Bench`, model weights `https://huggingface.co/ViTeX-Bench/ViTeX-Edit-14B`.
+- Paper source: the arXiv version, `https://arxiv.org/abs/2609.40356` (v1 posted 2026-09-30), which is the NeurIPS-template paper (local source `/home/xh/PJ/ViTeX/ViTeX_neurips`). Its table and figure numbers are the same as in the earlier `ViTeX_arxiv` build, so the references below still hold.
 
 ## Capabilities and Constraints
 
 - Plain static HTML/CSS/JS, no build step.
-- **No public paper link yet** (confirmed 2026-09-26): no Paper/arXiv button until one exists.
+- **Paper public on arXiv** (2609.40356, v1 posted 2026-09-30, the NeurIPS-template version): the first viewport has five equal ghost release buttons, in the order Paper, Dataset, Code, ViTeX-Edit-14B, Leaderboard. Paper links the unversioned arXiv abstract page (added 2026-10-01).
 - Protocol rules inherited from the leaderboard: no overall #1 or aggregate; post-processed (Composite) and Source video rows are shown but unranked; VideoPainter temporal scores are † and excluded from temporal comparison and from the Pareto set.
 - Pareto front on the three primaries (paper Table 11): FLUX-Text, TextCtrl, RS-STE, ViTeX-Edit-14B, Wan2.1-VACE-14B. Wan2.1-VACE-14B is on the front at SeqAcc 0, so front membership alone does not mean a successful edit.
 - Baseline families: A per-frame image editing (AnyText2, TextCtrl, FLUX-Text, RS-STE); B first-frame editing + propagation (TextCtrl + AnyV2V); C mask-conditioned video inpainting (Wan2.1-VACE-14B, VideoPainter); D instruction-guided video editing (Kling Video 3.0 Omni).
@@ -59,13 +59,13 @@ ViTeX-Bench is OCR-anchored: it measures whether the edited region reads as the 
 - Figures: `static/images/teaser.jpg` (paper Fig. 1), `pipeline.png` (Fig. 2), `arch.png` (Fig. 3).
 - Videos: `static/videos/showcase_v2/*.mp4` (five 4×3 composite comparisons, source + all methods per scene); `static/videos/failures/*.mp4` (source/output pairs for the four diagnosed failures in paper Fig. 4); `banner_video.mp4`, `carousel*.mp4` (template leftovers, unused).
 - Numbers: paper Table 2 (all 13 metric means for 11 rows), calibration (Spearman ρ = 0.95 human vs. OCR ranking; rater correlations +0.71 / −0.40 / −0.53; bootstrap Kendall τ = 0.936), dataset coverage (Table 1).
-- Absent, must not be fabricated: public paper URL, per-row confidence intervals on the site, user-submitted leaderboard rows, logos for TAMU/TACO.
+- Absent, must not be fabricated: per-row confidence intervals on the site, user-submitted leaderboard rows, logos for TAMU/TACO.
 
 ## Product Principles
 
 1. **Evidence first**: show real edited video and real numbers; every claim traces to the paper.
 2. **Protocol integrity**: never imply a single winner; the Pareto front is three-dimensional and front membership is not success.
-3. **Release is the payload**: dataset, code, model, leaderboard and citation are always one tap away.
+3. **Release is the payload**: paper, dataset, code, model, leaderboard and citation are always one tap away.
 4. **One family with the leaderboard**: the homepage and leaderboard read as the same project.
 5. **Equal on phone and desktop**.
 

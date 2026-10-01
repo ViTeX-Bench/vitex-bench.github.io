@@ -202,6 +202,12 @@ html { scrollbar-color: var(--line-2) transparent; }
 .venue__badge svg { width: 14px; height: 14px; fill: currentColor; }
 .venue__track { color: var(--fg); }
 .links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 30px; }
+/* The five release pills need about 700px on one line. Where the column is narrower they form a
+   3 + 2 block of equal pills, each as wide as the widest, rather than leaving one alone on a row. */
+.intro__main { container-type: inline-size; }
+@container (max-width: 729px) {
+  .links { display: grid; grid-template-columns: repeat(3, 1fr); width: max-content; max-width: 100%; }
+}
 .credit { border-left: 1px solid var(--line-2); padding: 4px 0 4px 28px; }
 .credit p { margin: 0; }
 .credit a { text-decoration: none; }
@@ -485,7 +491,7 @@ html { scrollbar-color: var(--line-2) transparent; }
 /* ---------- Cite ---------- */
 .cite pre { margin: 0 0 14px; padding: 18px 20px; border: 1px solid var(--line); border-radius: 10px; white-space: normal; font: 400 12.5px/1.7 var(--mono); color: var(--fg-2); }
 .cite pre code { border: 0; padding: 0; font-size: inherit; line-height: inherit; }
-.cite .bl { display: block; white-space: pre-wrap; overflow-wrap: break-word; padding-left: 14ch; text-indent: -14ch; }
+.cite .bl { display: block; white-space: pre-wrap; overflow-wrap: break-word; padding-left: 18ch; text-indent: -18ch; }
 .cite .bl:first-child, .cite .bl:last-child { padding-left: 0; text-indent: 0; }
 .nw { white-space: nowrap; }
 .visually-hidden { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
@@ -546,7 +552,7 @@ html { scrollbar-color: var(--line-2) transparent; }
   .glyph__cap { font-size: 13px; }
   .glyph__inner { padding-top: 20px; }
   .authors { font-size: 16px; gap: 4px 14px; }
-  .links { display: grid; grid-template-columns: 1fr 1fr; }
+  .links { display: grid; grid-template-columns: 1fr 1fr; width: auto; }
   .links .btn { padding: 0 14px; font-size: 14px; }
   .cmp__bar { flex-direction: column; align-items: stretch; }
   .cmp__bar .tabs { align-self: flex-start; }
