@@ -20,7 +20,7 @@ Preview locally with `python3 -m http.server` and open http://localhost:8000/.
 
 - `static/videos/failures/`: source/output pairs for the four diagnosed failures (paper Fig. 4).
 - `static/images/posters/`: first frames of the above, shown before the videos load.
-- `static/images/social.jpg`: the link preview, a capture of the first viewport.
+- `static/images/social.jpg`: the link preview, a capture of the first viewport (1200×630): headless Chrome in the dark theme at a 1200×690 window, with the 60px header cropped off. Its URLs (`og:image` and the Weibo, QQ and Douban share links) carry a `?v=N` cache-buster; bump it whenever the image is replaced.
 
 To add a scene, render its composite, cut the hero clip and posters as above, and add an entry to `SCENES` in `static/js/site.js` (`x` is the horizontal position of the text in the frame, from 0 to 1, where the big word flips).
 
