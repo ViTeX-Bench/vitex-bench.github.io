@@ -35,7 +35,7 @@
   // crop starts below it and keeps 16:9 (430×242).
   // =====================================================================
   var SCENES = [
-    { id: '0000657_00000', src: 'PROF', tgt: 'ENGR', x: 0.38 },
+    { id: '0004547_00000', src: 'First', tgt: 'Last', x: 0.5 },
     { id: '0006286_00000', src: 'COLLIER', tgt: 'WASHING', x: 0.74 },
     { id: '0005186_00000', src: 'ONLY', tgt: 'STOP', x: 0.6 },
     { id: '0001942_00000', src: 'BULB?', tgt: 'LAMP?', x: 0.16 },
@@ -217,9 +217,9 @@
     $('hero-say').textContent = s.src + ' to ' + s.tgt;
     fitWord();
     hero.state = null; heroWord(heroWipe ? heroWipe.p : 0.03);
-    hero.poster = loadImage('static/images/posters/hero_' + s.id + '.jpg?v=2');
+    hero.poster = loadImage('static/images/posters/hero_' + s.id + '.jpg');
     hero.poster.onload = function () { if (heroWipe) heroWipe.draw(); drawAmbient(); };
-    hero.video.src = 'static/videos/hero/' + s.id + '.mp4?v=2';
+    hero.video.src = 'static/videos/hero/' + s.id + '.mp4';
     hero.video.load();
     playHero();
     if (heroWipe && heroWipe.sweep && !heroWipe.touched) { heroWipe.sweepT0 = performance.now(); heroWipe.set(0.03, false); }
@@ -362,12 +362,12 @@
 
   function loadCmpScene() {
     var s = SCENES[cmp.scene];
-    cmp.poster = loadImage('static/images/posters/grid_' + s.id + '.jpg?v=2');
+    cmp.poster = loadImage('static/images/posters/grid_' + s.id + '.jpg');
     cmp.poster.onload = function () { cmpWipe.draw(); drawGrid(); };
     if (!cmp.wanted) return;
     $('cmp-status').hidden = false;
     cmp.video.preload = 'auto';
-    cmp.video.src = 'static/videos/showcase_v2/' + s.id + '.mp4?v=2';
+    cmp.video.src = 'static/videos/showcase_v2/' + s.id + '.mp4';
     cmp.video.load();
     var pr = cmp.video.play(); if (pr && pr.catch) pr.catch(function () {});
   }

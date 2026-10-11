@@ -10,7 +10,7 @@ Outputs go to static/videos/showcase_v2/<clip_id>.mp4.
 Usage:
     python scripts/render_showcase_grid.py                 # default 5 scenes
     python scripts/render_showcase_grid.py --clip 0006286_00000
-    python scripts/render_showcase_grid.py --clips 0000657_00000,0001942_00000
+    python scripts/render_showcase_grid.py --clips 0004547_00000,0001942_00000
 """
 
 import argparse
@@ -66,7 +66,7 @@ BADGE_FG = {
 }
 
 DEFAULT_CLIPS = [
-    "0000657_00000",  # PROF -> ENGR
+    "0004547_00000",  # First -> Last
     "0006286_00000",  # COLLIER -> WASHING
     "0005186_00000",  # ONLY -> STOP
     "0001942_00000",  # BULB? -> LAMP?
