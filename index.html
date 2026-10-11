@@ -197,7 +197,7 @@
       <div class="abstract__body">
         <p class="lede">Recent video generation is increasingly realistic and controllable, yet video editing remains comparatively underdeveloped, particularly for precise local edits that must preserve the original scene dynamics.</p>
         <p>Video scene text editing aims to replace text appearing on scene surfaces in a video, such as storefront signs, whiteboards, and product labels, while preserving the surrounding content, motion, and camera dynamics. Although scene text editing has been extensively studied for static images, video scene text editing that achieves high visual quality, temporal consistency, and edit locality remains largely underexplored. Existing resources offer limited paired real-video data, and general video-editing metrics do not directly measure whether the requested text remains correct over time. We introduce <strong>ViTeX-Bench</strong>, a benchmark suite comprising <strong>ViTeX-Dataset</strong> and a three-axis evaluation protocol. The dataset contains 387 real-world 720p videos with text-region masks and editing instructions: 230 provide reviewed, pipeline-generated paired edits for training, and 157 form a frozen evaluation split. The protocol evaluates text correctness, visual and temporal quality, and edit locality through 13 metrics, with one primary metric per axis and a Pareto comparison of their trade-offs. OCR calibration, human evaluation, and annotation-sensitivity analyses support the interpretation of these scores.</p>
-        <p>Across eight baselines from four editing families, accurate text, temporal stability, and scene preservation remain difficult to achieve together. We also release <strong>ViTeX-Edit-14B</strong>, an open-source reference editor fine-tuned on the paired training split with motion-aligned glyph-video conditioning. It achieves CharAcc 0.714, the highest mean among the evaluated video-native editors, with low temporal error. ViTeX-Bench provides a reproducible foundation for studying these trade-offs in video scene text editing.</p>
+        <p>Across eight baselines from four editing families, accurate text, temporal stability, and scene preservation remain difficult to achieve together. We also release <strong>ViTeX-Edit-14B</strong>, an open-source reference editor fine-tuned on the paired training split with motion-aligned glyph-video conditioning. It achieves CharAcc 0.714, the highest mean among the evaluated video-native editors, and with its glyph stream disabled it attains the lowest text-crop Warp among raw editor outputs. ViTeX-Bench provides a reproducible foundation for studying these trade-offs in video scene text editing.</p>
       </div>
     </div>
   </section>
@@ -349,7 +349,7 @@
 
     <div class="wrap">
       <div class="notes">
-        <p><strong>On the front is not the same as good.</strong> <span id="front-names">FLUX-Text, TextCtrl, RS-STE, ViTeX-Edit-14B and Wan2.1-VACE-14B</span> form the Pareto front. Wan2.1-VACE-14B is on it with SeqAcc 0: it returns the masked region almost unchanged, which keeps its temporal and locality scores strong. The other ten metrics stay visible for exactly this reason.</p>
+        <p><strong>On the front is not the same as good.</strong> <span id="front-names">FLUX-Text, TextCtrl, ViTeX-Edit-14B, RS-STE, ViTeX-Edit-14B (w/o glyph) and Wan2.1-VACE-14B</span> form the Pareto front. Wan2.1-VACE-14B is on it with SeqAcc 0: it returns the masked region almost unchanged, which keeps its temporal and locality scores strong. The other ten metrics stay visible for exactly this reason.</p>
         <p><strong>What is not ranked.</strong> Composite post-processing and the Source video are shown for reference only. VideoPainter's Flicker and Warp come from interpolated frames, so it is left out of temporal comparisons and of the front.</p>
       </div>
       <div class="calib">
@@ -453,6 +453,6 @@
   </div>
 </footer>
 
-<script src="static/js/site.js?v=12"></script>
+<script src="static/js/site.js?v=13"></script>
 </body>
 </html>
