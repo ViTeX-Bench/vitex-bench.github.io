@@ -13,7 +13,7 @@
 <meta property="og:description" content="Paired real-video data, a three-axis protocol with a Pareto comparison instead of one score, and an open 14B reference editor. NeurIPS 2026, Evaluations and Datasets Track.">
 <meta property="og:url" content="https://vitex-bench.github.io/">
 <meta property="og:image" content="https://vitex-bench.github.io/static/images/social.jpg?v=2">
-<meta property="og:video" content="https://vitex-bench.github.io/static/videos/promo/ViTeX-Bench_promo_720p.mp4?v=4">
+<meta property="og:video" content="https://vitex-bench.github.io/static/videos/promo/ViTeX-Bench_promo_720p.mp4?v=5">
 <meta property="og:video:type" content="video/mp4">
 <meta property="og:video:width" content="1280">
 <meta property="og:video:height" content="720">
@@ -148,8 +148,8 @@
     <div class="wrap promo__inner">
       <figure class="promo__frame" id="promo">
         <video id="promo-video" playsinline preload="none" poster="static/images/posters/promo.jpg?v=3" aria-label="ViTeX-Bench overview video, 1 minute 6 seconds, with music">
-          <source src="static/videos/promo/ViTeX-Bench_promo_720p.mp4?v=4" type="video/mp4" media="(max-width: 800px)">
-          <source src="static/videos/promo/ViTeX-Bench_promo_1080p.mp4?v=4" type="video/mp4">
+          <source src="static/videos/promo/ViTeX-Bench_promo_720p.mp4?v=5" type="video/mp4" media="(max-width: 800px)">
+          <source src="static/videos/promo/ViTeX-Bench_promo_1080p.mp4?v=5" type="video/mp4">
         </video>
         <button class="promo__play" id="promo-play" type="button" aria-label="Play the overview video (1:06, with sound)">
           <span class="promo__disc" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8.5 5.8v12.4a.8.8 0 0 0 1.2.7l9.9-6.2a.8.8 0 0 0 0-1.4L9.7 5.1a.8.8 0 0 0-1.2.7Z"/></svg></span>
@@ -179,7 +179,7 @@
         </button>
       </div>
       <div class="glyph__word">
-        <p class="word" id="hero-word" data-state="src"><span class="visually-hidden" id="hero-say" aria-live="polite"></span><span class="word__src" id="hero-src" aria-hidden="true">First</span><span class="word__tgt" id="hero-tgt" aria-hidden="true">Last</span></p>
+        <p class="word" id="hero-word" data-state="src"><span class="visually-hidden" id="hero-say" aria-live="polite"></span><span class="word__src" id="hero-src" aria-hidden="true">PROF</span><span class="word__tgt" id="hero-tgt" aria-hidden="true">ENGR</span></p>
       </div>
       <div class="glyph__foot">
         <div class="scenes" id="hero-scenes" role="radiogroup" aria-label="Scene"></div>
@@ -197,7 +197,7 @@
       <div class="abstract__body">
         <p class="lede">Recent video generation is increasingly realistic and controllable, yet video editing remains comparatively underdeveloped, particularly for precise local edits that must preserve the original scene dynamics.</p>
         <p>Video scene text editing aims to replace text appearing on scene surfaces in a video, such as storefront signs, whiteboards, and product labels, while preserving the surrounding content, motion, and camera dynamics. Although scene text editing has been extensively studied for static images, video scene text editing that achieves high visual quality, temporal consistency, and edit locality remains largely underexplored. Existing resources offer limited paired real-video data, and general video-editing metrics do not directly measure whether the requested text remains correct over time. We introduce <strong>ViTeX-Bench</strong>, a benchmark suite comprising <strong>ViTeX-Dataset</strong> and a three-axis evaluation protocol. The dataset contains 387 real-world 720p videos with text-region masks and editing instructions: 230 provide reviewed, pipeline-generated paired edits for training, and 157 form a frozen evaluation split. The protocol evaluates text correctness, visual and temporal quality, and edit locality through 13 metrics, with one primary metric per axis and a Pareto comparison of their trade-offs. OCR calibration, human evaluation, and annotation-sensitivity analyses support the interpretation of these scores.</p>
-        <p>Across eight baselines from four editing families, accurate text, temporal stability, and scene preservation remain difficult to achieve together. We also release <strong>ViTeX-Edit-14B</strong>, an open-source reference editor fine-tuned on the paired training split with motion-aligned glyph-video conditioning. It achieves CharAcc 0.688, the highest mean among the evaluated video-native editors, and the lowest comparable text-crop Warp among raw editor outputs. ViTeX-Bench provides a reproducible foundation for studying these trade-offs in video scene text editing.</p>
+        <p>Across eight baselines from four editing families, accurate text, temporal stability, and scene preservation remain difficult to achieve together. We also release <strong>ViTeX-Edit-14B</strong>, an open-source reference editor fine-tuned on the paired training split with motion-aligned glyph-video conditioning. It achieves CharAcc 0.714, the highest mean among the evaluated video-native editors, with low temporal error. ViTeX-Bench provides a reproducible foundation for studying these trade-offs in video scene text editing.</p>
       </div>
     </div>
   </section>
@@ -357,7 +357,7 @@
         <ul>
           <li><span class="calib__v">ρ = 0.95</span><span>Spearman agreement between method-blinded human transcription and the OCR-based method ranking.</span></li>
           <li><span class="calib__v">+0.71 · −0.40 · −0.53</span><span>Correlation of three non-author raters' scores (70 outputs) with SeqAcc, Warp<sub>c</sub> and DreamSim<sub>loc</sub>.</span></li>
-          <li><span class="calib__v">τ = 0.936</span><span>Mean Kendall agreement of bootstrap-resampled SeqAcc rankings with the full split.</span></li>
+          <li><span class="calib__v">τ = 0.925</span><span>Mean Kendall agreement of bootstrap-resampled SeqAcc rankings with the full split.</span></li>
         </ul>
       </div>
       <a class="btn btn--ghost" href="https://vitex-bench.github.io/ViTeX-Bench-Leaderboard/">Open the full leaderboard<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 16 16 8M9.5 8H16v6.5"/></svg></a>
@@ -402,7 +402,7 @@
             <div><dt>Backbone</dt><dd>Wan2.1-VACE-14B</dd></div>
             <div><dt>Fine-tuning</dt><dd>576 GPU-h · 8×H100</dd></div>
             <div><dt>Inference</dt><dd>one 50-step pass</dd></div>
-            <div><dt>CharAcc</dt><dd>0.688</dd></div>
+            <div><dt>CharAcc</dt><dd>0.714</dd></div>
           </dl>
           <div class="rel__links">
             <a class="rel__link" href="https://huggingface.co/ViTeX-Bench/ViTeX-Edit-14B">Weights on Hugging Face<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 16 16 8M9.5 8H16v6.5"/></svg></a>
@@ -453,6 +453,6 @@
   </div>
 </footer>
 
-<script src="static/js/site.js?v=10"></script>
+<script src="static/js/site.js?v=11"></script>
 </body>
 </html>
